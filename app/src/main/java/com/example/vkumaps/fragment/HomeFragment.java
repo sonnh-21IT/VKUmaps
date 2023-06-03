@@ -6,13 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -21,7 +21,6 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -29,17 +28,15 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
     //    private SupportMapFragment mapFragment;
     private ChangeFragmentListener listener;
+    private int currentstate;
 
     public HomeFragment(ChangeFragmentListener listener) {
         this.listener = listener;
@@ -50,7 +47,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        listener.changeTitle("Home");
+        listener.changeTitle("Bản đồ");
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -58,8 +55,29 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .commit();
 
         mapFragment.getMapAsync(this);
+        //bottom sheet
+        FrameLayout sheet=rootView.findViewById(R.id.sheet);
+        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(sheet);
 
-        MapView mapView = rootView.findViewById(R.id.map_view);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //chiều cao mặc định
+        bottomSheetBehavior.setPeekHeight(100);
+        //onclick
+        ImageView oc=rootView.findViewById(R.id.btn);
+        currentstate=0;
+        oc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentstate==0){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    currentstate=1;
+                }else{
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    currentstate=0;
+                }
+            }
+        });
+
         return rootView;
     }
 

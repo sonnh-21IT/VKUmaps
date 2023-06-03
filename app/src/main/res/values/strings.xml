@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">VKUmaps</string>
-    <string name="nav_home">Home</string>
-    <string name="nav_favorite">Favorite</string>
-    <string name="nav_history">History</string>
-    <string name="nav_account">Account</string>
-    <string name="nav_My_profile">My profile</string>
-    <string name="nav_change_pass">Change Password</string>
+    <string name="nav_map">Bản đồ</string>
+    <string name="nav_news">Tin tức</string>
+    <string name="nav_admissions">Tuyển sinh</string>
+    <string name="nav_event">Sự kiện</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_setting">Cài đặt</string>
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>

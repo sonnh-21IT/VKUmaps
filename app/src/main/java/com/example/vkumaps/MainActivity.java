@@ -5,40 +5,34 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.vkumaps.fragment.FavoriteFragment;
-import com.example.vkumaps.fragment.HistoryFragment;
+import com.example.vkumaps.fragment.AdmissionsFragment;
+import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener {
     private DrawerLayout drawerLayout;
     private static final int FRAGMENT_HOME=0;
-    private static final int FRAGMENT_FAVORITE=1;
-    private static final int FRAGMENT_HISTORY=2;
+    private static final int FRAGMENT_ADMISSION=1;
+    private static final int FRAGMENT_EVENT=2;
     private int currentFragment=FRAGMENT_HOME;
 
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SplashScreen.installSplashScreen(this);
+
         setContentView(R.layout.activity_main);
 
         toolbar=findViewById(R.id.toolbar);
@@ -54,31 +48,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         replaceFragment(new HomeFragment(this));
         currentFragment=FRAGMENT_HOME;
-        navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
+        navigationView.getMenu().findItem(R.id.nav_maps).setChecked(true);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id=item.getItemId();
-        if(id==R.id.nav_home){
+        if(id==R.id.nav_maps){
             if (currentFragment!=FRAGMENT_HOME){
                 replaceFragment(new HomeFragment(this));
                 currentFragment=FRAGMENT_HOME;
-                drawerLayout.closeDrawer(GravityCompat.START);
             }
-        }else if(id==R.id.nav_favorite){
-            if (currentFragment!=FRAGMENT_FAVORITE){
-                replaceFragment(new FavoriteFragment(this));
-                currentFragment=FRAGMENT_FAVORITE;
-                drawerLayout.closeDrawer(GravityCompat.START);
+        }else if(id==R.id.nav_admissions){
+            if (currentFragment!=FRAGMENT_ADMISSION){
+                replaceFragment(new AdmissionsFragment(this));
+                currentFragment=FRAGMENT_ADMISSION;
             }
-        }else if(id==R.id.nav_history){
-            if (currentFragment!=FRAGMENT_HISTORY){
-                replaceFragment(new HistoryFragment(this));
-                currentFragment=FRAGMENT_HISTORY;
-                drawerLayout.closeDrawer(GravityCompat.START);
+        }else if(id==R.id.nav_event){
+            if (currentFragment!=FRAGMENT_EVENT){
+                replaceFragment(new EventFragment(this));
+                currentFragment=FRAGMENT_EVENT;
             }
         }
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -102,6 +94,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
-        Toast.makeText(getApplicationContext(),title,Toast.LENGTH_SHORT).show();
     }
 }

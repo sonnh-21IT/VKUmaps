@@ -10,16 +10,16 @@ import androidx.fragment.app.Fragment;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 
-public class FavoriteFragment extends Fragment {
+public class EventFragment extends Fragment {
     private ChangeFragmentListener listener;
-    public FavoriteFragment(ChangeFragmentListener listener){
+    public EventFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        listener.changeTitle("Favorite");
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
+        listener.changeTitle("Sự kiện");
+        return inflater.inflate(R.layout.fragment_event, container, false);
     }
 }
