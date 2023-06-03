@@ -12,4 +12,10 @@
             <item android:id="@+id/nav_setting" android:title="@string/nav_setting" android:icon="@drawable/ic_setting"/>
         </menu>
     </item>
+    <item android:title="@string/nav_contact">
+        <menu>
+            <item android:id="@+id/nav_call" android:title="@string/nav_call" android:icon="@drawable/ic_call"/>
+            <item android:id="@+id/nav_mail" android:title="@string/nav_mail" android:icon="@drawable/ic_email"/>
+        </menu>
+    </item>
 </menu>

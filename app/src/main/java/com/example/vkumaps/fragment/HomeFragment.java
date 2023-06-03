@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.vkumaps.R;
@@ -36,7 +37,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
     //    private SupportMapFragment mapFragment;
     private ChangeFragmentListener listener;
-    private int currentstate;
+    public static int currentstate;
+    public static BottomSheetBehavior<View> bottomSheetBehavior;
+    private ImageView oc;
+    private FrameLayout sheet;
 
     public HomeFragment(ChangeFragmentListener listener) {
         this.listener = listener;
@@ -47,7 +51,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        listener.changeTitle("Bản đồ");
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -55,28 +58,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .commit();
 
         mapFragment.getMapAsync(this);
-        //bottom sheet
-        FrameLayout sheet=rootView.findViewById(R.id.sheet);
-        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(sheet);
-
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        //chiều cao mặc định
-        bottomSheetBehavior.setPeekHeight(100);
-        //onclick
-        ImageView oc=rootView.findViewById(R.id.btn);
-        currentstate=0;
-        oc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(currentstate==0){
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    currentstate=1;
-                }else{
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    currentstate=0;
-                }
-            }
-        });
+        oc=rootView.findViewById(R.id.btn);
+        sheet=rootView.findViewById(R.id.sheet);
 
         return rootView;
     }
@@ -136,5 +119,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listener.changeTitle("Bản đồ");
+        //bottom sheet
+        bottomSheetBehavior = BottomSheetBehavior.from(sheet);
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //chiều cao mặc định
+        bottomSheetBehavior.setPeekHeight(100);
+        currentstate=0;
+        oc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentstate==0){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    currentstate=1;
+                }else{
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    currentstate=0;
+                }
+            }
+        });
     }
 }

@@ -18,6 +18,7 @@ import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener {
@@ -58,19 +59,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (currentFragment!=FRAGMENT_HOME){
                 replaceFragment(new HomeFragment(this));
                 currentFragment=FRAGMENT_HOME;
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         }else if(id==R.id.nav_admissions){
             if (currentFragment!=FRAGMENT_ADMISSION){
                 replaceFragment(new AdmissionsFragment(this));
                 currentFragment=FRAGMENT_ADMISSION;
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         }else if(id==R.id.nav_event){
             if (currentFragment!=FRAGMENT_EVENT){
                 replaceFragment(new EventFragment(this));
                 currentFragment=FRAGMENT_EVENT;
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         }
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -79,7 +82,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else{
-            super.onBackPressed();
+            if(HomeFragment.currentstate==0){
+                super.onBackPressed();
+            }else{
+                HomeFragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                HomeFragment.currentstate=0;
+            }
         }
     }
     private void replaceFragment(Fragment fragment){
