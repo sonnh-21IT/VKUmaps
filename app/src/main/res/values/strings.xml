@@ -7,8 +7,9 @@
     <string name="nav_account">Tài khoản</string>
     <string name="nav_setting">Cài đặt</string>
     <string name="nav_contact">Liên hệ</string>
-    <string name="nav_call">0984399788</string>
-    <string name="nav_mail">example@vku.udn.vn</string>
+    <string name="nav_call"> 0236.6.552.688</string>
+    <string name="nav_mail">daotao@vku.udn.vn</string>
+    <string name="nav_permission">Quyền úng dụng</string>
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>

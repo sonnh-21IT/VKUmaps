@@ -7,9 +7,10 @@
             <item android:id="@+id/nav_event" android:title="@string/nav_event" android:icon="@drawable/ic_event"/>
         </menu>
     </item>
-    <item android:title="@string/nav_account">
+    <item android:title="@string/nav_setting">
         <menu>
-            <item android:id="@+id/nav_setting" android:title="@string/nav_setting" android:icon="@drawable/ic_setting"/>
+            <item android:id="@+id/nav_account" android:title="@string/nav_account" android:icon="@drawable/ic_user"/>
+            <item android:id="@+id/nav_permission" android:title="@string/nav_permission" android:icon="@drawable/ic_setting"/>
         </menu>
     </item>
     <item android:title="@string/nav_contact">

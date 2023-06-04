@@ -1,6 +1,9 @@
 package com.example.vkumaps;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -75,8 +78,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = FRAGMENT_EVENT;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
+        }else if (id == R.id.nav_permission) {
+            openSettingPermission();
+        }else if(id == R.id.nav_call){
+            openCall();
+        }else if(id == R.id.nav_mail){
+            openEMail();
         }
         return true;
+    }
+
+    private void openEMail() {
+        Intent intent=new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"daotao@vku.udn.vn"});
+        startActivity(intent);
+    }
+
+    private void openCall() {
+        String phoneNumber = " 02366552688"; // Số điện thoại cần gọi
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+phoneNumber));
+        startActivity(intent);
+    }
+
+    private void openSettingPermission() {
+        Intent intent=new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri=Uri.fromParts("package",getPackageName(),null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 
     @Override
