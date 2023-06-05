@@ -13,7 +13,6 @@ import com.example.vkumaps.models.News;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     private List<News> list;
     public NewsAdapter(List<News> list){
