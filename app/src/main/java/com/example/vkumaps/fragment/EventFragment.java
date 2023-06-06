@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,8 @@ public class EventFragment extends Fragment {
                                 listNews.add(newsModel);
                                 adapter.notifyDataSetChanged();
                             }
+                            ProgressBar progressbar = rootView.findViewById(R.id.progressbar);
+                            progressbar.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(getContext(), task.getException() + "", Toast.LENGTH_SHORT).show();
                         }
