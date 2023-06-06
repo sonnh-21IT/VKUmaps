@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:257077992898:android:3ebfa7aec952769b2a4a5b",
+        "android_client_info": {
+          "package_name": "com.example.vkumaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257077992898-n02sot869cav4g3ae66uh89p6087pa0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwtOyasuglEcBJxEdyxoKQr7WGqmTmAXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257077992898-n02sot869cav4g3ae66uh89p6087pa0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:257077992898:android:6a99980824d8656e2a4a5b",
         "android_client_info": {
           "package_name": "vku.tthltt.vkustudents"
