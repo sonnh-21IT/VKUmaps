@@ -10,6 +10,15 @@
     <string name="nav_call"> 0236.6.552.688</string>
     <string name="nav_mail">daotao@vku.udn.vn</string>
     <string name="nav_permission">Quyền ứng dụng</string>
+    <string name="nav_learn">Học tập</string>
+    <string name="nav_today">Hôm nay</string>
+    <string name="nav_week">Tuần này</string>
+    <string name="nav_scholarship">Cơ chế xét học bổng</string>
+    <string name="nav_r_admissions">Cơ chế xét tuyển</string>
+    <string name="mail_tt_hl">tthltt@vku.udn.vn</string>
+    <string name="tt_hl">Trung tâm Học liệu và Truyền thông</string>
+    <string name="nav_zalo">0236.6.552.688</string>
+    <string name="tt_fb">Trung tâm Học liệu và Truyền thông</string>
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>

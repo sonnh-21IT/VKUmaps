@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/nav_maps" android:title="@string/nav_map" android:icon="@drawable/ic_map"/>
+    <item android:title="@string/nav_learn">
+        <menu>
+            <item android:id="@+id/nav_today" android:title="@string/nav_today" android:icon="@drawable/ic_today"/>
+            <item android:id="@+id/nav_week" android:title="@string/nav_week" android:icon="@drawable/ic_week"/>
+            <item android:id="@+id/nav_scholarship" android:title="@string/nav_scholarship" android:icon="@drawable/ic_chart"/>
+        </menu>
+    </item>
     <item android:title="@string/nav_news">
         <menu>
             <item android:id="@+id/nav_admissions" android:title="@string/nav_admissions" android:icon="@drawable/ic_news"/>
             <item android:id="@+id/nav_event" android:title="@string/nav_event" android:icon="@drawable/ic_event"/>
+            <item android:id="@+id/nav_r_admissions" android:title="@string/nav_r_admissions" android:icon="@drawable/ic_admissions"/>
         </menu>
     </item>
     <item android:title="@string/nav_setting">
@@ -17,6 +25,8 @@
         <menu>
             <item android:id="@+id/nav_call" android:title="@string/nav_call" android:icon="@drawable/ic_call"/>
             <item android:id="@+id/nav_mail" android:title="@string/nav_mail" android:icon="@drawable/ic_email"/>
+            <item android:id="@+id/nav_zalo" android:title="@string/nav_call" android:icon="@drawable/ic_zalo"/>
+            <item android:id="@+id/nav_fb" android:title="@string/nav_mail" android:icon="@drawable/ic_facebook"/>
         </menu>
     </item>
 </menu>

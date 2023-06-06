@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="wrap_content"
     android:background="@color/status"
     android:orientation="vertical"
     android:padding="20dp"
@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Trung tâm HL và TT"
+        android:text="@string/tt_hl"
         android:textColor="@color/white"
         android:layout_marginTop="8dp"
         android:textSize="16dp"
@@ -21,7 +21,38 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="tthltt@vku.udn.vn"
+        android:text="@string/mail_tt_hl"
         android:textColor="@color/white"
         android:textSize="14sp"/>
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:padding="3dp"
+        android:layout_gravity="center">
+        <androidx.cardview.widget.CardView
+            android:backgroundTint="@color/status"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_zalo"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:backgroundTint="@color/status"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_facebook"/>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </LinearLayout>
