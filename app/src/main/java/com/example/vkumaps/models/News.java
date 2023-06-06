@@ -5,7 +5,7 @@ import java.util.Date;
 public class News {
     int id;
     String url,img,title;
-    Date created,updated;
+    String created,updated;
 
     public int getId() {
         return id;
@@ -39,19 +39,20 @@ public class News {
         this.title = title;
     }
 
-    public Date getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public Date getUpdated() {
+    public String getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(String updated) {
         this.updated = updated;
     }
 }
+
