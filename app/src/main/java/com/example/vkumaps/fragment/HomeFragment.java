@@ -43,8 +43,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback{
-    private static final int REQUEST_PERMISSION_CODE = 10;
-    //    private SupportMapFragment mapFragment;
     private ChangeFragmentListener listener;
     public static int currentstate;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
@@ -52,15 +50,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
     private FrameLayout sheet;
     private static final String TAG = "PERMISSION_TAG";
     private GoogleMap map;
-    private SeekBar customDurationBar;
-    private PolylineOptions currPolylineOptions;
-    private boolean isCanceled = false;
-
     private LocationManager locationManager;
-
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
-    ;
-
     public HomeFragment(ChangeFragmentListener listener) {
         this.listener = listener;
     }
@@ -122,7 +113,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
     }
 
     private void uiSettings() {
-        map.getUiSettings().setIndoorLevelPickerEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(false);
     }
