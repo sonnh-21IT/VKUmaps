@@ -11,8 +11,8 @@ import com.example.vkumaps.databinding.ItemNewsBinding;
 import com.example.vkumaps.models.News;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     private List<News> list;
     public NewsAdapter(List<News> list){
@@ -22,18 +22,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemNewsBinding newsBinding=ItemNewsBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ItemNewsBinding newsBinding = ItemNewsBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
         return new MyViewHolder(newsBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        News news=list.get(position);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String formattedDate = formatter.format(news.getCreated());
-//        System.out.println("Formatted date: " + formattedDate);
+        News news = list.get(position);
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//        String formattedDate = formatter.format(news.getCreated());
         holder.binding.title.setText(news.getTitle());
-        holder.binding.date.setText(formattedDate);
+        holder.binding.date.setText(news.getCreated());
         Glide.with(holder.itemView).load(list.get(position).getImg()).into(holder.binding.imgNews);
     }
 
@@ -51,3 +50,4 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
         }
     }
 }
+
