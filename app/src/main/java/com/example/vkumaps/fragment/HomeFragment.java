@@ -69,7 +69,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
                 .beginTransaction()
                 .add(R.id.map_view, mapFragment)
                 .commit();
-
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         return rootView;

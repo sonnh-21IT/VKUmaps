@@ -19,7 +19,7 @@ import com.example.vkumaps.databinding.ActivityBrowserBinding;
 public class BrowserActivity extends AppCompatActivity{
     private ActivityBrowserBinding binding;
     private Toolbar toolbar;
-    private static final String DOMAIN="vku.udn.vn/";
+    private static final String DOMAIN = "vku.udn.vn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class BrowserActivity extends AppCompatActivity{
                         //cho phép tải trang web
                         return false;
                     } else {
-                        //không cho phé tải trang web
+                        //không cho phép tải trang web
                         Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
                         startActivity(intent);
                         return true;
