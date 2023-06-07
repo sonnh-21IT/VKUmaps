@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".fragment.HomeFragment">
 
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/white"
+        android:indeterminate="true"
+        android:indeterminateTint="#286090"
+        android:max="100" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_news"
         android:layout_width="match_parent"
