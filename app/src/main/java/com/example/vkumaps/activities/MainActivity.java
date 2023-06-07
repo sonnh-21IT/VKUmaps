@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = FRAGMENT_EVENT;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
+        } else if (id == R.id.nav_account) {
+            openAccount();
         }else if (id == R.id.nav_permission) {
             openSettingPermission();
         }else if(id == R.id.nav_call){
@@ -87,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             openEMail();
         }
         return true;
+    }
+
+    private void openAccount() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
     }
 
     private void openEMail() {
