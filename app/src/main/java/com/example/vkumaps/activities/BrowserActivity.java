@@ -19,7 +19,7 @@ import com.example.vkumaps.databinding.ActivityBrowserBinding;
 public class BrowserActivity extends AppCompatActivity{
     private ActivityBrowserBinding binding;
     private Toolbar toolbar;
-    private static final String DOMAIN = "vku.udn.vn/";
+    private static final String DOMAIN = "vku.udn.vn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
