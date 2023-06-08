@@ -66,4 +66,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     //lottie
     implementation 'com.airbnb.android:lottie:6.0.0'
+    //FlexboxLayoutManager
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

@@ -90,6 +90,8 @@ public class BrowserActivity extends AppCompatActivity {
                     binding.loaderView.setVisibility(View.GONE);
                 }
             });
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -98,7 +100,7 @@ public class BrowserActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.toolbar_more:
-                Toast.makeText(this, "item click", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "item click", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(this, toolbar.findViewById(R.id.toolbar_more));
                 popupMenu.getMenuInflater().inflate(R.menu.menu_popup_item, popupMenu.getMenu());
 

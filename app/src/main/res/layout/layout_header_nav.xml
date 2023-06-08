@@ -29,30 +29,30 @@
         android:text="@string/mail_tt_hl"
         android:textColor="@color/white"
         android:textSize="14sp"/>
-    <LinearLayout
-        android:padding="5dp"
-        android:layout_marginTop="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="5"
-        android:layout_gravity="center">
-        <ImageView
-            android:layout_margin="5dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_zalo"/>
-        <TextView
-            android:layout_marginHorizontal="15dp"
-            android:layout_width="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_height="match_parent"/>
-        <ImageView
-            android:layout_margin="5dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_facebook"/>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:padding="5dp"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:weightSum="5"-->
+<!--        android:layout_gravity="center">-->
+<!--        <ImageView-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/ic_zalo"/>-->
+<!--        <TextView-->
+<!--            android:layout_marginHorizontal="15dp"-->
+<!--            android:layout_width="1dp"-->
+<!--            android:background="@android:color/darker_gray"-->
+<!--            android:layout_height="match_parent"/>-->
+<!--        <ImageView-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/ic_facebook"/>-->
+<!--    </LinearLayout>-->
 </LinearLayout>
