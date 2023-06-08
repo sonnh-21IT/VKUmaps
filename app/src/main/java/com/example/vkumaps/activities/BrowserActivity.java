@@ -25,6 +25,7 @@ import com.example.vkumaps.databinding.ActivityBrowserBinding;
 public class BrowserActivity extends AppCompatActivity {
     private ActivityBrowserBinding binding;
     private Toolbar toolbar;
+
     private ActionBar actionBar;
     private static final String DOMAIN = "vku.udn.vn";
 
@@ -43,11 +44,13 @@ public class BrowserActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setTitle("");
         String url = "";
         if (intent.hasExtra("url")) {
             url = intent.getStringExtra("url");
 //            title = intent.getStringExtra("title");
+
             Log.d("VKU", "onCreate: " + url);
             binding.webViewMain.loadUrl(url);
             binding.webViewMain.setWebViewClient(new WebViewClient() {
@@ -83,9 +86,6 @@ public class BrowserActivity extends AppCompatActivity {
                     binding.loaderView.setVisibility(View.GONE);
                 }
             });
-
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
