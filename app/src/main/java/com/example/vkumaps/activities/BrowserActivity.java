@@ -124,19 +124,19 @@ public class BrowserActivity extends AppCompatActivity {
 
                             return true;
                         }
-                        if (itemId==R.id.po_open_as_default_browser){
+                        if (itemId == R.id.po_open_as_default_browser) {
                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                             startActivity(intent);
                             return true;
                         }
-                        if (itemId==R.id.po_share){
-                            Intent intent=new Intent(Intent.ACTION_SEND);
+                        if (itemId == R.id.po_share) {
+                            Intent intent = new Intent(Intent.ACTION_SEND);
                             intent.setType("text/plain");
-                            String body="Chia sẻ";
-                            String sub=url;
-                            intent.putExtra(Intent.EXTRA_TEXT,body);
-                            intent.putExtra(Intent.EXTRA_TEXT,sub);
-                            startActivity(Intent.createChooser(intent,"share using"));
+                            String body = "Chia sẻ";
+                            String sub = url;
+                            intent.putExtra(Intent.EXTRA_TEXT, body);
+                            intent.putExtra(Intent.EXTRA_TEXT, sub);
+                            startActivity(Intent.createChooser(intent, "share using"));
                         }
                         return false;
                     }

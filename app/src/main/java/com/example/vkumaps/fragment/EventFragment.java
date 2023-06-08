@@ -22,6 +22,7 @@ import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.ItemNewsClickListener;
 import com.example.vkumaps.models.News;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -60,7 +61,12 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         rc.setAdapter(adapter);
 
         firestore.collection("newstable").orderBy("id", Query.Direction.DESCENDING)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .get().addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
