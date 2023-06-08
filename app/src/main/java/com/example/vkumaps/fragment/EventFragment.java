@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
     private List<News> listNews;
     private NewsAdapter adapter;
     private ChangeFragmentListener listener;
+    private ConstraintLayout loadView;
     public EventFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
@@ -45,8 +47,10 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         View rootView=inflater.inflate(R.layout.fragment_event, container, false);
         // Inflate the layout for this fragment
         listener.changeTitle("Sự kiện");
-
+        loadView = rootView.findViewById(R.id.loader_view);
         RecyclerView rc = rootView.findViewById(R.id.rc_news);
+        rc.setVisibility(View.GONE);
+        loadView.setVisibility(View.VISIBLE);
         rc.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false);
         rc.setLayoutManager(layoutManager);
@@ -64,9 +68,9 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
                                 News newsModel = document.toObject(News.class);
                                 listNews.add(newsModel);
                                 adapter.notifyDataSetChanged();
+                                loadView.setVisibility(View.GONE);
+                                rc.setVisibility(View.VISIBLE);
                             }
-                            ProgressBar progressbar = rootView.findViewById(R.id.progressbar);
-                            progressbar.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(getContext(), task.getException() + "", Toast.LENGTH_SHORT).show();
                         }
