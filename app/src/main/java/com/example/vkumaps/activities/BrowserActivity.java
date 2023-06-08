@@ -1,6 +1,10 @@
 package com.example.vkumaps.activities;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +32,7 @@ public class BrowserActivity extends AppCompatActivity {
 
     private ActionBar actionBar;
     private static final String DOMAIN = "vku.udn.vn";
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,6 @@ public class BrowserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setTitle("");
-        String url = "";
         if (intent.hasExtra("url")) {
             url = intent.getStringExtra("url");
 //            title = intent.getStringExtra("title");
@@ -94,7 +98,7 @@ public class BrowserActivity extends AppCompatActivity {
                 onBackPressed();
                 return true;
             case R.id.toolbar_more:
-                Toast.makeText(this,"item click",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "item click", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(this, toolbar.findViewById(R.id.toolbar_more));
                 popupMenu.getMenuInflater().inflate(R.menu.menu_popup_item, popupMenu.getMenu());
 
@@ -102,10 +106,37 @@ public class BrowserActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         int itemId = item.getItemId();
-                        if (itemId == R.id.nav_maps) {
-                            // Xử lý khi người dùng nhấp vào menu_item1
-                            Toast.makeText(getApplicationContext(),"popup click",Toast.LENGTH_SHORT).show();
+                        if (itemId == R.id.po_copy_link) {
+                            // Lấy nội dung cần copy
+                            String textToCopy = url;
+
+                            // Khởi tạo ClipboardManager từ context
+                            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+                            // Tạo ClipData để chứa nội dung cần copy
+                            ClipData clipData = ClipData.newPlainText("label", textToCopy);
+
+                            // Sao chép ClipData vào clipboard
+                            clipboardManager.setPrimaryClip(clipData);
+
+                            // Thông báo hoàn thành việc copy
+                            Toast.makeText(getApplicationContext(), "Đã sao chép nội dung", Toast.LENGTH_SHORT).show();
+
                             return true;
+                        }
+                        if (itemId==R.id.po_open_as_default_browser){
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            startActivity(intent);
+                            return true;
+                        }
+                        if (itemId==R.id.po_share){
+                            Intent intent=new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            String body="Chia sẻ";
+                            String sub=url;
+                            intent.putExtra(Intent.EXTRA_TEXT,body);
+                            intent.putExtra(Intent.EXTRA_TEXT,sub);
+                            startActivity(Intent.createChooser(intent,"share using"));
                         }
                         return false;
                     }
@@ -144,8 +175,8 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.menu_tool_bar,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_tool_bar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
