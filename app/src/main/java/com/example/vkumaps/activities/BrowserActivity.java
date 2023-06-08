@@ -19,7 +19,7 @@ import com.example.vkumaps.databinding.ActivityBrowserBinding;
 public class BrowserActivity extends AppCompatActivity{
     private ActivityBrowserBinding binding;
     private Toolbar toolbar;
-    private static final String DOMAIN="vku.udn.vn/";
+    private static final String DOMAIN="vku.udn.vn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,10 @@ public class BrowserActivity extends AppCompatActivity{
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String url = "https://developer.android.com/";
+        String url = "";
         String title = "";
         if (intent.hasExtra("url")) {
-//            url = intent.getStringExtra("url");
+            url = intent.getStringExtra("url");
             title = intent.getStringExtra("title");
             Log.d("VKU", "onCreate: " + url);
             binding.webViewMain.setWebViewClient(new WebViewClient(){
@@ -59,7 +59,7 @@ public class BrowserActivity extends AppCompatActivity{
                     }
                 }
             });
-            binding.webViewMain.loadUrl("https://developer.android.com/");
+            binding.webViewMain.loadUrl(url);
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setTitle(title);
