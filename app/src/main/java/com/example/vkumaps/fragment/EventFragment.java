@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,7 +58,7 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         adapter=new NewsAdapter(listNews,this);
         rc.setAdapter(adapter);
 
-        firestore.collection("newstable").orderBy("id", Query.Direction.DESCENDING)
+        firestore.collection("newstable").orderBy("created", Query.Direction.DESCENDING)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
