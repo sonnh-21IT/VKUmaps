@@ -14,12 +14,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/status"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                app:menu="@menu/menu_popup_item"
+                app:popupTheme="@style/Theme.PopupMenuStyle" />
         </com.google.android.material.appbar.AppBarLayout>
         <WebView
             android:id="@+id/web_view_main"

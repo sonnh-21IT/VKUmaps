@@ -10,9 +10,12 @@ import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
@@ -85,10 +88,30 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.toolbar_more:
+                Toast.makeText(this,"item click",Toast.LENGTH_SHORT).show();
+                PopupMenu popupMenu = new PopupMenu(this, toolbar.findViewById(R.id.toolbar_more));
+                popupMenu.getMenuInflater().inflate(R.menu.menu_popup_item, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.nav_maps) {
+                            // Xử lý khi người dùng nhấp vào menu_item1
+                            Toast.makeText(getApplicationContext(),"popup click",Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
                 return true;
             default:
                 break;
@@ -125,4 +148,5 @@ public class BrowserActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_tool_bar,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 }

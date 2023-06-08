@@ -19,6 +19,9 @@
     <string name="tt_hl">Trung tâm Học liệu và Truyền thông</string>
     <string name="nav_zalo">0236.6.552.688</string>
     <string name="tt_fb">Trung tâm Học liệu và Truyền thông</string>
+    <string name="pop_copy_link">Sao chép liên kết</string>
+    <string name="pop_share">Chia sẻ</string>
+    <string name="pop_open_as_default_browser">Mở bằng trình duyệt mặc định</string>
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
