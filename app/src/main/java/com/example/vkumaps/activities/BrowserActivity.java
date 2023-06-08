@@ -90,6 +90,8 @@ public class BrowserActivity extends AppCompatActivity {
                     binding.loaderView.setVisibility(View.GONE);
                 }
             });
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
