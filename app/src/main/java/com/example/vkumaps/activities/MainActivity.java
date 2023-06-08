@@ -27,17 +27,21 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.HomeFragment;
+import com.example.vkumaps.fragment.WeeklyScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener {
     private DrawerLayout drawerLayout;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
     private static final int FRAGMENT_EVENT = 2;
+    private static final int FRAGMENT_WEEKLY_SCHEDULE = 3;
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         AppCompatDelegate.setDefaultNightMode(nightMode);
         setContentView(R.layout.activity_main);
+        auth = FirebaseAuth.getInstance();
+
+//        if (auth.getCurrentUser() != null){
+//            findViewById(R.id.nav_account).setVisibility(View.GONE);
+//            findViewById(R.id.nav_logout).setVisibility(View.VISIBLE);
+//        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.nav_maps) {
             if (currentFragment != FRAGMENT_HOME) {
                 replaceFragment(new HomeFragment(this));
@@ -85,16 +96,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = FRAGMENT_EVENT;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
+        } else if (id == R.id.nav_week) {
+            if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
+                replaceFragment(new WeeklyScheduleFragment(this));
+                currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
         } else if (id == R.id.nav_account) {
             openAccount();
+        } else if (id == R.id.nav_logout) {
+            logout();
         } else if (id == R.id.nav_permission) {
             openSettingPermission();
-        } else if (id == R.id.nav_call) {
+        } else if(id == R.id.nav_call){
             openCall();
-        } else if (id == R.id.nav_mail) {
+        } else if(id == R.id.nav_mail){
             openEMail();
         }
         return true;
+    }
+
+    private void logout() {
+        if(auth.getCurrentUser() != null){
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void openAccount() {
