@@ -27,7 +27,6 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.HomeFragment;
-import com.example.vkumaps.fragment.WeeklyScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
@@ -98,9 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (id == R.id.nav_week) {
             if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
-                replaceFragment(new WeeklyScheduleFragment(this));
-                currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
-                drawerLayout.closeDrawer(GravityCompat.START);
+                //code..
             }
         } else if (id == R.id.nav_account) {
             openAccount();
