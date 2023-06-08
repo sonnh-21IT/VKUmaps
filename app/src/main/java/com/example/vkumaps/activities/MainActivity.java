@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -53,9 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        replaceFragment(new HomeFragment(this));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, new HomeFragment(this));
+        transaction.commit();
         currentFragment = FRAGMENT_HOME;
-        navigationView.getMenu().findItem(R.id.nav_maps).setChecked(true);
     }
 
     @Override
@@ -81,11 +87,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (id == R.id.nav_account) {
             openAccount();
-        }else if (id == R.id.nav_permission) {
+        } else if (id == R.id.nav_permission) {
             openSettingPermission();
-        }else if(id == R.id.nav_call){
+        } else if (id == R.id.nav_call) {
             openCall();
-        }else if(id == R.id.nav_mail){
+        } else if (id == R.id.nav_mail) {
             openEMail();
         }
         return true;
@@ -97,22 +103,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void openEMail() {
-        Intent intent=new Intent(Intent.ACTION_SENDTO);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"daotao@vku.udn.vn"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"daotao@vku.udn.vn"});
         startActivity(intent);
     }
 
     private void openCall() {
         String phoneNumber = " 02366552688"; // Số điện thoại cần gọi
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:"+phoneNumber));
+        intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
     }
 
     private void openSettingPermission() {
-        Intent intent=new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri=Uri.fromParts("package",getPackageName(),null);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
     }
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

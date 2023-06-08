@@ -1,30 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_maps" android:title="@string/nav_map" android:icon="@drawable/ic_map"/>
+    <item
+        android:id="@+id/nav_maps"
+        android:icon="@drawable/ic_map"
+        android:title="@string/nav_map" />
     <item android:title="@string/nav_learn">
         <menu>
-            <item android:id="@+id/nav_today" android:title="@string/nav_today" android:icon="@drawable/ic_today"/>
-            <item android:id="@+id/nav_week" android:title="@string/nav_week" android:icon="@drawable/ic_week"/>
-            <item android:id="@+id/nav_scholarship" android:title="@string/nav_scholarship" android:icon="@drawable/ic_chart"/>
+            <item
+                android:id="@+id/nav_today"
+                android:icon="@drawable/ic_today"
+                android:title="@string/nav_today" />
+            <item
+                android:id="@+id/nav_week"
+                android:icon="@drawable/ic_week"
+                android:title="@string/nav_week" />
+            <item
+                android:id="@+id/nav_scholarship"
+                android:icon="@drawable/ic_chart"
+                android:title="@string/nav_scholarship" />
         </menu>
     </item>
     <item android:title="@string/nav_news">
         <menu>
-            <item android:id="@+id/nav_admissions" android:title="@string/nav_admissions" android:icon="@drawable/ic_news"/>
-            <item android:id="@+id/nav_event" android:title="@string/nav_event" android:icon="@drawable/ic_event"/>
-            <item android:id="@+id/nav_r_admissions" android:title="@string/nav_r_admissions" android:icon="@drawable/ic_admissions"/>
+            <item
+                android:id="@+id/nav_admissions"
+                android:icon="@drawable/ic_news"
+                android:title="@string/nav_admissions" />
+            <item
+                android:id="@+id/nav_event"
+                android:icon="@drawable/ic_event"
+                android:title="@string/nav_event" />
+            <item
+                android:id="@+id/nav_r_admissions"
+                android:icon="@drawable/ic_admissions"
+                android:title="@string/nav_r_admissions" />
         </menu>
     </item>
     <item android:title="@string/nav_setting">
         <menu>
-            <item android:id="@+id/nav_account" android:title="@string/nav_account" android:icon="@drawable/ic_user"/>
-            <item android:id="@+id/nav_permission" android:title="@string/nav_permission" android:icon="@drawable/ic_setting"/>
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/ic_user"
+                android:title="@string/nav_account" />
+            <item
+                android:id="@+id/nav_permission"
+                android:icon="@drawable/ic_setting"
+                android:title="@string/nav_permission" />
         </menu>
     </item>
     <item android:title="@string/nav_contact">
         <menu>
-            <item android:id="@+id/nav_call" android:title="@string/nav_call" android:icon="@drawable/ic_call"/>
-            <item android:id="@+id/nav_mail" android:title="@string/nav_mail" android:icon="@drawable/ic_email"/>
+            <item
+                android:id="@+id/nav_call"
+                android:icon="@drawable/ic_call"
+                android:title="@string/nav_call" />
+            <item
+                android:id="@+id/nav_mail"
+                android:icon="@drawable/ic_email"
+                android:title="@string/nav_mail" />
         </menu>
     </item>
 </menu>
