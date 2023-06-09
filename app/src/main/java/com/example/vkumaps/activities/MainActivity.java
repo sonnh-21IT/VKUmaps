@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
+import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -25,14 +30,17 @@ import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener {
     private DrawerLayout drawerLayout;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
     private static final int FRAGMENT_EVENT = 2;
+    private static final int FRAGMENT_WEEKLY_SCHEDULE = 3;
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         AppCompatDelegate.setDefaultNightMode(nightMode);
         setContentView(R.layout.activity_main);
+        auth = FirebaseAuth.getInstance();
+
+//        if (auth.getCurrentUser() != null){
+//            findViewById(R.id.nav_account).setVisibility(View.GONE);
+//            findViewById(R.id.nav_logout).setVisibility(View.VISIBLE);
+//        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,14 +67,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        replaceFragment(new HomeFragment(this));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, new HomeFragment(this));
+        transaction.commit();
         currentFragment = FRAGMENT_HOME;
-        navigationView.getMenu().findItem(R.id.nav_maps).setChecked(true);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.nav_maps) {
             if (currentFragment != FRAGMENT_HOME) {
                 replaceFragment(new HomeFragment(this));
@@ -79,16 +95,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = FRAGMENT_EVENT;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
+        } else if (id == R.id.nav_week) {
+            if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
+                //code..
+            }
         } else if (id == R.id.nav_account) {
             openAccount();
-        }else if (id == R.id.nav_permission) {
+        } else if (id == R.id.nav_logout) {
+            logout();
+        } else if (id == R.id.nav_permission) {
             openSettingPermission();
-        }else if(id == R.id.nav_call){
+        } else if(id == R.id.nav_call){
             openCall();
-        }else if(id == R.id.nav_mail){
+        } else if(id == R.id.nav_mail){
             openEMail();
         }
         return true;
+    }
+
+    private void logout() {
+        if(auth.getCurrentUser() != null){
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void openAccount() {
@@ -97,22 +128,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void openEMail() {
-        Intent intent=new Intent(Intent.ACTION_SENDTO);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"daotao@vku.udn.vn"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"daotao@vku.udn.vn"});
         startActivity(intent);
     }
 
     private void openCall() {
         String phoneNumber = " 02366552688"; // Số điện thoại cần gọi
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:"+phoneNumber));
+        intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
     }
 
     private void openSettingPermission() {
-        Intent intent=new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri=Uri.fromParts("package",getPackageName(),null);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivity(intent);
     }
@@ -134,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 

@@ -3,17 +3,8 @@ package com.example.vkumaps.models;
 import java.util.Date;
 
 public class News {
-    int id;
     String url,img,title;
-    String created,updated;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    Date created, updated;
 
     public String getUrl() {
         return url;
@@ -39,19 +30,19 @@ public class News {
         this.title = title;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getUpdated() {
+    public Date getUpdated() {
         return updated;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(Date updated) {
         this.updated = updated;
     }
 }

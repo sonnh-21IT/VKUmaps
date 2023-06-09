@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +21,7 @@ import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.ItemNewsClickListener;
 import com.example.vkumaps.models.News;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -35,6 +36,7 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
     private List<News> listNews;
     private NewsAdapter adapter;
     private ChangeFragmentListener listener;
+    private ConstraintLayout loadView;
     public EventFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
@@ -45,8 +47,10 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         View rootView=inflater.inflate(R.layout.fragment_event, container, false);
         // Inflate the layout for this fragment
         listener.changeTitle("Sự kiện");
-
+        loadView = rootView.findViewById(R.id.loader_view);
         RecyclerView rc = rootView.findViewById(R.id.rc_news);
+        rc.setVisibility(View.GONE);
+        loadView.setVisibility(View.VISIBLE);
         rc.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false);
         rc.setLayoutManager(layoutManager);
@@ -55,7 +59,7 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         adapter=new NewsAdapter(listNews,this);
         rc.setAdapter(adapter);
 
-        firestore.collection("newstable").orderBy("id", Query.Direction.DESCENDING)
+        firestore.collection("newstable").orderBy("created", Query.Direction.DESCENDING)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -64,9 +68,9 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
                                 News newsModel = document.toObject(News.class);
                                 listNews.add(newsModel);
                                 adapter.notifyDataSetChanged();
+                                loadView.setVisibility(View.GONE);
+                                rc.setVisibility(View.VISIBLE);
                             }
-                            ProgressBar progressbar = rootView.findViewById(R.id.progressbar);
-                            progressbar.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(getContext(), task.getException() + "", Toast.LENGTH_SHORT).show();
                         }

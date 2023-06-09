@@ -12,6 +12,8 @@ import com.example.vkumaps.databinding.ItemNewsBinding;
 import com.example.vkumaps.listener.ItemNewsClickListener;
 import com.example.vkumaps.models.News;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -33,10 +35,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         News news = list.get(position);
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//        String formattedDate = formatter.format(news.getCreated());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = formatter.format(news.getCreated());
         holder.binding.title.setText(news.getTitle());
-        holder.binding.date.setText(news.getCreated());
+        holder.binding.date.setText(formattedDate);
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
