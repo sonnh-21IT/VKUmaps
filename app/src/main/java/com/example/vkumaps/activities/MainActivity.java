@@ -27,7 +27,6 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.HomeFragment;
-import com.example.vkumaps.fragment.WeekScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
     private static final int FRAGMENT_EVENT = 2;
-    private static final int FRAGMENT_WEEK_SCHEDULE = 3;
+    private static final int FRAGMENT_WEEKLY_SCHEDULE = 3;
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
     private FirebaseAuth auth;
@@ -97,10 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         } else if (id == R.id.nav_week) {
-            if (currentFragment != FRAGMENT_WEEK_SCHEDULE) {
-                replaceFragment(new WeekScheduleFragment(this));
-                currentFragment = FRAGMENT_WEEK_SCHEDULE;
-                drawerLayout.closeDrawer(GravityCompat.START);
+            if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
+                //code..
             }
         } else if (id == R.id.nav_account) {
             openAccount();

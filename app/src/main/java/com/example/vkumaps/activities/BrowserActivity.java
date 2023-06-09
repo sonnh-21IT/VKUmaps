@@ -121,9 +121,6 @@ public class BrowserActivity extends AppCompatActivity {
                             // Sao chép ClipData vào clipboard
                             clipboardManager.setPrimaryClip(clipData);
 
-                            // Thông báo hoàn thành việc copy
-                            Toast.makeText(getApplicationContext(), "Đã sao chép nội dung", Toast.LENGTH_SHORT).show();
-
                             return true;
                         }
                         if (itemId == R.id.po_open_as_default_browser) {

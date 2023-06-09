@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.FeedbackActivity">
+    tools:context=".activities.FeedbackActivity"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,12 +32,14 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="-75dp"
+            android:backgroundTint="@android:color/darker_gray"
             android:background="@drawable/round_back_white_stroke_1000"
             android:padding="20dp">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:backgroundTint="@android:color/darker_gray"
                 android:background="@drawable/round_back_white_1000" />
 
             <ImageView
@@ -93,11 +96,13 @@
             android:paddingBottom="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
+                app:boxStrokeColor="@color/black"
                 android:id="@+id/textInputLayout4"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:hint="Tên của bạn"
+                android:textColorHint="@android:color/darker_gray"
                 android:paddingBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.424"
@@ -106,6 +111,7 @@
 
                 <EditText
                     android:id="@+id/ratingName"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text" />
@@ -113,10 +119,13 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout5"
+                app:boxStrokeColor="@color/black"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                app:boxBackgroundMode="outline"
                 android:hint="Mô tả"
+                android:textColorHint="@android:color/darker_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.424"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="top"
+                    android:textColor="@color/black"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
