@@ -10,6 +10,8 @@
 
     <color name="status">#FFD95A</color>
 
+    <color name="textHeading">#008eff</color>
+
     <color name="fb_color_1">#FDD736</color>
     <color name="fb_color_2">#3B5796</color>
 </resources>
