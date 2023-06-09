@@ -30,7 +30,7 @@ public class SearchByAreaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_search_by_area, container, false);
-        listener.changeTitle("Tuyển sinh");
+        listener.changeTitle("Tra cứu khu vực");
         recyclerView = view.findViewById(R.id.rc_main);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
