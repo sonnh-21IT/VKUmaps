@@ -18,6 +18,13 @@
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/Theme.VKUmaps</item>
     </style>
+    <style name="MyRatingBar" parent="Widget.AppCompat.RatingBar">
+
+        <!--non selected star color-->
+        <item name="colorControlNormal">#4D000000</item>
+
+        <!--selected star color-->
+        <item name="colorControlActivated">@color/fb_color_1</item>
     <style name="Theme.PopupMenuStyle" parent="@style/ThemeOverlay.AppCompat.Light">
         <item name="android:textColor">@color/black</item>
         <item name="android:colorBackground">@color/white</item>
