@@ -105,12 +105,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             logout();
         } else if (id == R.id.nav_permission) {
             openSettingPermission();
+        } else if (id == R.id.nav_rating) {
+            openRating();
         } else if(id == R.id.nav_call){
             openCall();
         } else if(id == R.id.nav_mail){
             openEMail();
         }
         return true;
+    }
+
+    private void openRating() {
+        Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+        startActivity(intent);
     }
 
     private void logout() {

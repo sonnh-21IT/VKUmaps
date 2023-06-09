@@ -3,6 +3,7 @@ package com.example.vkumaps.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,7 +14,6 @@ import android.widget.RatingBar;
 import com.example.vkumaps.R;
 
 public class FeedbackActivity extends AppCompatActivity {
-
     private float userRate = 0;
 
     @Override
@@ -29,14 +29,21 @@ public class FeedbackActivity extends AppCompatActivity {
         rateNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //save database...
 
+                //success notifications
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 
         rateLaterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                finishAndRemoveTask();
             }
         });
 
