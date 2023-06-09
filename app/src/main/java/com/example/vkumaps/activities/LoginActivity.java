@@ -1,5 +1,9 @@
 package com.example.vkumaps.activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +33,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity {
     LinearLayout login_gg;
     private GoogleSignInClient client;
+    private ActivityResultLauncher<Intent> startActivityForResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +65,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = client.getSignInIntent();
-                startActivityForResult(i, 1234);
+                startActivityForResult.launch(i);
+//                startActivityForResult(i, 1234);
             }
         });
+
+        startActivityForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                int resultCode = result.getResultCode();
+                Intent data = result.getData();
+                LoginActivity.this.onActivityResult(1234, resultCode, data);
+            }
+        });
+
     }
 
     @Override
@@ -97,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Hiển thị dialog thông báo lỗi
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setTitle("Lỗi đăng nhập");
-                    builder.setMessage("Đăng nhập chỉ được phép với email có đuôi @vku.udn.vn");
+                    builder.setMessage("Đăng nhập chỉ được phép với email @vku.udn.vn");
                     builder.setPositiveButton("Đồng ý", null);
                     builder.show();
                 }
