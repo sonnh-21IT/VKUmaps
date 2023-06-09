@@ -25,6 +25,7 @@
 
         <!--selected star color-->
         <item name="colorControlActivated">@color/fb_color_1</item>
+    </style>
     <style name="Theme.PopupMenuStyle" parent="@style/ThemeOverlay.AppCompat.Light">
         <item name="android:textColor">@color/black</item>
         <item name="android:colorBackground">@color/white</item>
