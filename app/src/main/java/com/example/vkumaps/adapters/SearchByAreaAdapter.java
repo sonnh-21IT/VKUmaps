@@ -44,9 +44,9 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         holder.expanderLinearLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
         if (isExpandable){
-            holder.img.setRotation(90f);
+            holder.img.setRotation(180f);
         }else{
-            holder.img.setRotation(0f);
+            holder.img.setRotation(90f);
         }
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
