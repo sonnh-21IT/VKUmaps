@@ -42,6 +42,7 @@
     <item android:title="@string/nav_setting">
         <menu>
             <item android:id="@+id/nav_account" android:title="@string/nav_account" android:icon="@drawable/ic_user"/>
+            <item android:id="@+id/nav_support" android:title="Hướng dẫn sử dụng" android:icon="@drawable/ic_support"/>
             <item android:id="@+id/nav_logout" android:title="@string/nav_logout" android:icon="@drawable/ic_logout"/>
             <item android:id="@+id/nav_permission" android:title="@string/nav_permission" android:icon="@drawable/ic_setting"/>
             <item android:id="@+id/nav_rating" android:title="@string/nav_rating" android:icon="@drawable/ic_rating"/>
