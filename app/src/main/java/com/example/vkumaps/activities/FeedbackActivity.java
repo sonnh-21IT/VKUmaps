@@ -2,6 +2,7 @@ package com.example.vkumaps.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,14 @@ public class FeedbackActivity extends AppCompatActivity {
         final AppCompatButton rateLaterBtn = findViewById(R.id.rateLaterBtn);
         final RatingBar ratingBar = findViewById(R.id.ratingBar);
         final ImageView ratingImage = findViewById(R.id.ratingImage);
+        final Toolbar toolbarFeedback = findViewById(R.id.toolbarFeedback);
+
+        toolbarFeedback.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         rateNowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
