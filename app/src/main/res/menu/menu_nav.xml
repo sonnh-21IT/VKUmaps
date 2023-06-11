@@ -1,63 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/nav_map">
-        <menu>
-            <item android:id="@+id/nav_maps" android:title="@string/nav_vkumaps" android:icon="@drawable/ic_map"/>
-            <item android:id="@+id/nav_directions" android:title="@string/nav_directions" android:icon="@drawable/ic_directions"/>
-            <item android:id="@+id/nav_area" android:title="@string/nav_area" android:icon="@drawable/ic_area_search"/>
-        </menu>
-    </item>
-    <item android:title="@string/nav_learn">
+    <item android:title="@string/menu_feature">
         <menu>
             <item
-                android:id="@+id/nav_today"
+                android:id="@+id/menu_main_maps"
+                android:icon="@drawable/ic_map"
+                android:title="@string/menu_main_maps" />
+            <item
+                android:id="@+id/menu_direction"
+                android:icon="@drawable/ic_directions"
+                android:title="@string/menu_direction" />
+            <item
+                android:id="@+id/menu_search_by_area"
+                android:icon="@drawable/ic_area_search"
+                android:title="@string/menu_search_by_area" />
+        </menu>
+    </item>
+    <item android:title="@string/menu_learn">
+        <menu>
+            <item
+                android:id="@+id/menu_timetable"
                 android:icon="@drawable/ic_today"
-                android:title="@string/nav_today" />
+                android:title="@string/menu_timetable" />
             <item
-                android:id="@+id/nav_week"
-                android:icon="@drawable/ic_week"
-                android:title="@string/nav_week" />
-            <item
-                android:id="@+id/nav_scholarship"
-                android:icon="@drawable/ic_chart"
-                android:title="@string/nav_scholarship" />
-        </menu>
-    </item>
-    <item android:title="@string/nav_news">
-        <menu>
-            <item
-                android:id="@+id/nav_admissions"
-                android:icon="@drawable/ic_news"
-                android:title="@string/nav_admissions" />
-            <item
-                android:id="@+id/nav_event"
-                android:icon="@drawable/ic_event"
-                android:title="@string/nav_event" />
-            <item
-                android:id="@+id/nav_r_admissions"
+                android:id="@+id/menu_learning_outcomes"
                 android:icon="@drawable/ic_admissions"
-                android:title="@string/nav_r_admissions" />
+                android:title="@string/menu_learning_outcomes" />
         </menu>
     </item>
-    <item android:title="@string/nav_setting">
+    <item android:title="@string/menu_news">
         <menu>
-            <item android:id="@+id/nav_account" android:title="@string/nav_account" android:icon="@drawable/ic_user"/>
-            <item android:id="@+id/nav_support" android:title="Hướng dẫn sử dụng" android:icon="@drawable/ic_support"/>
-            <item android:id="@+id/nav_logout" android:title="@string/nav_logout" android:icon="@drawable/ic_logout"/>
-            <item android:id="@+id/nav_permission" android:title="@string/nav_permission" android:icon="@drawable/ic_setting"/>
-            <item android:id="@+id/nav_rating" android:title="@string/nav_rating" android:icon="@drawable/ic_rating"/>
+            <item
+                android:id="@+id/menu_admissions"
+                android:icon="@drawable/ic_admissions"
+                android:title="@string/menu_admissions" />
+            <item
+                android:id="@+id/menu_event"
+                android:icon="@drawable/ic_event"
+                android:title="@string/menu_event" />
         </menu>
     </item>
-    <item android:title="@string/nav_contact">
+    <item android:title="@string/menu_more">
         <menu>
             <item
-                android:id="@+id/nav_call"
-                android:icon="@drawable/ic_call"
-                android:title="@string/nav_call" />
+                android:id="@+id/menu_account"
+                android:icon="@drawable/ic_user"
+                android:title="@string/menu_account" />
             <item
-                android:id="@+id/nav_mail"
-                android:icon="@drawable/ic_email"
-                android:title="@string/nav_mail" />
+                android:id="@+id/menu_instruct"
+                android:icon="@drawable/ic_support"
+                android:title="@string/menu_instruct" />
+            <item
+                android:id="@+id/menu_rating"
+                android:icon="@drawable/ic_rating"
+                android:title="@string/menu_rating" />
         </menu>
     </item>
 </menu>
