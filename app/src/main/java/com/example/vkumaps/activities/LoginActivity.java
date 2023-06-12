@@ -35,19 +35,21 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient client;
     private ActivityResultLauncher<Intent> startActivityForResult;
 
+    private static final int RC_SIGN_IN = 1234;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.activity_login);
 
-//        final Toolbar toolbarLogin = findViewById(R.id.toolbarLogin);
+        final Toolbar toolbarLogin = findViewById(R.id.toolbarLogin);
 
-//        toolbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
+        toolbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         // Xóa thông tin đăng nhập lưu trữ của phiên trước
         GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
@@ -73,9 +75,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                int resultCode = result.getResultCode();
-                Intent data = result.getData();
-                LoginActivity.this.onActivityResult(1234, resultCode, data);
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData();
+                    LoginActivity.this.onActivityResult(RC_SIGN_IN, RESULT_OK, data);
+                } else {
+                    // Xử lý lỗi đăng nhập không thành công
+                    Toast.makeText(LoginActivity.this, "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -84,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1234){
+        if (requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
