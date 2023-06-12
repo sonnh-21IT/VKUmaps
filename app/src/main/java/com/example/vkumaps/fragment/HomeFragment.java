@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -38,8 +40,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.maps.android.data.Feature;
+import com.google.maps.android.data.kml.KmlLayer;
+import com.google.maps.android.data.kml.KmlPlacemark;
+import com.google.maps.android.data.kml.KmlPolygon;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback{
@@ -77,7 +88,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        mapSetup();
+        try {
+            mapSetup();
+        } catch (XmlPullParserException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         uiSettings();
     }
 
@@ -116,7 +133,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
         map.getUiSettings().setMapToolbarEnabled(false);
     }
 
-    private void mapSetup() {
+    private void mapSetup() throws XmlPullParserException, IOException {
         map.clear();
         map.setPadding(0, 0, 0, 550);
         cameraSetup();
@@ -127,6 +144,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
         }
         //hiển thị maps
         map.setTrafficEnabled(true);
+
+        //Vẽ các khu vực lên maps
+        KmlLayer kmlLayer = new KmlLayer(map, R.raw.vkustudent, getContext());
+        kmlLayer.addLayerToMap();
+
+        if (kmlLayer.isLayerOnMap()) {
+            // Duyệt qua các đối tượng KmlPlacemark trong lớp KML
+            for (KmlPlacemark placemark : kmlLayer.getPlacemarks()) {
+
+            }
+        } else {
+            Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
+        }
+
+        kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
+            @Override
+            public void onFeatureClick(Feature feature) {
+                String name = feature.getProperty("name");
+                if (name != null) {
+                    // Hiển thị tên khu vực
+                    Toast.makeText(getContext(), name+"", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     private void cameraSetup() {
