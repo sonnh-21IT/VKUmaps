@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_SEARCH_BY_AREA  = 3;
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
     private static final int FRAGMENT_ACCOUNT = 5;
-        private static final int FRAGMENT_FEEDBACK = 5;
+    private static final int FRAGMENT_FEEDBACK = 5;
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
     private FirebaseAuth auth;
@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
 
 //        if (auth.getCurrentUser() != null){
-//            findViewById(R.id.nav_account).setVisibility(View.GONE);
-//            findViewById(R.id.nav_logout).setVisibility(View.VISIBLE);
+//            findViewById(R.id.menu_user_email).setVisibility(View.VISIBLE);
 //        }
 
         toolbar = findViewById(R.id.toolbar);
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.menu_main_maps) {
             if (currentFragment != FRAGMENT_HOME) {
                 replaceFragment(new HomeFragment(this));
@@ -120,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = FRAGMENT_ACCOUNT;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
+        } else if (id == R.id.menu_logout) {
+            logout();
         } else if (id == R.id.menu_timetable) {
             if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
                 replaceFragment(new WeekScheduleFragment(this));
@@ -139,11 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void openRating() {
-        Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
-        startActivity(intent);
-    }
-
     private void logout() {
         if(auth.getCurrentUser() != null){
             FirebaseAuth.getInstance().signOut();
@@ -151,11 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             finish();
         }
-    }
-
-    private void openAccount() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
     }
 
     private void openEMail() {
