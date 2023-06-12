@@ -26,7 +26,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.vkumaps.R;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
+import com.example.vkumaps.fragment.FeedbackFragment;
 import com.example.vkumaps.fragment.HomeFragment;
+import com.example.vkumaps.fragment.LoginFragment;
 import com.example.vkumaps.fragment.SearchByAreaFragment;
 import com.example.vkumaps.fragment.WeekScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_EVENT = 2;
     private static final int FRAGMENT_SEARCH_BY_AREA  = 3;
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
+    private static final int FRAGMENT_ACCOUNT = 5;
+        private static final int FRAGMENT_FEEDBACK = 5;
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
     private FirebaseAuth auth;
@@ -80,49 +84,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_maps) {
+        if (id == R.id.menu_main_maps) {
             if (currentFragment != FRAGMENT_HOME) {
                 replaceFragment(new HomeFragment(this));
                 currentFragment = FRAGMENT_HOME;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
-        } else if (id == R.id.nav_admissions) {
+        } else if (id == R.id.menu_admissions) {
             if (currentFragment != FRAGMENT_ADMISSION) {
                 replaceFragment(new AdmissionsFragment(this));
                 currentFragment = FRAGMENT_ADMISSION;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
-        } else if (id == R.id.nav_event) {
+        } else if (id == R.id.menu_event) {
             if (currentFragment != FRAGMENT_EVENT) {
                 replaceFragment(new EventFragment(this));
                 currentFragment = FRAGMENT_EVENT;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
-        } else if (id == R.id.nav_area) {
+        } else if (id == R.id.menu_search_by_area) {
             if (currentFragment != FRAGMENT_SEARCH_BY_AREA) {
                 replaceFragment(new SearchByAreaFragment(this));
                 currentFragment = FRAGMENT_SEARCH_BY_AREA;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
-        } else if (id == R.id.nav_week) {
+        } else if (id == R.id.menu_rating) {
+            if (currentFragment != FRAGMENT_FEEDBACK) {
+                replaceFragment(new FeedbackFragment(this));
+                currentFragment = FRAGMENT_FEEDBACK;
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        } else if (id == R.id.menu_account) {
+            if (currentFragment != FRAGMENT_ACCOUNT) {
+                replaceFragment(new LoginFragment(this));
+                currentFragment = FRAGMENT_ACCOUNT;
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        } else if (id == R.id.menu_timetable) {
             if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
                 replaceFragment(new WeekScheduleFragment(this));
                 currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
-        } else if (id == R.id.nav_account) {
-            openAccount();
-        } else if (id == R.id.nav_logout) {
-            logout();
-        } else if (id == R.id.nav_permission) {
-            openSettingPermission();
-        } else if (id == R.id.nav_rating) {
-            openRating();
-        } else if(id == R.id.nav_call){
-            openCall();
-        } else if(id == R.id.nav_mail){
-            openEMail();
         }
+//        else if (id == R.id.nav_permission) {
+//            openSettingPermission();
+//        } else if (id == R.id.nav_rating) {
+//            openRating();
+//        } else if(id == R.id.nav_call){
+//            openCall();
+//        } else if(id == R.id.nav_mail){
+//            openEMail();
+//        }
         return true;
     }
 

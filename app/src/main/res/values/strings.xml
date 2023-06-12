@@ -1,4 +1,20 @@
 <resources>
+    <string name="menu_feature">TÍNH NĂNG</string>
+    <string name="menu_main_maps">Bản đồ</string>
+    <string name="menu_search_by_area">Tra cứu khu vực</string>
+    <string name="menu_direction">Dẫn đường</string>
+    <string name="menu_learn">HỌC TẬP</string>
+    <string name="menu_timetable">Thời khóa biểu</string>
+    <string name="menu_learning_outcomes">Kết quả học tập</string>
+    <string name="menu_contact">Liên hệ</string>
+    <string name="menu_news">TIN TỨC</string>
+    <string name="menu_admissions">Tuyển sinh</string>
+    <string name="menu_event">Sự Kiện</string>
+    <string name="menu_account">Tài khoản</string>
+    <string name="menu_more">KHÁC</string>
+    <string name="menu_instruct">Hướng dẫn sử dụng</string>
+    <string name="menu_rating">Đánh giá / Góp ý</string>
+
     <string name="app_name">VKUStudents</string>
     <string name="nav_map">Bản đồ</string>
     <string name="nav_vkumaps">Bản đồ VKU</string>

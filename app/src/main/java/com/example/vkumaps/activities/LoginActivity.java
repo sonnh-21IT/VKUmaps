@@ -38,16 +38,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.fragment_login);
 
-        final Toolbar toolbarLogin = findViewById(R.id.toolbarLogin);
+//        final Toolbar toolbarLogin = findViewById(R.id.toolbarLogin);
 
-        toolbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        toolbarLogin.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
 
         // Xóa thông tin đăng nhập lưu trữ của phiên trước
         GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
