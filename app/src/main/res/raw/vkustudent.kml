@@ -1342,48 +1342,10 @@
         <styleUrl>#poly-9FA8DA-2001-222-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="poly-B2EBF2-1201-140-nodesc-normal">
-      <LineStyle>
-        <color>fff2ebb2</color>
-        <width>1.201</width>
-      </LineStyle>
-      <PolyStyle>
-        <color>8cf2ebb2</color>
-        <fill>1</fill>
-        <outline>1</outline>
-      </PolyStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="poly-B2EBF2-1201-140-nodesc-highlight">
-      <LineStyle>
-        <color>fff2ebb2</color>
-        <width>1.8015</width>
-      </LineStyle>
-      <PolyStyle>
-        <color>8cf2ebb2</color>
-        <fill>1</fill>
-        <outline>1</outline>
-      </PolyStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="poly-B2EBF2-1201-140-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#poly-B2EBF2-1201-140-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#poly-B2EBF2-1201-140-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
     <Style id="poly-B2EBF2-801-105-nodesc-normal">
       <LineStyle>
         <color>fff2ebb2</color>
-        <width>0.801</width>
+        <width>3.000</width>
       </LineStyle>
       <PolyStyle>
         <color>69f2ebb2</color>
@@ -1397,7 +1359,7 @@
     <Style id="poly-B2EBF2-801-105-nodesc-highlight">
       <LineStyle>
         <color>fff2ebb2</color>
-        <width>1.2015</width>
+        <width>4.5</width>
       </LineStyle>
       <PolyStyle>
         <color>69f2ebb2</color>
@@ -1610,7 +1572,7 @@
     </StyleMap>
     <Placemark>
       <name>Khu K</name>
-      <styleUrl>#poly-B2EBF2-1201-140-nodesc</styleUrl>
+      <styleUrl>#poly-B2EBF2-801-105-nodesc</styleUrl>
       <Polygon>
           <outerBoundaryIs>
             <LinearRing>
