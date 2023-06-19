@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     currentFragment = FRAGMENT_HOME;
                 }
                 break;
+            }
             case R.id.menu_admissions: {
                 if (currentFragment != FRAGMENT_ADMISSION) {
                     fragment = new AdmissionsFragment(this);

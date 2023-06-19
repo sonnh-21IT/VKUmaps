@@ -8,17 +8,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.vkumaps.R;
 import com.example.vkumaps.activities.MainActivity;
 import com.example.vkumaps.listener.ChangeFragmentListener;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class FeedbackFragment extends Fragment {
     private ChangeFragmentListener listener;
