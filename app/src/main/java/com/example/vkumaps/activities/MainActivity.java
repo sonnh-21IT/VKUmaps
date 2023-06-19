@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
     private static final int FRAGMENT_ACCOUNT = 5;
     private static final int FRAGMENT_FEEDBACK = 6;
+
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
     private FirebaseAuth auth;
@@ -56,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
 
 //        if (auth.getCurrentUser() != null){
-//            findViewById(R.id.nav_account).setVisibility(View.GONE);
-//            findViewById(R.id.nav_logout).setVisibility(View.VISIBLE);
+//            findViewById(R.id.menu_user_email).setVisibility(View.VISIBLE);
 //        }
 
         toolbar = findViewById(R.id.toolbar);
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+
         switch (id) {
             case R.id.menu_main_maps: {
                 if (currentFragment != FRAGMENT_HOME) {
@@ -89,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     currentFragment = FRAGMENT_HOME;
                 }
                 break;
-            }
             case R.id.menu_admissions: {
                 if (currentFragment != FRAGMENT_ADMISSION) {
                     fragment = new AdmissionsFragment(this);
