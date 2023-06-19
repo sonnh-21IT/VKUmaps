@@ -9,7 +9,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,8 +22,8 @@ import java.util.List;
 public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapter.MyViewHolder> {
     private List<DataModel> mList;
     private List<String> list;
-    private MyViewHolder mLastClickedViewHolder;
 
+    private SearchByAreaAdapter.MyViewHolder mLastViewHolder;
     public SearchByAreaAdapter(List<DataModel> mList) {
         this.mList = mList;
     }
@@ -60,13 +59,6 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (mLastClickedViewHolder != holder && mLastClickedViewHolder != null) {
-////                    mLastClickedViewHolder.expanderLinearLayout.setVisibility(View.GONE);
-//                    Toast.makeText(v.getContext(), mLastClickedViewHolder.textView.getText(),Toast.LENGTH_SHORT).show();
-//                    mLastClickedViewHolder.expanderLinearLayout.setVisibility(View.GONE);
-//
-//                }
-                mLastClickedViewHolder = holder;
                 list = model.getNestedList();
                 notifyItemChanged(holder.getAdapterPosition());
                 model.setExpandable(!model.isExpandable());
@@ -99,7 +91,7 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         RotateAnimation animation = new RotateAnimation(from, 0,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(200);
+        animation.setDuration(400);
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
         return animation;
     }

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.vkumaps.R;
+import com.example.vkumaps.adapters.SearchByAreaAdapter;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.FeedbackFragment;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private FirebaseAuth auth;
     private Fragment fragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
