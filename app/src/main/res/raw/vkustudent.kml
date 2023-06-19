@@ -1239,7 +1239,7 @@
     <Placemark>
       <name>Giảng đường C</name>
       <description>Giảng đường C - Khu K</description>
-      <styleUrl>#poly-01579B-1000-222</styleUrl>
+      <styleUrl>#poly-01579B-1000-245</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
@@ -1412,47 +1412,15 @@
       </Point>
     </Placemark>
     <Placemark>
-      <name>Thư viện</name>
-      <styleUrl>#poly-7CB342-1000-242-nodesc</styleUrl>
-      <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <tessellate>1</tessellate>
-            <coordinates>
-              108.251377,15.974684,0
-              108.251375,15.974566,0
-              108.251753,15.974564,0
-              108.251752,15.974637,0
-              108.251729,15.974637,0
-              108.251729,15.974686,0
-              108.251554,15.974686,0
-              108.251554,15.974702,0
-              108.251468,15.974701,0
-              108.251468,15.974683,0
-              108.251377,15.974684,0
-            </coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Thư viện VKU</name>
-      <styleUrl>#icon-1664-673AB7-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.251578,15.97461,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Viện eSTI</name>
+      <name>Không gian nghiên cứu và sáng tạo</name>
       <styleUrl>#poly-0F9D58-1000-245-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              108.251442,15.974565,0
+              108.2513803,15.9745637,0
+              108.251439,15.9745642,0
               108.25144,15.974475,0
               108.251367,15.974474,0
               108.251366,15.974446,0
@@ -1475,19 +1443,29 @@
               108.251569,15.974324,0
               108.251568,15.974489,0
               108.251465,15.97449,0
-              108.251466,15.974565,0
-              108.251442,15.974565,0
+              108.2514657,15.974565,0
+              108.2515867,15.9745665,0
+              108.2517522,15.9745668,0
+              108.2517514,15.9746368,0
+              108.2517258,15.9746369,0
+              108.2517254,15.9746854,0
+              108.2515531,15.9746845,0
+              108.2515524,15.9747019,0
+              108.2514668,15.9747014,0
+              108.2514666,15.9746829,0
+              108.2513784,15.9746827,0
+              108.2513803,15.9745637,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Viện eSTI</name>
+      <name>Không gian nghiên cứu và sáng tạo</name>
       <styleUrl>#icon-1740-F57C00-nodesc</styleUrl>
       <Point>
         <coordinates>
-          108.25147,15.974411,0
+          108.2514787,15.9744271,0
         </coordinates>
       </Point>
     </Placemark>
