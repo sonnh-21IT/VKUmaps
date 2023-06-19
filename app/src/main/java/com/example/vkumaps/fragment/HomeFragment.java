@@ -3,12 +3,14 @@ package com.example.vkumaps.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -135,16 +139,43 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
         //hiển thị maps
         map.setTrafficEnabled(true);
+        // Cài đặt mức zoom tối thiểu là 10
+        map.setMinZoomPreference(15);
+
+        // Cài đặt mức zoom tối đa là 18
+        map.setMaxZoomPreference(20);
+
+        LatLngBounds bounds = new LatLngBounds(
+                new LatLng(15.972769, 108.251301), // Tọa độ góc tây nam của hình chữ nhật
+                new LatLng(15.977739, 108.253532
+
+                )  // Tọa độ góc đông bắc của hình chữ nhật
+        );
+        map.setLatLngBoundsForCameraTarget(bounds);
+//        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = map.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            requireContext(), R.raw.mymapstyle));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
     }
 
     private void cameraSetup() {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(VKU_LOCATION)      // Sets the center of the map to Mountain View
-                .zoom(17)                   // Sets the zoom
+                .zoom(16)                   // Sets the zoom
                 .bearing(270)                // Sets the orientation of the camera to east
                 .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
