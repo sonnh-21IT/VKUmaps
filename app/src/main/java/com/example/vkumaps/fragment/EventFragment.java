@@ -82,4 +82,13 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         intent.putExtra("title", news.getTitle());
         startActivity(intent);
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

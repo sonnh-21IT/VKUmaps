@@ -1,7 +1,6 @@
 package com.example.vkumaps.fragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,14 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -38,11 +34,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback{
+public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private ChangeFragmentListener listener;
     public static int currentstate;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
@@ -52,6 +47,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
     private GoogleMap map;
     private LocationManager locationManager;
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
+    private ActivityResultLauncher<String> resultLauncher;
+
     public HomeFragment(ChangeFragmentListener listener) {
         this.listener = listener;
     }
@@ -71,6 +68,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
                 .commit();
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                            map.setMyLocationEnabled(true);
+                        }
+                    }
+                }
+        );
         return rootView;
     }
 
@@ -161,14 +169,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,Activit
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
-        ActivityResultLauncher<String> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    Log.d("VKU Maps", isGranted.toString());
-                }
-        );
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             resultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

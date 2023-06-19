@@ -68,4 +68,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:6.0.0'
     //Timetable
     implementation 'com.github.tlaabs:TimetableView:1.0.3-fx1'
+
+//    implementation 'com.google.android.gms:play-services-location:15.0.1'
+//    implementation 'com.google.android.gms:play-services-maps:15.0.1'
 }

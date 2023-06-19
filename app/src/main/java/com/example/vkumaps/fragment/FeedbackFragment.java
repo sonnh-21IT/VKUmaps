@@ -93,4 +93,13 @@ public class FeedbackFragment extends Fragment {
         scaleAnimation.setDuration(200);
         ratingImage.startAnimation(scaleAnimation);
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

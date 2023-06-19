@@ -44,4 +44,13 @@ public class WeekScheduleFragment extends Fragment {
 
     private void showDefaultSchedule() {
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
