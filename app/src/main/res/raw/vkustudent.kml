@@ -42,6 +42,46 @@
         <styleUrl>#icon-1531-01579B-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
+    <Style id="icon-1548-FFD600-nodesc-normal">
+      <IconStyle>
+        <color>ff9b5701</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2080&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+     <Style id="icon-1548-FFD600-nodesc-highlight">
+      <IconStyle>
+        <color>ff9b5701</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2080&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1548-FFD600-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1548-FFD600-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1548-FFD600-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
     <Style id="icon-1548-01579B-nodesc-normal">
       <IconStyle>
         <color>ff9b5701</color>
@@ -436,6 +476,390 @@
         <styleUrl>#icon-1783-E65100-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
+    <Style id="icon-1886-7CB342-nodesc-normal">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=7cb342&amp;id=2370&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1886-7CB342-nodesc-highlight">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=7cb342&amp;id=2370&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1886-7CB342-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1886-7CB342-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1886-7CB342-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1577-FFD600-nodesc-normal">
+      <IconStyle>
+        <color>ff00d6ff</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffea00&amp;id=2130&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1577-FFD600-nodesc-highlight">
+      <IconStyle>
+        <color>ff00d6ff</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffea00&amp;id=2130&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1577-FFD600-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1577-FFD600-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1577-FFD600-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1890-FFEA00-nodesc-normal">
+      <IconStyle>
+        <color>ff00eaff</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffee58&amp;id=2382&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1890-FFEA00-nodesc-highlight">
+      <IconStyle>
+        <color>ff00eaff</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffee58&amp;id=2382&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1890-FFEA00-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1890-FFEA00-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1890-FFEA00-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1589-0097A7-nodesc-normal">
+      <IconStyle>
+        <color>ffa79700</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=42a5f5&amp;id=2152&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1589-0097A7-nodesc-highlight">
+      <IconStyle>
+        <color>ffa79700</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=42a5f5&amp;id=2152&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1589-0097A7-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1589-0097A7-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1589-0097A7-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+     <Style id="icon-1684-0288D1-nodesc-normal">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=0288d1&amp;id=2311&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1684-0288D1-nodesc-highlight">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=0288d1&amp;id=2311&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1684-0288D1-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1684-0288D1-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1684-0288D1-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1696-F57C00-nodesc-normal">
+      <IconStyle>
+        <color>ff007cf5</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=f57c00&amp;id=2331&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1696-F57C00-nodesc-highlight">
+      <IconStyle>
+        <color>ff007cf5</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=f57c00&amp;id=2331&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1696-F57C00-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1696-F57C00-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1696-F57C00-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1707-0097A7-nodesc-normal">
+      <IconStyle>
+        <color>ffa79700</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=26a69a&amp;id=2350&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1707-0097A7-nodesc-highlight">
+      <IconStyle>
+        <color>ffa79700</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=26a69a&amp;id=2350&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1707-0097A7-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1707-0097A7-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1707-0097A7-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1720-7CB342-nodesc-normal">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=388e3c&amp;id=2367&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1720-7CB342-nodesc-highlight">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://earth.google.com/earth/rpc/cc/icon?color=388e3c&amp;id=2367&amp;scale=4</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1720-7CB342-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1720-7CB342-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1720-7CB342-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-01579B-1-199-normal">
+      <LineStyle>
+        <color>ff9b5701</color>
+        <width>0.001</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>c79b5701</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <Style id="poly-01579B-1-199-highlight">
+      <LineStyle>
+        <color>ff9b5701</color>
+        <width>0.0015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>c79b5701</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <StyleMap id="poly-01579B-1-199">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-01579B-1-199-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-01579B-1-199-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-01579B-1-232-normal">
+      <LineStyle>
+        <color>ff9b5701</color>
+        <width>0.001</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>e89b5701</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <Style id="poly-01579B-1-232-highlight">
+      <LineStyle>
+        <color>ff9b5701</color>
+        <width>0.0015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>e89b5701</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+    </Style>
+    <StyleMap id="poly-01579B-1-232">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-01579B-1-232-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-01579B-1-232-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
     <Style id="poly-01579B-1-255-normal">
       <LineStyle>
         <color>ff9b5701</color>
@@ -466,6 +890,44 @@
       <Pair>
         <key>highlight</key>
         <styleUrl>#poly-01579B-1-255-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-097138-2001-133-nodesc-normal">
+      <LineStyle>
+        <color>ff387109</color>
+        <width>2.001</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>85387109</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-097138-2001-133-nodesc-highlight">
+      <LineStyle>
+        <color>ff387109</color>
+        <width>3.0015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>85387109</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-097138-2001-133-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-097138-2001-133-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-097138-2001-133-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Style id="poly-0F9D58-1000-245-nodesc-normal">
@@ -544,6 +1006,44 @@
         <styleUrl>#poly-0F9D58-2000-232-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
+    <Style id="poly-1A237E-1601-156-nodesc-normal">
+      <LineStyle>
+        <color>ff7e231a</color>
+        <width>1.601</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>9c7e231a</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-1A237E-1601-156-nodesc-highlight">
+      <LineStyle>
+        <color>ff7e231a</color>
+        <width>2.4015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>9c7e231a</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-1A237E-1601-156-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-1A237E-1601-156-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-1A237E-1601-156-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
     <Style id="poly-673AB7-1000-128-nodesc-normal">
       <LineStyle>
         <color>ffb73a67</color>
@@ -582,6 +1082,44 @@
         <styleUrl>#poly-673AB7-1000-128-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
+    <Style id="poly-7CB342-1200-201-nodesc-normal">
+      <LineStyle>
+        <color>ff42b37c</color>
+        <width>1.2</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>c942b37c</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-7CB342-1200-201-nodesc-highlight">
+      <LineStyle>
+        <color>ff42b37c</color>
+        <width>1.8</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>c942b37c</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-7CB342-1200-201-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-7CB342-1200-201-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-7CB342-1200-201-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
     <Style id="poly-7CB342-1301-138-nodesc-normal">
       <LineStyle>
         <color>ff42b37c</color>
@@ -618,6 +1156,44 @@
       <Pair>
         <key>highlight</key>
         <styleUrl>#poly-7CB342-1301-138-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-880E4F-1501-117-nodesc-normal">
+      <LineStyle>
+        <color>ff4f0e88</color>
+        <width>1.501</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>754f0e88</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-880E4F-1501-117-nodesc-highlight">
+      <LineStyle>
+        <color>ff4f0e88</color>
+        <width>2.2515</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>754f0e88</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-880E4F-1501-117-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-880E4F-1501-117-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-880E4F-1501-117-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Style id="poly-880E4F-1801-168-nodesc-normal">
@@ -696,51 +1272,45 @@
         <styleUrl>#poly-880E4F-2000-176-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="poly-9FA8DA-2000-222-nodesc-normal">
+    <Style id="poly-880E4F-601-184-normal">
       <LineStyle>
-        <color>ffdaa89f</color>
-        <width>2</width>
+        <color>ff4f0e88</color>
+        <width>0.601</width>
       </LineStyle>
       <PolyStyle>
-        <color>dedaa89f</color>
+        <color>b84f0e88</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <Style id="poly-9FA8DA-2000-222-nodesc-highlight">
+    <Style id="poly-880E4F-601-184-highlight">
       <LineStyle>
-        <color>ffdaa89f</color>
-        <width>3</width>
+        <color>ff4f0e88</color>
+        <width>0.9015</width>
       </LineStyle>
       <PolyStyle>
-        <color>dedaa89f</color>
+        <color>b84f0e88</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <StyleMap id="poly-9FA8DA-2000-222-nodesc">
+    <StyleMap id="poly-880E4F-601-184">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-9FA8DA-2000-222-nodesc-normal</styleUrl>
+        <styleUrl>#poly-880E4F-601-184-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-9FA8DA-2000-222-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-880E4F-601-184-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="poly-B2EBF2-3701-140-nodesc-normal">
+    <Style id="poly-9FA8DA-2001-222-nodesc-normal">
       <LineStyle>
-        <color>fff2ebb2</color>
-        <width>3.701</width>
+        <color>ffdaa89f</color>
+        <width>2.001</width>
       </LineStyle>
       <PolyStyle>
-        <color>8cf2ebb2</color>
+        <color>dedaa89f</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -748,13 +1318,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-B2EBF2-3701-140-nodesc-highlight">
+    <Style id="poly-9FA8DA-2001-222-nodesc-highlight">
       <LineStyle>
-        <color>fff2ebb2</color>
-        <width>5.5515</width>
+        <color>ffdaa89f</color>
+        <width>3.0015</width>
       </LineStyle>
       <PolyStyle>
-        <color>8cf2ebb2</color>
+        <color>dedaa89f</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -762,14 +1332,90 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-B2EBF2-3701-140-nodesc">
+    <StyleMap id="poly-9FA8DA-2001-222-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-B2EBF2-3701-140-nodesc-normal</styleUrl>
+        <styleUrl>#poly-9FA8DA-2001-222-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-B2EBF2-3701-140-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-9FA8DA-2001-222-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-B2EBF2-1201-140-nodesc-normal">
+      <LineStyle>
+        <color>fff2ebb2</color>
+        <width>1.201</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>8cf2ebb2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-B2EBF2-1201-140-nodesc-highlight">
+      <LineStyle>
+        <color>fff2ebb2</color>
+        <width>1.8015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>8cf2ebb2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-B2EBF2-1201-140-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-B2EBF2-1201-140-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-B2EBF2-1201-140-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-B2EBF2-801-105-nodesc-normal">
+      <LineStyle>
+        <color>fff2ebb2</color>
+        <width>0.801</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>69f2ebb2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-B2EBF2-801-105-nodesc-highlight">
+      <LineStyle>
+        <color>fff2ebb2</color>
+        <width>1.2015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>69f2ebb2</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-B2EBF2-801-105-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-B2EBF2-801-105-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-B2EBF2-801-105-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Style id="poly-F57C00-1601-186-nodesc-normal">
@@ -810,13 +1456,13 @@
         <styleUrl>#poly-F57C00-1601-186-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="poly-F9A825-1200-237-nodesc-normal">
+    <Style id="poly-F9A825-1200-201-nodesc-normal">
       <LineStyle>
         <color>ff25a8f9</color>
         <width>1.2</width>
       </LineStyle>
       <PolyStyle>
-        <color>ed25a8f9</color>
+        <color>c925a8f9</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -824,13 +1470,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-F9A825-1200-237-nodesc-highlight">
+    <Style id="poly-F9A825-1200-201-nodesc-highlight">
       <LineStyle>
         <color>ff25a8f9</color>
         <width>1.8</width>
       </LineStyle>
       <PolyStyle>
-        <color>ed25a8f9</color>
+        <color>c925a8f9</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -838,14 +1484,14 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-F9A825-1200-237-nodesc">
+    <StyleMap id="poly-F9A825-1200-201-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-F9A825-1200-237-nodesc-normal</styleUrl>
+        <styleUrl>#poly-F9A825-1200-201-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-F9A825-1200-237-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-F9A825-1200-201-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Style id="poly-FADA80-1-252-nodesc-normal">
@@ -886,10 +1532,10 @@
         <styleUrl>#poly-FADA80-1-252-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="poly-FFCC80-1-255-nodesc-normal">
+    <Style id="poly-FFCC80-1501-255-nodesc-normal">
       <LineStyle>
         <color>ff80ccff</color>
-        <width>0.001</width>
+        <width>1.501</width>
       </LineStyle>
       <PolyStyle>
         <color>ff80ccff</color>
@@ -900,10 +1546,10 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-FFCC80-1-255-nodesc-highlight">
+    <Style id="poly-FFCC80-1501-255-nodesc-highlight">
       <LineStyle>
         <color>ff80ccff</color>
-        <width>0.0015</width>
+        <width>2.2515</width>
       </LineStyle>
       <PolyStyle>
         <color>ff80ccff</color>
@@ -914,71 +1560,118 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-FFCC80-1-255-nodesc">
+    <StyleMap id="poly-FFCC80-1501-255-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-FFCC80-1-255-nodesc-normal</styleUrl>
+        <styleUrl>#poly-FFCC80-1501-255-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-FFCC80-1-255-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-FFCC80-1501-255-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="poly-FFEA00-2601-150-nodesc-normal">
+      <LineStyle>
+        <color>ff00eaff</color>
+        <width>2.601</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>9600eaff</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-FFEA00-2601-150-nodesc-highlight">
+      <LineStyle>
+        <color>ff00eaff</color>
+        <width>3.9015</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>9600eaff</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-FFEA00-2601-150-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-FFEA00-2601-150-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-FFEA00-2601-150-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>Khu K</name>
-      <styleUrl>#poly-B2EBF2-3701-140-nodesc</styleUrl>
+      <styleUrl>#poly-B2EBF2-1201-140-nodesc</styleUrl>
       <Polygon>
-        <outerBoundaryIs>
-          <LinearRing>
-            <tessellate>1</tessellate>
-            <coordinates>
-              108.253466,15.9777855,0
-              108.2511682,15.9777928,0
-              108.2512258,15.974906,0
-              108.25103,15.9748983,0
-              108.2510381,15.974839,0
-              108.2512017,15.974839,0
-              108.2512051,15.9741328,0
-              108.2511836,15.973942,0
-              108.2511836,15.9738981,0
-              108.2512104,15.9738878,0
-              108.2512185,15.9729647,0
-              108.2512426,15.972828,0
-              108.2512775,15.9727506,0
-              108.2513392,15.9726991,0
-              108.2515028,15.9726862,0
-              108.2515752,15.9726759,0
-              108.2516664,15.9726295,0
-              108.2517335,15.9725753,0
-              108.2518005,15.9725418,0
-              108.2521599,15.9725444,0
-              108.2522672,15.9725934,0
-              108.2523343,15.9726398,0
-              108.2524443,15.9726836,0
-              108.2526186,15.9727197,0
-              108.2528037,15.9727635,0
-              108.2529512,15.9727996,0
-              108.2530478,15.9728383,0
-              108.253147,15.9728873,0
-              108.2533696,15.9729647,0
-              108.2534554,15.9730034,0
-              108.2535145,15.9730652,0
-              108.2535305,15.9731065,0
-              108.2535332,15.9731735,0
-              108.253544,15.973238,0
-              108.2535358,15.974851,0
-              108.253466,15.9748562,0
-              108.253466,15.9750676,0
-              108.2537343,15.9750676,0
-              108.2537289,15.9751295,0
-              108.2535572,15.9751347,0
-              108.2535251,15.9764137,0
-              108.253466,15.9764291,0
-              108.253466,15.9777855,0
-            </coordinates>
-          </LinearRing>
-        </outerBoundaryIs>
-      </Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                108.2534721,15.9777862,0
+                108.2511743,15.9777935,0
+                108.2512212,15.9749093,0
+                108.2510428,15.9749106,0
+                108.2510442,15.9748397,0
+                108.2512078,15.9748397,0
+                108.2512112,15.9741335,0
+                108.2511897,15.9739427,0
+                108.2511951,15.9739104,0
+                108.2512165,15.9738885,0
+                108.2512179,15.9734701,0
+                108.2512246,15.9729654,0
+                108.25124,15.9728361,0
+                108.2512585,15.972771,0
+                108.2512945,15.9727226,0
+                108.2513302,15.9726946,0
+                108.2513743,15.9726821,0
+                108.251414,15.9726792,0
+                108.2515089,15.9726869,0
+                108.2515813,15.9726766,0
+                108.2516725,15.9726302,0
+                108.2517396,15.972576,0
+                108.2518066,15.9725425,0
+                108.252166,15.9725451,0
+                108.2522733,15.9725941,0
+                108.2523404,15.9726405,0
+                108.2524504,15.9726843,0
+                108.2525972,15.9727098,0
+                108.2526717,15.9727222,0
+                108.2528098,15.9727561,0
+                108.2529197,15.9727829,0
+                108.2529937,15.9728055,0
+                108.2530529,15.9728332,0
+                108.2531497,15.9728764,0
+                108.2532939,15.9729361,0
+                108.2533889,15.9729598,0
+                108.253441,15.9729851,0
+                108.253482,15.9730152,0
+                108.2535119,15.973063,0
+                108.2535262,15.9731062,0
+                108.2535333,15.9731742,0
+                108.2535478,15.9733209,0
+                108.2535446,15.9748569,0
+                108.2535298,15.9748559,0
+                108.253523,15.9749233,0
+                108.253523,15.9750051,0
+                108.2537289,15.9750109,0
+                108.253727,15.9751405,0
+                108.2535633,15.9751354,0
+                108.2535312,15.9764144,0
+                108.2534721,15.9764149,0
+                108.2534721,15.9777862,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
     </Placemark>
     <Placemark>
       <name>Giảng đường A</name>
@@ -1573,7 +2266,7 @@
     </Placemark>
     <Placemark>
       <name>Ký túc xá VKU</name>
-      <styleUrl>#poly-FFCC80-1-255-nodesc</styleUrl>
+      <styleUrl>#poly-FFCC80-1501-255-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
@@ -1660,7 +2353,7 @@
     </Placemark>
     <Placemark>
       <name>Sân thể thao KTX</name>
-      <styleUrl>#poly-9FA8DA-2000-222-nodesc</styleUrl>
+      <styleUrl>#poly-9FA8DA-2001-222-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
@@ -1714,7 +2407,7 @@
       </Point>
     </Placemark>
     <Placemark>
-      <name>Cổng 1</name>
+      <name>Cổng vào khu K</name>
       <styleUrl>#icon-1783-E65100-nodesc</styleUrl>
       <Point>
         <coordinates>
@@ -1723,7 +2416,7 @@
       </Point>
     </Placemark>
     <Placemark>
-      <name>Cổng 2</name>
+      <name>Cổng sau khu K</name>
       <styleUrl>#icon-1783-E65100-nodesc</styleUrl>
       <Point>
         <coordinates>
@@ -1772,7 +2465,7 @@
     </Placemark>
     <Placemark>
       <name>Vườn cây</name>
-      <styleUrl>#icon-1720-7CB342-nodesc</styleUrl>
+      <styleUrl>#icon-1886-7CB342-nodesc</styleUrl>
       <Point>
         <coordinates>
           108.2531834,15.9767895,0
@@ -1781,17 +2474,22 @@
     </Placemark>
     <Placemark>
       <name>Trung tâm hoạt động sinh viên</name>
-      <styleUrl>#poly-F9A825-1200-237-nodesc</styleUrl>
+      <styleUrl>#poly-F9A825-1200-201-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              108.2513739,15.9759898,0
-              108.2513806,15.9753915,0
-              108.2518178,15.9753967,0
-              108.2518111,15.9759924,0
-              108.2513739,15.9759898,0
+              108.2514115,15.9760104,0
+              108.2514148,15.9759021,0
+              108.2514178,15.9757641,0
+              108.2514207,15.9756577,0
+              108.2514167,15.9755814,0
+              108.2514121,15.9755303,0
+              108.2514021,15.9754147,0
+              108.2518446,15.975407,0
+              108.2518433,15.9760105,0
+              108.2514115,15.9760104,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>
@@ -1808,10 +2506,441 @@
     </Placemark>
     <Placemark>
       <name>Trung tâm hoạt động sinh viên</name>
-      <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+      <styleUrl>#icon-1589-0097A7-nodesc</styleUrl>
       <Point>
         <coordinates>
           108.2515938,15.9756854,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Khu V</name>
+      <styleUrl>#poly-B2EBF2-801-105-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2484543,15.973388,0
+              108.2484543,15.9717582,0
+              108.2487922,15.9717892,0
+              108.2490926,15.9718356,0
+              108.2496988,15.9718872,0
+              108.249967,15.9719026,0
+              108.2500743,15.9720006,0
+              108.2501011,15.972145,0
+              108.2501118,15.9728206,0
+              108.2500448,15.9728696,0
+              108.2500314,15.9729367,0
+              108.2500984,15.9730063,0
+              108.2500958,15.9734034,0
+              108.2484543,15.973388,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Minimart</name>
+      <styleUrl>#icon-1684-0288D1-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.2522039,15.9736143,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Căn tin KTX</name>
+      <styleUrl>#icon-1577-FFD600-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.2521999,15.9732715,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Nhà xe Khu V</name>
+      <styleUrl>#icon-1644-01579B</styleUrl>
+      <Point>
+        <coordinates>
+          108.2500497,15.9726766,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Nhà xe Khu V</name>
+      <description>Nhà xe - Khu V</description>
+      <styleUrl>#poly-880E4F-601-184</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2500833,15.9727447,0
+              108.2500015,15.972746,0
+              108.2499988,15.9726893,0
+              108.2500136,15.9726841,0
+              108.2500203,15.9726738,0
+              108.2500203,15.9726557,0
+              108.2500109,15.9722045,0
+              108.2500418,15.9721993,0
+              108.2500659,15.9722019,0
+              108.250086,15.9722058,0
+              108.2500833,15.9727447,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Nhà xe </name>
+      <styleUrl>#poly-880E4F-1501-117-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2535426,15.975206,0
+              108.2535399,15.9757643,0
+              108.2534635,15.975763,0
+              108.2534621,15.9752022,0
+              108.2535426,15.975206,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Cổng vào Khu V</name>
+      <styleUrl>#icon-1783-E65100-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.2500617,15.9729164,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Nhà xe</name>
+      <styleUrl>#icon-1644-01579B</styleUrl>
+      <Point>
+        <coordinates>
+          108.253501,15.9755393,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+     <name>Dãy nhà A</name>
+     <description>Dãy nhà A - Khu V</description>
+     <styleUrl>#poly-01579B-1-232</styleUrl>
+     <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2491648,15.9723606,0
+              108.2491661,15.972027,0
+              108.2491192,15.9720205,0
+              108.2491219,15.9720038,0
+              108.2489797,15.9720051,0
+              108.2489864,15.9719548,0
+              108.2489832,15.9719409,0
+              108.2489784,15.971898,0
+              108.2492533,15.9719084,0
+              108.2492506,15.9719393,0
+              108.2492935,15.9719367,0
+              108.2492935,15.9719006,0
+              108.2496275,15.9719058,0
+              108.2496261,15.9719264,0
+              108.2496637,15.9719277,0
+              108.2496637,15.9719045,0
+              108.2497374,15.9719032,0
+              108.2497576,15.9718955,0
+              108.249842,15.9719032,0
+              108.2498434,15.972027,0
+              108.249653,15.9720308,0
+              108.249653,15.9721314,0
+              108.2498568,15.9721301,0
+              108.2498555,15.9722616,0
+              108.2496583,15.9722642,0
+              108.2496556,15.9723661,0
+              108.249712,15.9723661,0
+              108.2497093,15.9724821,0
+              108.2496516,15.9724821,0
+              108.249653,15.9724512,0
+              108.2496181,15.9724525,0
+              108.2496181,15.9724847,0
+              108.2494504,15.9724847,0
+              108.2494491,15.9725131,0
+              108.2493365,15.9725143,0
+              108.2493365,15.9724847,0
+              108.2492801,15.9724834,0
+              108.2492815,15.972446,0
+              108.2492399,15.9724434,0
+              108.2492399,15.9724834,0
+              108.2491111,15.9724834,0
+              108.2491111,15.9723609,0
+              108.2491648,15.9723606,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+        <innerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2492198,15.9723603,0
+              108.2492198,15.9723661,0
+              108.2491648,15.9723615,0
+              108.2491648,15.9723606,0
+              108.2492198,15.9723603,0
+            </coordinates>
+          </LinearRing>
+        </innerBoundaryIs>
+        <innerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2492198,15.9720244,0
+              108.2495953,15.9720296,0
+              108.2495939,15.9721301,0
+              108.2494826,15.9721314,0
+              108.2494813,15.9722526,0
+              108.249598,15.9722539,0
+              108.2495966,15.9723609,0
+              108.2494491,15.9723609,0
+              108.2494491,15.9723454,0
+              108.2494317,15.972339,0
+              108.2494116,15.97233,0
+              108.2493566,15.97233,0
+              108.2493338,15.972348,0
+              108.2493338,15.9723596,0
+              108.2492198,15.9723603,0
+              108.2492198,15.9720244,0
+            </coordinates>
+          </LinearRing>
+        </innerBoundaryIs>
+      </Polygon>
+   </Placemark>
+    <Placemark>
+      <name>Dãy nhà A</name>
+      <styleUrl>#icon-1548-FFD600-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.249398,15.9724211,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Dãy nhà B</name>
+      <description>Dãy nhà B- Khu V</description>
+      <styleUrl>#poly-01579B-1-199</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.249034,15.9733047,0
+              108.2490367,15.9731899,0
+              108.2491775,15.9731899,0
+              108.2491775,15.9732209,0
+              108.2492043,15.9732196,0
+              108.249207,15.9731873,0
+              108.2496161,15.9731861,0
+              108.2496161,15.9732209,0
+              108.2496509,15.9732196,0
+              108.2496509,15.9731848,0
+              108.249714,15.9731873,0
+              108.2497153,15.973306,0
+              108.249034,15.9733047,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Dãy nhà B</name>
+      <styleUrl>#icon-1548-FFD600-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.249377,15.9732487,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Sân tennis</name>
+      <styleUrl>#poly-FFEA00-2601-150-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2515354,15.9762901,0
+              108.2517232,15.9762901,0
+              108.2517218,15.9766524,0
+              108.2515307,15.9766505,0
+              108.2513409,15.9766524,0
+              108.2513409,15.9762901,0
+              108.2515354,15.9762901,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Sân tennis</name>
+      <styleUrl>#icon-1707-0097A7-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.251526,15.9764815,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Sân bóng đá mini</name>
+      <styleUrl>#poly-097138-2001-133-nodesc</styleUrl>
+      <MultiGeometry>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                108.2515392,15.9772921,0
+                108.2513461,15.9772928,0
+                108.2513487,15.9769305,0
+                108.2515392,15.9769331,0
+                108.2515392,15.9772921,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <tessellate>1</tessellate>
+              <coordinates>
+                108.2515392,15.9772921,0
+                108.2515405,15.9769331,0
+                108.2515392,15.9769331,0
+                108.2515392,15.9769318,0
+                108.2517242,15.9769318,0
+                108.2517242,15.9772915,0
+                108.2515392,15.9772921,0
+              </coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark>
+      <name>Sân vân động VKU</name>
+      <styleUrl>#poly-7CB342-1200-201-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2519719,15.9765423,0
+              108.25198,15.9764418,0
+              108.2520041,15.9763799,0
+              108.252039,15.9763283,0
+              108.2520819,15.9762922,0
+              108.2521382,15.9762432,0
+              108.2522053,15.976202,0
+              108.2522831,15.9761762,0
+              108.2523743,15.9761659,0
+              108.2524467,15.9761659,0
+              108.2525164,15.9761839,0
+              108.2525996,15.9762226,0
+              108.2526666,15.9762664,0
+              108.252723,15.9763231,0
+              108.2527659,15.976385,0
+              108.2527846,15.9764701,0
+              108.2527954,15.9765526,0
+              108.25279,15.9772205,0
+              108.2527793,15.9772592,0
+              108.2527659,15.9773004,0
+              108.2527337,15.9773546,0
+              108.2526961,15.9774036,0
+              108.2526479,15.9774526,0
+              108.2525915,15.9774913,0
+              108.2525298,15.9775222,0
+              108.2524735,15.9775377,0
+              108.252393,15.9775557,0
+              108.2523045,15.977548,0
+              108.2522455,15.9775325,0
+              108.2521811,15.9775093,0
+              108.2521168,15.977468,0
+              108.2520604,15.9774113,0
+              108.2520149,15.9773572,0
+              108.2519934,15.9773108,0
+              108.2519746,15.9772514,0
+              108.2519693,15.9771844,0
+              108.2519719,15.9765423,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Sân bóng đá mini</name>
+      <styleUrl>#icon-1696-F57C00-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.25154,15.9771263,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Sân vận động VKU</name>
+      <styleUrl>#icon-1698-0288D1-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.252393,15.9768337,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Sân bóng chuyền</name>
+      <styleUrl>#poly-1A237E-1601-156-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2520932,15.9757962,0
+              108.2522796,15.9757974,0
+              108.2522769,15.9759999,0
+              108.2519296,15.9759986,0
+              108.2519296,15.9757923,0
+              108.2520932,15.9757962,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Bãi cỏ</name>
+      <styleUrl>#icon-1720-7CB342-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.2530612,15.9734614,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Sân bóng chuyền</name>
+      <styleUrl>#icon-1890-FFEA00-nodesc</styleUrl>
+      <Point>
+        <coordinates>
+          108.2520976,15.9759103,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Nhà xe KTX</name>
+      <styleUrl>#icon-1644-01579B</styleUrl>
+      <Point>
+        <coordinates>
+          108.2520044,15.9726569,0
         </coordinates>
       </Point>
     </Placemark>
