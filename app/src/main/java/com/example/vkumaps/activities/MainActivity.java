@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
-import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -41,13 +37,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
     private static final int FRAGMENT_EVENT = 2;
-    private static final int FRAGMENT_SEARCH_BY_AREA  = 3;
+    private static final int FRAGMENT_SEARCH_BY_AREA = 3;
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
     private static final int FRAGMENT_ACCOUNT = 5;
-    private static final int FRAGMENT_FEEDBACK = 5;
+    private static final int FRAGMENT_FEEDBACK = 6;
+
     private int currentFragment = FRAGMENT_HOME;
     private Toolbar toolbar;
     private FirebaseAuth auth;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,65 +80,92 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_main_maps) {
-            if (currentFragment != FRAGMENT_HOME) {
-                replaceFragment(new HomeFragment(this));
-                currentFragment = FRAGMENT_HOME;
-                drawerLayout.closeDrawer(GravityCompat.START);
+
+        switch (id) {
+            case R.id.menu_main_maps: {
+                if (currentFragment != FRAGMENT_HOME) {
+                    fragment = new HomeFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_HOME;
+                }
+                break;
+            case R.id.menu_admissions: {
+                if (currentFragment != FRAGMENT_ADMISSION) {
+                    fragment = new AdmissionsFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_ADMISSION;
+                }
+                break;
             }
-        } else if (id == R.id.menu_admissions) {
-            if (currentFragment != FRAGMENT_ADMISSION) {
-                replaceFragment(new AdmissionsFragment(this));
-                currentFragment = FRAGMENT_ADMISSION;
-                drawerLayout.closeDrawer(GravityCompat.START);
+            case R.id.menu_event: {
+                if (currentFragment != FRAGMENT_EVENT) {
+                    fragment = new EventFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_EVENT;
+                }
+                break;
             }
-        } else if (id == R.id.menu_event) {
-            if (currentFragment != FRAGMENT_EVENT) {
-                replaceFragment(new EventFragment(this));
-                currentFragment = FRAGMENT_EVENT;
-                drawerLayout.closeDrawer(GravityCompat.START);
+            case R.id.menu_search_by_area: {
+                if (currentFragment != FRAGMENT_SEARCH_BY_AREA) {
+                    fragment = new SearchByAreaFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_SEARCH_BY_AREA;
+                }
+                break;
             }
-        } else if (id == R.id.menu_search_by_area) {
-            if (currentFragment != FRAGMENT_SEARCH_BY_AREA) {
-                replaceFragment(new SearchByAreaFragment(this));
-                currentFragment = FRAGMENT_SEARCH_BY_AREA;
-                drawerLayout.closeDrawer(GravityCompat.START);
+            case R.id.menu_rating: {
+                if (currentFragment != FRAGMENT_FEEDBACK) {
+                    fragment = new FeedbackFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_FEEDBACK;
+                }
+                break;
             }
-        } else if (id == R.id.menu_rating) {
-            if (currentFragment != FRAGMENT_FEEDBACK) {
-                replaceFragment(new FeedbackFragment(this));
-                currentFragment = FRAGMENT_FEEDBACK;
-                drawerLayout.closeDrawer(GravityCompat.START);
+            case R.id.menu_account: {
+                if (currentFragment != FRAGMENT_ACCOUNT) {
+                    fragment = new LoginFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_ACCOUNT;
+                }
+                break;
             }
-        } else if (id == R.id.menu_account) {
-            if (currentFragment != FRAGMENT_ACCOUNT) {
-                replaceFragment(new LoginFragment(this));
-                currentFragment = FRAGMENT_ACCOUNT;
-                drawerLayout.closeDrawer(GravityCompat.START);
+            case R.id.menu_timetable: {
+                if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
+                    fragment = new WeekScheduleFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
+                }
+                break;
             }
-        } else if (id == R.id.menu_logout) {
-            logout();
-        } else if (id == R.id.menu_timetable) {
-            if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
-                replaceFragment(new WeekScheduleFragment(this));
-                currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
+            default: {
                 drawerLayout.closeDrawer(GravityCompat.START);
+                break;
             }
         }
-//        else if (id == R.id.nav_permission) {
-//            openSettingPermission();
-//        } else if (id == R.id.nav_rating) {
-//            openRating();
-//        } else if(id == R.id.nav_call){
-//            openCall();
-//        } else if(id == R.id.nav_mail){
-//            openEMail();
-//        }
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            // Wait for the drawer to close completely before changing fragment
+            drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    if (fragment!=null){
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        replaceFragment(fragment);
+                    }
+                }
+            });
+        }
         return true;
     }
 
     private void logout() {
-        if(auth.getCurrentUser() != null){
+        if (auth.getCurrentUser() != null) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
@@ -185,16 +210,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in,  // enter
+                R.anim.fade_out,  // exit
+                R.anim.fade_in,   // popEnter
+                R.anim.slide_out);
         transaction.replace(R.id.content_frame, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
     @Override
     public void changeTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

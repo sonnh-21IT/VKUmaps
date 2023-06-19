@@ -1,14 +1,18 @@
 package com.example.vkumaps.fragment;
 
+
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import com.example.vkumaps.R;
+import com.example.vkumaps.listener.ChangeFragmentListener;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -130,5 +134,14 @@ public class LoginFragment extends Fragment {
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
         }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

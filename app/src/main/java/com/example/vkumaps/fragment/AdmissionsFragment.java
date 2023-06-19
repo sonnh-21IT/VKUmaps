@@ -22,4 +22,13 @@ public class AdmissionsFragment extends Fragment {
         listener.changeTitle("Tuyển sinh");
         return inflater.inflate(R.layout.fragment_admissions, container, false);
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

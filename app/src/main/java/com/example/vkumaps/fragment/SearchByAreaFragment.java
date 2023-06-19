@@ -120,4 +120,13 @@ public class SearchByAreaFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         return view;
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
