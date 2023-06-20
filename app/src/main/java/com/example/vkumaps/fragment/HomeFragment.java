@@ -34,7 +34,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.kml.KmlLayer;
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private ChangeFragmentListener listener;
     public static int currentstate;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
-    private ImageView oc;
+    private ImageView oc,zoomIn,zoomOut;
     private FrameLayout sheet;
     private static final String TAG = "PERMISSION_TAG";
     private GoogleMap map;
@@ -67,6 +68,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         oc = rootView.findViewById(R.id.btn);
+        zoomOut=rootView.findViewById(R.id.zoom_out);
+        zoomIn=rootView.findViewById(R.id.zoom_in);
         sheet = rootView.findViewById(R.id.sheet);
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         requestPermission();
@@ -78,14 +81,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-                            map.setMyLocationEnabled(true);
-                        }
+            new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (isGranted) {
+                    if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                        map.setMyLocationEnabled(true);
+                        map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                            @Override
+                            public boolean onMyLocationButtonClick() {
+
+                                return false;
+                            }
+                        });
                     }
                 }
+            }
         );
         return rootView;
     }
@@ -134,15 +144,25 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void uiSettings() {
-        map.getUiSettings().setZoomControlsEnabled(true);
+//        map.getUiSettings().setZoomControlsEnabled(true);
+        zoomIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.animateCamera(CameraUpdateFactory.zoomIn());
+            }
+        });
+        zoomOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.animateCamera(CameraUpdateFactory.zoomOut());
+            }
+        });
         map.getUiSettings().setMapToolbarEnabled(false);
     }
 
     private void mapSetup() throws XmlPullParserException, IOException {
         map.clear();
-        map.setPadding(0, 0, 0, 550);
         cameraSetup();
-        markerSetup();
         //vị trí hiện tại
         if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             map.setMyLocationEnabled(true);
@@ -169,28 +189,32 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 String name = feature.getProperty("name");
                 if (name != null) {
                     // Hiển thị tên khu vực
-                    Toast.makeText(getContext(), name+"", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), name + "", Toast.LENGTH_SHORT).show();
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    currentstate = 1;
                 }
             }
         });
+
+        map.setMaxZoomPreference(23);
+        map.setMinZoomPreference(16.5f);
+        LatLngBounds bounds = new LatLngBounds(
+                new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
+                new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
+        );
+        map.setLatLngBoundsForCameraTarget(bounds);
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
     }
 
     private void cameraSetup() {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(VKU_LOCATION)      // Sets the center of the map to Mountain View
-                .zoom(17)                   // Sets the zoom
+                .zoom(16.5f)                   // Sets the zoom
                 .bearing(270)                // Sets the orientation of the camera to east
                 .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(16.5f), 1000, null);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-    }
-
-    private void markerSetup() {
-        map.addMarker(new MarkerOptions()
-                .position(VKU_LOCATION)
-                .title("Trường Đại học Công nghệ Thông tin và Truyên thông Viêt-Hàn")
-                .snippet("Trường Đại học công lập đào tạo sâu về công nghệ thông tin và kinh tế số duy nhất tại miền trung"));
     }
 
 

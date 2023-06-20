@@ -145,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             }
+            case R.id.menu_logout: {
+                logout();
+                break;
+            }
             default: {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
@@ -170,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
-            finish();
         }
     }
 
