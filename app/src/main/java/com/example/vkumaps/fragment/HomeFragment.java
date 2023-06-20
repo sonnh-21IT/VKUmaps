@@ -36,16 +36,21 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
+import com.google.maps.android.data.kml.KmlPoint;
 import com.google.maps.android.data.kml.KmlPolygon;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -192,13 +197,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 if (geometry != null && geometry.getGeometryType().equals("Polygon")) {
                     // Bỏ qua sự kiện click trên đa giác (polygon)
                     return;
-                }
-                String name = feature.getProperty("name");
-                if (name != null) {
-                    // Hiển thị tên khu vực
-                    Toast.makeText(getContext(), name + "", Toast.LENGTH_SHORT).show();
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    currentstate = 1;
+                } else if (geometry.getGeometryType().equals("Point")) {
+                    KmlPoint kmlPoint = (KmlPoint) geometry;
+                    LatLng pointCoordinates = kmlPoint.getGeometryObject();
+                    double latitude = pointCoordinates.latitude;
+                    double longitude = pointCoordinates.longitude;
+                    // Sử dụng latitude và longitude của điểm tại đây
+
+                    String name = feature.getProperty("name");
+                    if (name != null) {
+                        // Hiển thị tên khu vực
+                        Toast.makeText(getContext(), name+"-"+latitude+"-"+longitude, Toast.LENGTH_SHORT).show();
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        currentstate = 1;
+                    }
                 }
             }
         });
@@ -221,6 +233,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .build();                   // Creates a CameraPosition from the builder
         map.animateCamera(CameraUpdateFactory.zoomTo(16.5f), 1000, null);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
     }
 
 
