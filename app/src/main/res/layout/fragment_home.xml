@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.HomeFragment">
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,33 +33,40 @@
                 android:src="@drawable/baseline_remove_24"
                 app:tint="@color/white" />
         </FrameLayout>
+
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_marginVertical="300dp"
-            android:layout_marginHorizontal="15dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="200dp"
             app:cardCornerRadius="3dp">
+
             <LinearLayout
-                android:background="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical">
+
                 <ImageView
-                    app:tint="@android:color/darker_gray"
+
                     android:id="@+id/zoom_in"
-                    android:paddingVertical="2dp"
-                    android:height="30dp"
-                    android:layout_width="30dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add"/>
+                    android:height="30dp"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="10dp"
+                    android:src="@drawable/ic_add"
+                    app:tint="@android:color/darker_gray" />
+
                 <ImageView
-                    app:tint="@android:color/darker_gray"
                     android:id="@+id/zoom_out"
-                    android:paddingVertical="2dp"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_remove"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="10dp"
+                    android:src="@drawable/ic_remove"
+                    app:tint="@android:color/darker_gray" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

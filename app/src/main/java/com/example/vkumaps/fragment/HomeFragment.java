@@ -190,6 +190,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 if (name != null) {
                     // Hiển thị tên khu vực
                     Toast.makeText(getContext(), name + "", Toast.LENGTH_SHORT).show();
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    currentstate = 1;
                 }
             }
         });
