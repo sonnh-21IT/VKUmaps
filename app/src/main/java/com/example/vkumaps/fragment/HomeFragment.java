@@ -38,8 +38,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.data.Feature;
+import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
+import com.google.maps.android.data.kml.KmlPolygon;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -186,6 +188,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
             @Override
             public void onFeatureClick(Feature feature) {
+                Geometry geometry = feature.getGeometry();
+                if (geometry != null && geometry.getGeometryType().equals("Polygon")) {
+                    // Bỏ qua sự kiện click trên đa giác (polygon)
+                    return;
+                }
                 String name = feature.getProperty("name");
                 if (name != null) {
                     // Hiển thị tên khu vực
@@ -210,7 +217,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(VKU_LOCATION)      // Sets the center of the map to Mountain View
                 .zoom(16.5f)                   // Sets the zoom
-                .bearing(270)                // Sets the orientation of the camera to east
                 .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
         map.animateCamera(CameraUpdateFactory.zoomTo(16.5f), 1000, null);
