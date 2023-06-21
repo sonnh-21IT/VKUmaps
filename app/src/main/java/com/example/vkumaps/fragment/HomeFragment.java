@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Build;
@@ -24,8 +25,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
+import com.example.vkumaps.models.MarkerModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +43,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
@@ -62,6 +72,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "PERMISSION_TAG";
     private GoogleMap map;
     private LocationManager locationManager;
+    private FirebaseFirestore firestore;
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private ActivityResultLauncher<String> resultLauncher;
 
@@ -78,8 +89,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         zoomOut=rootView.findViewById(R.id.zoom_out);
         zoomIn=rootView.findViewById(R.id.zoom_in);
         sheet = rootView.findViewById(R.id.sheet);
+        firestore = FirebaseFirestore.getInstance();
+
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        requestPermission();
+
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.map_view, mapFragment)
@@ -93,17 +106,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 if (isGranted) {
                     if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                         map.setMyLocationEnabled(true);
-                        map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                            @Override
-                            public boolean onMyLocationButtonClick() {
-
-                                return false;
-                            }
-                        });
                     }
                 }
             }
         );
+        requestPermission();
+
         return rootView;
     }
 
@@ -193,27 +201,39 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
             @Override
             public void onFeatureClick(Feature feature) {
-                Geometry geometry = feature.getGeometry();
-                if (geometry != null && geometry.getGeometryType().equals("Polygon")) {
-                    // Bỏ qua sự kiện click trên đa giác (polygon)
-                    return;
-                } else if (geometry.getGeometryType().equals("Point")) {
-                    KmlPoint kmlPoint = (KmlPoint) geometry;
-                    LatLng pointCoordinates = kmlPoint.getGeometryObject();
-                    double latitude = pointCoordinates.latitude;
-                    double longitude = pointCoordinates.longitude;
-                    // Sử dụng latitude và longitude của điểm tại đây
 
-                    String name = feature.getProperty("name");
-                    if (name != null) {
-                        // Hiển thị tên khu vực
-                        Toast.makeText(getContext(), name+"-"+latitude+"-"+longitude, Toast.LENGTH_SHORT).show();
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        currentstate = 1;
-                    }
-                }
             }
         });
+
+        //Hiển thị các maker
+        firestore.collection("Khu K")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.getId();
+                                MarkerModel markerModel = document.toObject(MarkerModel.class);
+                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                                        markerModel.getIconURL(), name);
+                            }
+                        }
+                    }
+                });
+        firestore.collection("Khu V")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.getId();
+                                MarkerModel markerModel = document.toObject(MarkerModel.class);
+                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                                        markerModel.getIconURL(), name);
+                            }
+                        }
+                    }
+                });
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
@@ -223,6 +243,45 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         );
         map.setLatLngBoundsForCameraTarget(bounds);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
+    }
+
+    //add marker
+    private void addMarker(LatLng latMarker, String imageUrl, String name) {
+        Glide.with(this)
+                .load(imageUrl)
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable drawable, @Nullable Transition<? super Drawable> transition) {
+                        // This is the Drawable loaded from the URL
+                        // You can use the drawable here, for example, setting it as the icon for a marker
+                        BitmapDescriptor bitmapDescriptor = getMarkerIconFromDrawable(drawable);
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(latMarker)
+                                .title(name)
+                                .icon(bitmapDescriptor);
+                        Marker marker = map.addMarker(markerOptions);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        // Handle any cleanup or placeholder Drawable here
+                    }
+                });
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Bitmap bitmap;
+
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+        }
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void cameraSetup() {
