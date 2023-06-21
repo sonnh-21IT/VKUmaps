@@ -40,6 +40,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
@@ -50,6 +52,8 @@ import com.google.maps.android.data.kml.KmlPoint;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -350,6 +354,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .build();                   // Creates a CameraPosition from the builder
         map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
     }
 
 
