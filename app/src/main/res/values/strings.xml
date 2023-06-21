@@ -18,33 +18,17 @@
     <string name="menu_user_email">vku.udn.vn</string>
 
     <string name="app_name">VKUStudents</string>
-    <string name="nav_map">Bản đồ</string>
-    <string name="nav_vkumaps">Bản đồ VKU</string>
-    <string name="nav_directions">Dẫn đường</string>
-    <string name="nav_area">Tra cứu khu vực</string>
-    <string name="nav_news">Tin tức</string>
-    <string name="nav_admissions">Tuyển sinh</string>
-    <string name="nav_event">Sự kiện</string>
-    <string name="nav_account">Tài khoản</string>
-    <string name="nav_logout">Đăng xuất</string>
-    <string name="nav_setting">Cài đặt</string>
-    <string name="nav_contact">Liên hệ</string>
-    <string name="nav_call"> 0236.6.552.688</string>
-    <string name="nav_mail">daotao@vku.udn.vn</string>
-    <string name="nav_permission">Cài đặt</string>
-    <string name="nav_rating">Đánh giá ứng dụng</string>
-    <string name="nav_learn">Học tập</string>
-    <string name="nav_today">Hôm nay</string>
-    <string name="nav_week">Tuần này</string>
-    <string name="nav_scholarship">Học bổng</string>
-    <string name="nav_r_admissions">Cơ chế xét tuyển</string>
+
     <string name="mail_tt_hl">tthltt@vku.udn.vn</string>
     <string name="tt_hl">Trung tâm Học liệu và Truyền thông</string>
-    <string name="nav_zalo">0236.6.552.688</string>
     <string name="tt_fb">Trung tâm Học liệu và Truyền thông</string>
+
     <string name="pop_copy_link">Sao chép liên kết</string>
     <string name="pop_share">Chia sẻ</string>
     <string name="pop_open_as_default_browser">Mở bằng trình duyệt mặc định</string>
+
+    <string name="pop_normal">Mặc định</string>
+    <string name="pop_satellite">Vệ tinh</string>
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
