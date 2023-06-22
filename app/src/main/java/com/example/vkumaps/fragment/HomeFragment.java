@@ -62,8 +62,6 @@ import com.google.maps.android.data.kml.KmlPoint;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -76,6 +74,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
+    private KmlLayer kmlLayer;
 
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private ActivityResultLauncher<String> resultLauncher;
@@ -117,6 +116,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         map.setMyLocationEnabled(true);
                     }
                 }
+            }
         );
         requestPermission();
 
