@@ -2,280 +2,6 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>VKU</name>
-    <Style id="icon-1531-01579B-nodesc-normal">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2054&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1531-01579B-nodesc-highlight">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2054&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1531-01579B-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1531-01579B-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1531-01579B-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1548-FFD600-nodesc-normal">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2080&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-     <Style id="icon-1548-FFD600-nodesc-highlight">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2080&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1548-FFD600-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1548-FFD600-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1548-FFD600-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1548-01579B-nodesc-normal">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2080&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1548-01579B-nodesc-highlight">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2080&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1548-01579B-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1548-01579B-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1548-01579B-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1559-0288D1-nodesc-normal">
-      <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2099&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1559-0288D1-nodesc-highlight">
-      <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2099&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1559-0288D1-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1559-0288D1-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1559-0288D1-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1559-F57C00-nodesc-normal">
-      <IconStyle>
-        <color>ff007cf5</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2174&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1559-F57C00-nodesc-highlight">
-      <IconStyle>
-        <color>ff007cf5</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2174&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1559-F57C00-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1559-F57C00-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1559-F57C00-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1580-097138-nodesc-normal">
-      <IconStyle>
-        <color>ff387109</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=388e3c&amp;id=2134&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1580-097138-nodesc-highlight">
-      <IconStyle>
-        <color>ff387109</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=388e3c&amp;id=2134&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1580-097138-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1580-097138-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1580-097138-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1644-01579B-normal">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2244&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-    </Style>
-    <Style id="icon-1644-01579B-highlight">
-      <IconStyle>
-        <color>ff9b5701</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=303f9f&amp;id=2244&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-    </Style>
-    <StyleMap id="icon-1644-01579B">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1644-01579B-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1644-01579B-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
     <Style id="icon-1664-673AB7-nodesc-normal">
       <IconStyle>
         <color>ffb73a67</color>
@@ -314,486 +40,6 @@
       <Pair>
         <key>highlight</key>
         <styleUrl>#icon-1664-673AB7-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1698-0288D1-nodesc-normal">
-      <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=42a5f5&amp;id=2336&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1698-0288D1-nodesc-highlight">
-      <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=42a5f5&amp;id=2336&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1698-0288D1-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1698-0288D1-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1698-0288D1-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1708-FFD600-nodesc-normal">
-      <IconStyle>
-        <color>ff00d6ff</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffd600&amp;id=2351&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1708-FFD600-nodesc-highlight">
-      <IconStyle>
-        <color>ff00d6ff</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffd600&amp;id=2351&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1708-FFD600-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1708-FFD600-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1708-FFD600-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1740-F57C00-nodesc-normal">
-      <IconStyle>
-        <color>ff007cf5</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=e65100&amp;id=2007&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1740-F57C00-nodesc-highlight">
-      <IconStyle>
-        <color>ff007cf5</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=e65100&amp;id=2007&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1740-F57C00-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1740-F57C00-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1740-F57C00-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1783-E65100-nodesc-normal">
-      <IconStyle>
-        <color>ff0051e6</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=d32f2f&amp;id=2107&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1783-E65100-nodesc-highlight">
-      <IconStyle>
-        <color>ff0051e6</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=d32f2f&amp;id=2107&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1783-E65100-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1783-E65100-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1783-E65100-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1886-7CB342-nodesc-normal">
-      <IconStyle>
-        <color>ff42b37c</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=7cb342&amp;id=2370&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1886-7CB342-nodesc-highlight">
-      <IconStyle>
-        <color>ff42b37c</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=7cb342&amp;id=2370&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1886-7CB342-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1886-7CB342-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1886-7CB342-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1577-FFD600-nodesc-normal">
-      <IconStyle>
-        <color>ff00d6ff</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffea00&amp;id=2130&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1577-FFD600-nodesc-highlight">
-      <IconStyle>
-        <color>ff00d6ff</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffea00&amp;id=2130&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1577-FFD600-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1577-FFD600-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1577-FFD600-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1890-FFEA00-nodesc-normal">
-      <IconStyle>
-        <color>ff00eaff</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffee58&amp;id=2382&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1890-FFEA00-nodesc-highlight">
-      <IconStyle>
-        <color>ff00eaff</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=ffee58&amp;id=2382&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1890-FFEA00-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1890-FFEA00-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1890-FFEA00-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1589-0097A7-nodesc-normal">
-      <IconStyle>
-        <color>ffa79700</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=42a5f5&amp;id=2152&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1589-0097A7-nodesc-highlight">
-      <IconStyle>
-        <color>ffa79700</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=42a5f5&amp;id=2152&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1589-0097A7-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1589-0097A7-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1589-0097A7-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-     <Style id="icon-1684-0288D1-nodesc-normal">
-      <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=0288d1&amp;id=2311&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1684-0288D1-nodesc-highlight">
-      <IconStyle>
-        <color>ffd18802</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=0288d1&amp;id=2311&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1684-0288D1-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1684-0288D1-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1684-0288D1-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1696-F57C00-nodesc-normal">
-      <IconStyle>
-        <color>ff007cf5</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=f57c00&amp;id=2331&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1696-F57C00-nodesc-highlight">
-      <IconStyle>
-        <color>ff007cf5</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=f57c00&amp;id=2331&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1696-F57C00-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1696-F57C00-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1696-F57C00-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1707-0097A7-nodesc-normal">
-      <IconStyle>
-        <color>ffa79700</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=26a69a&amp;id=2350&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1707-0097A7-nodesc-highlight">
-      <IconStyle>
-        <color>ffa79700</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=26a69a&amp;id=2350&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1707-0097A7-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1707-0097A7-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1707-0097A7-nodesc-highlight</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="icon-1720-7CB342-nodesc-normal">
-      <IconStyle>
-        <color>ff42b37c</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=388e3c&amp;id=2367&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <Style id="icon-1720-7CB342-nodesc-highlight">
-      <IconStyle>
-        <color>ff42b37c</color>
-        <scale>1</scale>
-        <Icon>
-          <href>https://earth.google.com/earth/rpc/cc/icon?color=388e3c&amp;id=2367&amp;scale=4</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <scale>1</scale>
-      </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
-    </Style>
-    <StyleMap id="icon-1720-7CB342-nodesc">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#icon-1720-7CB342-nodesc-normal</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#icon-1720-7CB342-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Style id="poly-01579B-1-199-normal">
@@ -1691,15 +937,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Giảng đường A</name>
-      <styleUrl>#icon-1708-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.252295,15.974686,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Giảng đường B</name>
       <description>Dãy B - Khu K</description>
       <styleUrl>#poly-01579B-1-255</styleUrl>
@@ -1775,15 +1012,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Giảng đường B</name>
-      <styleUrl>#icon-1708-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.253041,15.974678,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Giảng đường C</name>
       <description>Giảng đường C - Khu K</description>
       <styleUrl>#poly-01579B-1-255</styleUrl>
@@ -1813,15 +1041,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Giảng đường C</name>
-      <styleUrl>#icon-1708-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.253042,15.974303,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Giảng đường D</name>
@@ -1863,15 +1082,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Giảng đường D</name>
-      <styleUrl>#icon-1708-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.252141,15.975437,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Giảng đường E</name>
@@ -1931,16 +1141,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Nhà xe Khu K</name>
-      <description>Nhà xe - Khu K</description>
-      <styleUrl>#icon-1644-01579B</styleUrl>
-      <Point>
-        <coordinates>
-          108.253503,15.973932,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Không gian nghiên cứu và sáng tạo</name>
       <styleUrl>#poly-0F9D58-1000-245-nodesc</styleUrl>
       <Polygon>
@@ -1979,15 +1179,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Không gian nghiên cứu và sáng tạo</name>
-      <styleUrl>#icon-1740-F57C00-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2514787,15.9744271,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Tòa nhà hành chính</name>
@@ -2040,15 +1231,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Tòa nhà hành chính</name>
-      <styleUrl>#icon-1548-01579B-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.251776,15.975075,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Hội trường tròn Khu K</name>
       <styleUrl>#poly-673AB7-1000-128-nodesc</styleUrl>
       <Polygon>
@@ -2088,15 +1270,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Hồi trường tròn Khu K</name>
-      <styleUrl>#icon-1531-01579B-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.251455,15.974958,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Đài phun nước hữu nghị Việt - Hàn</name>
@@ -2141,24 +1314,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Đài phun nước hữu nghị Việt - Hàn</name>
-      <styleUrl>#icon-1580-097138-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.252631,15.975075,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Giảng đường E</name>
-      <styleUrl>#icon-1708-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.252857,15.975441,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Ký túc xá VKU</name>
@@ -2207,15 +1362,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Ký túc xá VKU</name>
-      <styleUrl>#icon-1559-0288D1-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.251925,15.973261,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Nhà xe KTX</name>
       <styleUrl>#poly-880E4F-2000-176-nodesc</styleUrl>
       <Polygon>
@@ -2237,15 +1383,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Sân thể thao KTX</name>
-      <styleUrl>#icon-1698-0288D1-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.252518,15.973471,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Sân thể thao KTX</name>
@@ -2294,33 +1431,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Ký túc xá dịch vụ</name>
-      <styleUrl>#icon-1559-F57C00-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2528404,15.9759481,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Cổng vào khu K</name>
-      <styleUrl>#icon-1783-E65100-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2536709,15.975101,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Cổng sau khu K</name>
-      <styleUrl>#icon-1783-E65100-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.251088,15.9748593,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Vườn cây</name>
       <styleUrl>#poly-7CB342-1301-138-nodesc</styleUrl>
       <Polygon>
@@ -2360,15 +1470,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Vườn cây</name>
-      <styleUrl>#icon-1886-7CB342-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2531834,15.9767895,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Trung tâm hoạt động sinh viên</name>
       <styleUrl>#poly-F9A825-1200-201-nodesc</styleUrl>
       <Polygon>
@@ -2385,24 +1486,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Căn tin VKU</name>
-      <styleUrl>#icon-1577-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2517762,15.9757835,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Trung tâm hoạt động sinh viên</name>
-      <styleUrl>#icon-1589-0097A7-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2515938,15.9756854,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Khu V</name>
@@ -2430,33 +1513,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Minimart</name>
-      <styleUrl>#icon-1684-0288D1-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2522039,15.9736143,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Căn tin KTX</name>
-      <styleUrl>#icon-1577-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2521999,15.9732715,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Nhà xe Khu V</name>
-      <styleUrl>#icon-1644-01579B</styleUrl>
-      <Point>
-        <coordinates>
-          108.2500497,15.9726766,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Nhà xe Khu V</name>
@@ -2500,24 +1556,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Cổng vào Khu V</name>
-      <styleUrl>#icon-1783-E65100-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2500617,15.9729164,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Nhà xe</name>
-      <styleUrl>#icon-1644-01579B</styleUrl>
-      <Point>
-        <coordinates>
-          108.253501,15.9755393,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
      <name>Dãy nhà A</name>
@@ -2617,15 +1655,6 @@
        </MultiGeometry>
     </Placemark>
     <Placemark>
-      <name>Dãy nhà A</name>
-      <styleUrl>#icon-1548-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.249398,15.9724211,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Dãy nhà B</name>
       <description>Dãy nhà B- Khu V</description>
       <styleUrl>#poly-01579B-1-199</styleUrl>
@@ -2653,15 +1682,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Dãy nhà B</name>
-      <styleUrl>#icon-1548-FFD600-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.249377,15.9732487,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Sân tennis</name>
       <styleUrl>#poly-FFEA00-2601-150-nodesc</styleUrl>
       <Polygon>
@@ -2680,15 +1700,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Sân tennis</name>
-      <styleUrl>#icon-1707-0097A7-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.251526,15.9764815,0
-        </coordinates>
-      </Point>
     </Placemark>
     <Placemark>
       <name>Sân bóng đá mini</name>
@@ -2777,24 +1788,6 @@
       </Polygon>
     </Placemark>
     <Placemark>
-      <name>Sân bóng đá mini</name>
-      <styleUrl>#icon-1696-F57C00-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.25154,15.9771263,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Sân vận động VKU</name>
-      <styleUrl>#icon-1698-0288D1-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.252393,15.9768337,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Sân bóng chuyền</name>
       <styleUrl>#poly-1A237E-1601-156-nodesc</styleUrl>
       <Polygon>
@@ -2813,33 +1806,6 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
-    <Placemark>
-      <name>Bãi cỏ</name>
-      <styleUrl>#icon-1720-7CB342-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2530612,15.9734614,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Sân bóng chuyền</name>
-      <styleUrl>#icon-1890-FFEA00-nodesc</styleUrl>
-      <Point>
-        <coordinates>
-          108.2520976,15.9759103,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>Nhà xe KTX</name>
-      <styleUrl>#icon-1644-01579B</styleUrl>
-      <Point>
-        <coordinates>
-          108.2520044,15.9726569,0
-        </coordinates>
-      </Point>
     </Placemark>
   </Document>
 </kml>
