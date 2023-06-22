@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
-
+    private KmlLayer kmlLayer;
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private ActivityResultLauncher<String> resultLauncher;
     private SupportMapFragment mapFragment;
@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         map.setMyLocationEnabled(true);
                     }
                 }
+            }
         );
         requestPermission();
 
@@ -341,6 +342,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         kmlLayer = new KmlLayer(map, R.raw.vkustudent, getContext());
         kmlLayer.addLayerToMap();
 
+        /*
         if (kmlLayer.isLayerOnMap()) {
             // Duyệt qua các đối tượng KmlPlacemark trong lớp KML
             for (KmlPlacemark placemark : kmlLayer.getPlacemarks()) {
@@ -356,36 +358,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+         */
 
         //Hiển thị các maker
-        firestore.collection("Khu K")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.getId();
-                                MarkerModel markerModel = document.toObject(MarkerModel.class);
-                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
-                                        markerModel.getIconURL(), name);
-                            }
-                        }
-                    }
-                });
-        firestore.collection("Khu V")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.getId();
-                                MarkerModel markerModel = document.toObject(MarkerModel.class);
-                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
-                                        markerModel.getIconURL(), name);
-                            }
-                        }
-                    }
-                });
+        addMarkerFromFirestore("Khu K");
+        addMarkerFromFirestore("Khu V");
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
@@ -395,6 +372,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         );
         map.setLatLngBoundsForCameraTarget(bounds);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
+    }
+
+    private void addMarkerFromFirestore(String str) {
+        firestore.collection(str)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.getId();
+                                MarkerModel markerModel = document.toObject(MarkerModel.class);
+                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                                        markerModel.getIconURL(), name);
+                            }
+                        }
+                    }
+                });
     }
 
     //add marker
@@ -445,9 +439,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 .build();                   // Creates a CameraPosition from the builder
         map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
     }
-
 
     private BitmapDescriptor bitmapDescriptorFromVectorForMarker(Context context, int vectorId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorId);
