@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:layout_marginHorizontal="15dp"
-            android:layout_marginVertical="200dp"
+            android:layout_marginVertical="150dp"
             app:cardCornerRadius="3dp">
 
             <LinearLayout
@@ -66,6 +66,49 @@
                     android:paddingHorizontal="5dp"
                     android:paddingVertical="10dp"
                     android:src="@drawable/ic_remove"
+                    app:tint="@android:color/darker_gray" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="250dp"
+            app:cardCornerRadius="3dp">
+
+            <ImageView
+                android:id="@+id/rotate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="5dp"
+                android:src="@drawable/ic_rotate"
+                app:tint="@android:color/darker_gray" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="0dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/map_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="5dp"
+                    android:rotation="235"
+                    android:src="@drawable/ic_copy"
                     app:tint="@android:color/darker_gray" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

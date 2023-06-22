@@ -1,16 +1,19 @@
 package com.example.vkumaps.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -21,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -54,7 +58,6 @@ import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
 import com.google.maps.android.data.kml.KmlPoint;
-import com.google.maps.android.data.kml.KmlPolygon;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -67,32 +70,38 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private ChangeFragmentListener listener;
     public static int currentstate;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
-    private ImageView oc,zoomIn,zoomOut;
+    private ImageView oc, zoomIn, zoomOut, rotate,mapType;
     private FrameLayout sheet;
     private static final String TAG = "PERMISSION_TAG";
     private GoogleMap map;
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
+
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private ActivityResultLauncher<String> resultLauncher;
+    private SupportMapFragment mapFragment;
 
     public HomeFragment(ChangeFragmentListener listener) {
         this.listener = listener;
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         oc = rootView.findViewById(R.id.btn);
-        zoomOut=rootView.findViewById(R.id.zoom_out);
-        zoomIn=rootView.findViewById(R.id.zoom_in);
+        zoomOut = rootView.findViewById(R.id.zoom_out);
+        zoomIn = rootView.findViewById(R.id.zoom_in);
+        rotate = rootView.findViewById(R.id.rotate);
         sheet = rootView.findViewById(R.id.sheet);
-        firestore = FirebaseFirestore.getInstance();
 
+        firestore = FirebaseFirestore.getInstance();
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
 
+        mapType = rootView.findViewById(R.id.map_type);
+        mapFragment = SupportMapFragment.newInstance();
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.map_view, mapFragment)
@@ -108,7 +117,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         map.setMyLocationEnabled(true);
                     }
                 }
-            }
         );
         requestPermission();
 
@@ -118,8 +126,42 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+//                                    LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    cameraSetup(latLng, 20, 0);
+                    if (currentstate == 1) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                }
+                return true;
+            }
+        });
         try {
             mapSetup();
+            kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
+                @Override
+                public void onFeatureClick(Feature feature) {
+                    Geometry geometry = feature.getGeometry();
+                    if (geometry != null && geometry.getGeometryType().equals("Polygon")) {
+                        //khi click lên đa giác
+                        if (currentstate == 1) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                    } else if (geometry.getGeometryType().equals("Point")) {
+                        KmlPoint kmlPoint = (KmlPoint) geometry;
+                        LatLng pointCoordinates = kmlPoint.getGeometryObject();
+                        if (currentstate == 0) {
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        }
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(pointCoordinates, 20));
+                    }
+                }
+            });
         } catch (XmlPullParserException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -144,15 +186,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         //chiều cao mặc định
         bottomSheetBehavior.setPeekHeight(100);
         currentstate = 0;
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    // Do something when the bottom sheet is expanded
+                    currentstate = 1;
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // Do something when the bottom sheet is collapsed
+                    currentstate = 0;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // Do something while the bottom sheet is sliding
+            }
+        });
         oc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (currentstate == 0) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    currentstate = 1;
                 } else {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    currentstate = 0;
                 }
             }
         });
@@ -173,20 +231,114 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             }
         });
         map.getUiSettings().setMapToolbarEnabled(false);
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                if (currentstate == 1) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
+        rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentstate == 1) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                // Tạo một đối tượng CameraPosition mới với hướng mong muốn
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(map.getCameraPosition().target) // Giữ nguyên tọa độ trung tâm của camera
+                        .zoom(map.getCameraPosition().zoom) // Giữ nguyên mức zoom của camera
+                        .tilt(0) // Điều chỉnh góc nghiêng của camera
+//                        .tilt(map.getCameraPosition().tilt) // Điều chỉnh góc nghiêng của camera
+                        .bearing(calculateBearing()) // Điều chỉnh hướng của camera
+                        .build();
+                // Sử dụng animateCamera để chuyển đổi hướng của camera
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+        mapType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
+    }
+    private float calculateBearing(){
+        float currentBearing=map.getCameraPosition().bearing;
+        float bearing=0;
+        float temp=1;
+        boolean left=true;
+        if (currentBearing==90||currentBearing==0||currentBearing==180||currentBearing==270){
+            if (currentBearing==360){
+                return 0f;
+            }
+            return currentBearing+90;
+        }else {
+            if (currentBearing>0&&currentBearing<90){
+                temp=1;
+                if (currentBearing<45){
+                    left=false;
+                }else {
+                    left=true;
+                }
+            }else if (currentBearing>90&&currentBearing<180){
+                temp=2;
+                if (currentBearing<135){
+                    left=false;
+                }else {
+                    left=true;
+                }
+            }else if (currentBearing>180&&currentBearing<270){
+                temp=3;
+                if (currentBearing<225){
+                    left=false;
+                }else {
+                    left=true;
+                }
+            }else if (currentBearing>270&&currentBearing<360){
+                temp=4;
+                if (currentBearing<315){
+                    left=false;
+                }else {
+                    left=true;
+                }
+            }
+            if (left){
+                if (temp==1){
+                    bearing=90;
+                }else if (temp==2){
+                    bearing=180;
+                }else if (temp==3){
+                    bearing=270;
+                }else if (temp==4){
+                    bearing=360;
+                }
+            }else {
+                if (temp==1){
+                    bearing=0;
+                }else if (temp==2){
+                    bearing=90;
+                }else if (temp==3){
+                    bearing=180;
+                }else if (temp==4){
+                    bearing=270;
+                }
+            }
+            return bearing;
+        }
     }
 
     private void mapSetup() throws XmlPullParserException, IOException {
-        map.clear();
-        cameraSetup();
+        cameraSetup(VKU_LOCATION, 16.5f, 30);
         //vị trí hiện tại
         if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             map.setMyLocationEnabled(true);
         }
-        //hiển thị maps
-        map.setTrafficEnabled(true);
+        map.setTrafficEnabled(false);
 
         //Vẽ các khu vực lên maps
-        KmlLayer kmlLayer = new KmlLayer(map, R.raw.vkustudent, getContext());
+        kmlLayer = new KmlLayer(map, R.raw.vkustudent, getContext());
         kmlLayer.addLayerToMap();
 
         if (kmlLayer.isLayerOnMap()) {
@@ -284,13 +436,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    private void cameraSetup() {
+    private void cameraSetup(LatLng latLng, float zoom, int tilt) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(VKU_LOCATION)      // Sets the center of the map to Mountain View
-                .zoom(16.5f)                   // Sets the zoom
-                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                .target(latLng)      // Sets the center of the map to Mountain View
+                .zoom(zoom)                   // Sets the zoom
+                .bearing(360)
+                .tilt(tilt)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
-        map.animateCamera(CameraUpdateFactory.zoomTo(16.5f), 1000, null);
+        map.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
@@ -313,7 +466,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             resultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
-
+    private void showPopupMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(requireContext(), v);
+        popupMenu.inflate(R.menu.menu_popup_maptype);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.pop_normal:
+                        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        return true;
+                    case R.id.pop_satellite:
+                        map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
+    }
     @Override
     public void onStop() {
         super.onStop();
