@@ -29,11 +29,14 @@ import com.example.vkumaps.fragment.LoginFragment;
 import com.example.vkumaps.fragment.SearchByAreaFragment;
 import com.example.vkumaps.fragment.WeekScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
+import com.example.vkumaps.listener.SharePlaceListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener, SharePlaceListener {
     private DrawerLayout drawerLayout;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, new HomeFragment(this));
+        transaction.replace(R.id.content_frame, new HomeFragment(this,this));
         transaction.commit();
         currentFragment = FRAGMENT_HOME;
     }
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.menu_main_maps: {
                 if (currentFragment != FRAGMENT_HOME) {
-                    fragment = new HomeFragment(this);
+                    fragment = new HomeFragment(this,this);
 //                    replaceFragment(fragment);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     currentFragment = FRAGMENT_HOME;
@@ -238,5 +241,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onSharePlace(Marker marker) {
+        // Get the place data from the marker
+        String placeName = marker.getTitle();
+        LatLng latLng = marker.getPosition();
+
+        // Create a Uri that contains the place data
+        String uri = "https://www.google.com/maps/place/" + placeName + "/@" + latLng.latitude + "," + latLng.longitude;
+        Uri gmmIntentUri = Uri.parse(uri);
+
+        // Create an Intent to share the place data
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this place: " + uri);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, placeName);
+
+        // Start the share activity
+        startActivity(Intent.createChooser(shareIntent, "Share using"));
     }
 }
