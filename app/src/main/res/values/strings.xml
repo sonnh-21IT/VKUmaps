@@ -41,4 +41,6 @@
         <item>Fri</item>
         <item>Sat</item>
     </string-array>
+    <string name="mapbox_access_token">pk.eyJ1IjoibGVtaW5odGhlIiwiYSI6ImNsajZtaGJnOTBhN2QzZm5xZHZ0dHA3NWcifQ.3O4QWN_9xkzKu69OxYz9Ow</string>
+    <string name="google_map_api_key">AIzaSyDwa1NuAe0hMdlYZ8jOJ2HXtMefnEFe-6E</string>
 </resources>

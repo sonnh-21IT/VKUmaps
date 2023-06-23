@@ -138,13 +138,13 @@
         <styleUrl>#poly-01579B-1-255-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="poly-097138-2001-133-nodesc-normal">
+    <Style id="poly-558B2F-4501-138-nodesc-normal">
       <LineStyle>
-        <color>ff387109</color>
-        <width>2.001</width>
+        <color>ff2f8b55</color>
+        <width>3.501</width>
       </LineStyle>
       <PolyStyle>
-        <color>85387109</color>
+        <color>8a2f8b55</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -152,13 +152,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-097138-2001-133-nodesc-highlight">
+    <Style id="poly-558B2F-4501-138-nodesc-highlight">
       <LineStyle>
-        <color>ff387109</color>
-        <width>3.0015</width>
+        <color>ff2f8b55</color>
+        <width>4.7515</width>
       </LineStyle>
       <PolyStyle>
-        <color>85387109</color>
+        <color>8a2f8b55</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -166,14 +166,14 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-097138-2001-133-nodesc">
+    <StyleMap id="poly-558B2F-4501-138-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-097138-2001-133-nodesc-normal</styleUrl>
+        <styleUrl>#poly-558B2F-4501-138-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-097138-2001-133-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-558B2F-4501-138-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Style id="poly-0F9D58-1000-245-nodesc-normal">
@@ -1701,41 +1701,23 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark>
+     <Placemark>
       <name>Sân bóng đá mini</name>
-      <styleUrl>#poly-097138-2001-133-nodesc</styleUrl>
-      <MultiGeometry>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <tessellate>1</tessellate>
-              <coordinates>
-                108.2515392,15.9772921,0
-                108.2513461,15.9772928,0
-                108.2513487,15.9769305,0
-                108.2515392,15.9769331,0
-                108.2515392,15.9772921,0
-              </coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-        <Polygon>
-          <outerBoundaryIs>
-            <LinearRing>
-              <tessellate>1</tessellate>
-              <coordinates>
-                108.2515392,15.9772921,0
-                108.2515405,15.9769331,0
-                108.2515392,15.9769331,0
-                108.2515392,15.9769318,0
-                108.2517242,15.9769318,0
-                108.2517242,15.9772915,0
-                108.2515392,15.9772921,0
-              </coordinates>
-            </LinearRing>
-          </outerBoundaryIs>
-        </Polygon>
-      </MultiGeometry>
+      <styleUrl>#poly-558B2F-4501-138-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              108.2513461,15.9772928,0
+              108.251347,15.9769331,0
+              108.2517242,15.9769318,0
+              108.2517242,15.9772915,0
+              108.2513461,15.9772928,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
     </Placemark>
     <Placemark>
       <name>Sân vân động VKU</name>
