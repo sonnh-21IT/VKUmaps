@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -64,7 +65,7 @@ import com.mapbox.geojson.Feature;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback, PermissionsListener {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, PermissionsListener , View.OnClickListener {
     private View rootView;
     private ImageView oc, zoomIn, zoomOut, rotate, mapType;
     private MapView mapView;
@@ -83,6 +84,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
     private static final String TAG = "PERMISSION_TAG";
     private ActivityResultLauncher<String> resultLauncher;
     private FirebaseFirestore firestore;
+    private TextView shareBtn,directionBtn;
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
 
     public HomeFragment(ChangeFragmentListener listener) {
@@ -118,6 +120,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
         sheet = rootView.findViewById(R.id.sheet);
         mapView = rootView.findViewById(R.id.map_view);
         mapType = rootView.findViewById(R.id.map_type);
+        shareBtn=rootView.findViewById(R.id.btn_share);
+        directionBtn=rootView.findViewById(R.id.btn_direction);
+
+        shareBtn.setOnClickListener(this);
+        directionBtn.setOnClickListener(this);
+        zoomOut.setOnClickListener(this);
+        zoomIn.setOnClickListener(this);
+        rotate.setOnClickListener(this);
+        mapType.setOnClickListener(this);
+        oc.setOnClickListener(this);
 
         firestore = FirebaseFirestore.getInstance();
     }
@@ -185,51 +197,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
 
     private void uiSettings() {
 //        map.getUiSettings().setZoomControlsEnabled(true);
-        zoomIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mapboxMap.animateCamera(CameraUpdateFactory.zoomIn());
-            }
-        });
-        zoomOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mapboxMap.animateCamera(CameraUpdateFactory.zoomOut());
-            }
-        });
-        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
-            @Override
-            public boolean onMapClick(@NonNull LatLng point) {
-                if (currentstate == 1) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-                return true;
-            }
-        });
-        rotate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentstate == 1) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-                // Tạo một đối tượng CameraPosition mới với hướng mong muốn
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(mapboxMap.getCameraPosition().target) // Giữ nguyên tọa độ trung tâm của camera
-                        .zoom(mapboxMap.getCameraPosition().zoom) // Giữ nguyên mức zoom của camera
-                        .tilt(0) // Điều chỉnh góc nghiêng của camera
-//                        .tilt(map.getCameraPosition().tilt) // Điều chỉnh góc nghiêng của camera
-                        .bearing(calculateBearing()) // Điều chỉnh hướng của camera
-                        .build();
-                // Sử dụng animateCamera để chuyển đổi hướng của camera
-                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
-        mapType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(view);
-            }
-        });
+//        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
+//            @Override
+//            public boolean onMapClick(@NonNull LatLng point) {
+//                if (currentstate == 1) {
+////                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//                }
+//                return true;
+//            }
+//        });
     }
 
     private float calculateBearing(){
@@ -417,16 +393,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
                 // Do something while the bottom sheet is sliding
             }
         });
-        oc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentstate == 0) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-        });
+
     }
 
     @Override
@@ -451,5 +418,58 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int idView=view.getId();
+        switch (idView){
+            case R.id.btn_direction:{
+                Toast.makeText(requireContext(),"direction licked",Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.btn_share:{
+                Toast.makeText(requireContext(),"share licked",Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.zoom_out:{
+                mapboxMap.animateCamera(CameraUpdateFactory.zoomOut());
+                break;
+            }
+            case R.id.zoom_in:{
+                mapboxMap.animateCamera(CameraUpdateFactory.zoomIn());
+                break;
+            }
+            case R.id.rotate:{
+                if (currentstate == 1) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                // Tạo một đối tượng CameraPosition mới với hướng mong muốn
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(mapboxMap.getCameraPosition().target) // Giữ nguyên tọa độ trung tâm của camera
+                        .zoom(mapboxMap.getCameraPosition().zoom) // Giữ nguyên mức zoom của camera
+                        .tilt(0) // Điều chỉnh góc nghiêng của camera
+//                        .tilt(map.getCameraPosition().tilt) // Điều chỉnh góc nghiêng của camera
+                        .bearing(calculateBearing()) // Điều chỉnh hướng của camera
+                        .build();
+                // Sử dụng animateCamera để chuyển đổi hướng của camera
+                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                break;
+            }
+            case R.id.map_type:{
+                showPopupMenu(view);
+                break;
+            }
+            case R.id.btn:{
+                if (currentstate == 0) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                break;
+            }
+            default:
+                break;
+        }
     }
 }
