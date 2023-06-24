@@ -4,6 +4,9 @@
         android:id="@+id/pop_normal"
         android:title="@string/pop_normal" />
     <item
+        android:id="@+id/pop_dark"
+        android:title="@string/pop_dark" />
+    <item
         android:id="@+id/pop_satellite"
         android:title="@string/pop_satellite" />
 </menu>

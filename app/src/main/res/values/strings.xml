@@ -29,6 +29,7 @@
 
     <string name="pop_normal">Mặc định</string>
     <string name="pop_satellite">Vệ tinh</string>
+    <string name="pop_dark">Chế độ tối</string>
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
