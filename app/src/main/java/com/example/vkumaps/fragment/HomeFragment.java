@@ -1,15 +1,19 @@
 package com.example.vkumaps.fragment;
 
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,23 +25,32 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.airbnb.lottie.L;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
+import com.example.vkumaps.models.MarkerModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
@@ -45,8 +58,10 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.geojson.Feature;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, PermissionsListener {
@@ -68,7 +83,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
     private static final String TAG = "PERMISSION_TAG";
     private ActivityResultLauncher<String> resultLauncher;
     private FirebaseFirestore firestore;
-//    public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
+    public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
 
     public HomeFragment(ChangeFragmentListener listener) {
         this.listener = listener;
@@ -82,7 +97,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
         Mapbox.getInstance(getContext(), getString(R.string.mapbox_access_token));
 
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        // Khởi tạo SharedPreferences
 
         locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
@@ -111,26 +125,62 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
     @Override
     public void onMapReady(@NonNull MapboxMap mapbox) {
         mapboxMap = mapbox;
-        mapboxMap.setStyle(Style.TRAFFIC_DAY, new Style.OnStyleLoaded() {
+        mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 //Hiển thị vị trí hiện tại
                 enableLocationComponent(style);
-                //Zoom camera vào vị trí hiện tại
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null) {
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    cameraSetup(latLng, 16, 0);
-                }
+                cameraSetup(VKU_LOCATION, 15.5f);
+
                 if (currentstate == 1) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
-            }
+           }
         });
+        mapSetup();
         uiSettings();
+    }
+
+    private void mapSetup() {
+        mapboxMap.setMaxZoomPreference(23);
+        mapboxMap.setMinZoomPreference(15.5f);
+
+        //Vẽ bản đồ
+
+        //Add marker
+        firestore.collection("Khu K")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.getId();
+                                MarkerModel markerModel = document.toObject(MarkerModel.class);
+                            }
+                        }
+                    }
+                });
+
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(new LatLng(15.971851, 108.248515)) // Điểm góc trái trên
+                .include(new LatLng(15.977745, 108.253451)) // Điểm góc phải dưới
+                .build();
+
+        mapboxMap.setLatLngBoundsForCameraTarget(bounds);
+
+        // Kiểm tra vị trí hiện tại có thuộc phạm vi trên không
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location != null) {
+            LatLng currentLocation= new LatLng(location.getLatitude(), location.getLongitude());
+            if (!bounds.contains(currentLocation)) {
+                // Hiển thị thông báo lên màn hình
+                Toast.makeText(getContext(), "Vị trí hiện tại nằm ngoài phạm vi", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void uiSettings() {
@@ -247,12 +297,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
         }
     }
 
-    private void cameraSetup(LatLng latLng, float zoom, int tilt) {
+    private void cameraSetup(LatLng latLng, float zoom) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng)      // Sets the center of the map to Mountain View
                 .zoom(zoom)                   // Sets the zoom
                 .bearing(360)
-                .tilt(tilt)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
         mapboxMap.animateCamera(CameraUpdateFactory.zoomTo(zoom), 1000, null);
         mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -266,7 +315,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.pop_normal:
-                        mapboxMap.setStyle(Style.TRAFFIC_DAY);
+                        mapboxMap.setStyle(Style.LIGHT);
                         return true;
                     case R.id.pop_satellite:
                         mapboxMap.setStyle(Style.SATELLITE);
