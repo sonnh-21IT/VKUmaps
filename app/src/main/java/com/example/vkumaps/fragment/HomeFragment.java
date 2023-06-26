@@ -67,7 +67,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, PermissionsListener , View.OnClickListener {
     private View rootView;
-    private ImageView oc, zoomIn, zoomOut, rotate, mapType;
+    private ImageView oc, zoomIn, zoomOut, rotate, mapType,myLocation;
     private MapView mapView;
     private FrameLayout sheet;
 
@@ -122,6 +122,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
         mapType = rootView.findViewById(R.id.map_type);
         shareBtn=rootView.findViewById(R.id.btn_share);
         directionBtn=rootView.findViewById(R.id.btn_direction);
+        myLocation=rootView.findViewById(R.id.map_my_location);
 
         shareBtn.setOnClickListener(this);
         directionBtn.setOnClickListener(this);
@@ -130,6 +131,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
         rotate.setOnClickListener(this);
         mapType.setOnClickListener(this);
         oc.setOnClickListener(this);
+        myLocation.setOnClickListener(this);
 
         firestore = FirebaseFirestore.getInstance();
     }
@@ -373,7 +375,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //chiều cao mặc định
-        bottomSheetBehavior.setPeekHeight(100);
+        bottomSheetBehavior.setPeekHeight(0);
         currentstate = 0;
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -466,6 +468,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Permis
                 } else {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
+                break;
+            }
+            case R.id.map_my_location:{
+                // Điều chỉnh camera để hiển thị vị trí của người dùng
+                CameraPosition position = new CameraPosition.Builder()
+                        .target(new LatLng(locationComponent.getLastKnownLocation().getLatitude(),
+                                locationComponent.getLastKnownLocation().getLongitude()))
+                        .zoom(20)
+                        .build();
+                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
                 break;
             }
             default:
