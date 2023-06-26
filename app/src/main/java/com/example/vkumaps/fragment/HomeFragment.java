@@ -138,6 +138,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             map.setMyLocationEnabled(true);
                             // Disable the My Location layer on the map
 //                        map.setMyLocationEnabled(false);
+                            //vị trí hiện tại
                         }
                     }
                 }
@@ -249,6 +250,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 map.animateCamera(CameraUpdateFactory.zoomIn());
             }
         });
+        if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null && allowedArea.contains(new LatLng(location.getLatitude(), location.getLongitude()))) {
+                // The user's current location is within the allowed area
+                map.setMyLocationEnabled(true);
+            } else {
+                // The user's current location is outside the allowed area
+                map.setMyLocationEnabled(false);
+            }
+            map.setMyLocationEnabled(true);
+        }
         zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -353,17 +365,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private void mapSetup() throws XmlPullParserException, IOException {
         cameraSetup(VKU_LOCATION, 16.5f, 30);
-        //vị trí hiện tại
-        if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (location != null && allowedArea.contains(new LatLng(location.getLatitude(), location.getLongitude()))) {
-                // The user's current location is within the allowed area
-                map.setMyLocationEnabled(true);
-            } else {
-                // The user's current location is outside the allowed area
-                map.setMyLocationEnabled(false);
-            }
-        }
+
         map.setTrafficEnabled(false);
 
         //Vẽ các khu vực lên maps
