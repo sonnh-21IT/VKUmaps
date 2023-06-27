@@ -168,20 +168,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         });
         try {
             mapSetup();
-            kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
-                @Override
-                public void onFeatureClick(Feature feature) {
-                    Geometry geometry = feature.getGeometry();
-                    if (geometry != null) {
-                        //khi click lên đa giác
-                        if (currentstate == 1) {
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        }else {
-                            map.animateCamera(CameraUpdateFactory.zoomTo(17));
-                        }
-                    }
-                }
-            });
         } catch (XmlPullParserException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -384,7 +370,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
             @Override
             public void onFeatureClick(Feature feature) {
-
+                Geometry geometry = feature.getGeometry();
+                if (geometry != null) {
+                    //khi click lên đa giác
+                    if (currentstate == 1) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }else {
+                        map.animateCamera(CameraUpdateFactory.zoomTo(17));
+                    }
+                }
             }
         });
 
