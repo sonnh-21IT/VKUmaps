@@ -393,23 +393,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 MarkerModel markerModel = document.toObject(MarkerModel.class);
                                 addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
                                         markerModel.getIconURL(), name);
-                                map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(@NonNull Marker marker) {
-                                        if (marker!=null){
-                                            Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
-                                            cameraSetup(marker.getPosition(),20,0);
-                                            titlePlace.setText(marker.getTitle());
-                                            desPlace.setText(marker.getSnippet());
-                                            shareLocation=marker;
-                                            if (currentstate==0){
-                                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                                            }
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                });
                             }
                         }
                     }
@@ -425,35 +408,48 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
                                         markerModel.getIconURL(), name);
                             }
-                            map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-                                @Override
-                                public void onCameraIdle() {
-                                    // Get the current camera zoom level
-                                    float zoomLevel = map.getCameraPosition().zoom;
-                                    if (zoomLevel < 17) {
-                                        // Hide all markers if the zoom level is less than 12
-                                        for (Marker marker : markerList) {
-                                            marker.setVisible(false);
-                                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                                        }
-                                    } else {
-                                        // Show all markers if the zoom level is 12 or greater
-                                        for (Marker marker : markerList) {
-                                            marker.setVisible(true);
-                                        }
-                                    }
-                                }
-                            });
                         }
                     }
                 });
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                if (marker!=null){
+                    Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
+                    cameraSetup(marker.getPosition(),20,0);
+                    titlePlace.setText(marker.getTitle());
+                    desPlace.setText(marker.getSnippet());
+                    shareLocation=marker;
+                    if (currentstate==0){
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                // Get the current camera zoom level
+                float zoomLevel = map.getCameraPosition().zoom;
+                if (zoomLevel < 17) {
+                    // Hide all markers if the zoom level is less than 12
+                    for (Marker marker : markerList) {
+                        marker.setVisible(false);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                } else {
+                    // Show all markers if the zoom level is 12 or greater
+                    for (Marker marker : markerList) {
+                        marker.setVisible(true);
+                    }
+                }
+            }
+        });
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
-//        LatLngBounds bounds = new LatLngBounds(
-//                new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
-//                new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
-//        );
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
     }
@@ -475,9 +471,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                         Marker marker = map.addMarker(markerOptions);
                         marker.setVisible(false);
                         markerList.add(marker);
-//                        for (Marker markerItem : markerList) {
-//                            markerItem.setVisible(false);
-//                        }
                     }
 
                     @Override
