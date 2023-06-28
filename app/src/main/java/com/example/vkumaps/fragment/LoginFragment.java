@@ -18,7 +18,6 @@ import com.example.vkumaps.listener.ChangeFragmentListener;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.vkumaps.activities.MainActivity;
@@ -27,21 +26,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Objects;
 
 public class LoginFragment extends Fragment {
     LinearLayout login_gg;
     View root;
     private GoogleSignInClient client;
     private ActivityResultLauncher<Intent> signInLauncher;
-    private static final int RC_SIGN_IN = 1234;
-    private ChangeFragmentListener listener;
+    private final ChangeFragmentListener listener;
     public LoginFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
@@ -53,7 +51,7 @@ public class LoginFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_login, container, false);
 
         // Xóa thông tin đăng nhập lưu trữ của phiên trước
-        GoogleSignIn.getClient(getContext(), GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
+        GoogleSignIn.getClient(requireContext(), GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -61,15 +59,12 @@ public class LoginFragment extends Fragment {
                 .requestEmail()
                 .build();
 
-        client = GoogleSignIn.getClient(getContext(), options);
+        client = GoogleSignIn.getClient(requireContext(), options);
 
         login_gg = root.findViewById(R.id.login_gg);
-        login_gg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = client.getSignInIntent();
-                signInLauncher.launch(i);
-            }
+        login_gg.setOnClickListener(view -> {
+            Intent i = client.getSignInIntent();
+            signInLauncher.launch(i);
         });
 
         signInLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -98,16 +93,13 @@ public class LoginFragment extends Fragment {
 
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 FirebaseAuth.getInstance().signInWithCredential(credential)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+                        .addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             } else {
@@ -120,8 +112,8 @@ public class LoginFragment extends Fragment {
                 builder.setPositiveButton("Đồng ý", null);
                 builder.show();
             }
-        } catch (ApiException e) {
-            return;
+        } catch (ApiException ignored) {
+
         }
     }
 

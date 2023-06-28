@@ -1,5 +1,6 @@
 package com.example.vkumaps.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.vkumaps.R;
-import com.example.vkumaps.adapters.SearchByAreaAdapter;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.FeedbackFragment;
@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
     private static final int FRAGMENT_ACCOUNT = 5;
     private static final int FRAGMENT_FEEDBACK = 6;
-
     private int currentFragment = FRAGMENT_HOME;
-    private Toolbar toolbar;
     private FirebaseAuth auth;
     private Fragment fragment;
     @Override
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            findViewById(R.id.menu_user_email).setVisibility(View.VISIBLE);
 //        }
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         currentFragment = FRAGMENT_HOME;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -179,38 +178,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
     }
-
-    private void openEMail() {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"daotao@vku.udn.vn"});
-        startActivity(intent);
-    }
-
-    private void openCall() {
-        String phoneNumber = " 02366552688"; // Số điện thoại cần gọi
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + phoneNumber));
-        startActivity(intent);
-    }
-
-    private void openSettingPermission() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-    }
+//
+//    private void openEMail() {
+//        Intent intent = new Intent(Intent.ACTION_SENDTO);
+//        intent.setData(Uri.parse("mailto:"));
+//        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"daotao@vku.udn.vn"});
+//        startActivity(intent);
+//    }
+//
+//    private void openCall() {
+//        String phoneNumber = " 02366552688"; // Số điện thoại cần gọi
+//        Intent intent = new Intent(Intent.ACTION_DIAL);
+//        intent.setData(Uri.parse("tel:" + phoneNumber));
+//        startActivity(intent);
+//    }
+//
+//    private void openSettingPermission() {
+//        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//        Uri uri = Uri.fromParts("package", getPackageName(), null);
+//        intent.setData(uri);
+//        startActivity(intent);
+//    }
 
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if (HomeFragment.currentstate == 0) {
+            if (HomeFragment.currentState == 0) {
                 super.onBackPressed();
             } else {
                 HomeFragment.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                HomeFragment.currentstate = 0;
+                HomeFragment.currentState = 0;
             }
         }
     }

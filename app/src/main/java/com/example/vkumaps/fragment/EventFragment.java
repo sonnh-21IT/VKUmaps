@@ -1,5 +1,6 @@
 package com.example.vkumaps.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,27 +18,24 @@ import com.example.vkumaps.adapters.NewsAdapter;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.ItemNewsClickListener;
 import com.example.vkumaps.models.News;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventFragment extends Fragment implements ItemNewsClickListener {
-    private FirebaseFirestore firestore;
     private List<News> listNews;
     private NewsAdapter adapter;
-    private ChangeFragmentListener listener;
+    private final ChangeFragmentListener listener;
     private ConstraintLayout loadView;
 
     public EventFragment(ChangeFragmentListener listener) {
         this.listener = listener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,23 +49,20 @@ public class EventFragment extends Fragment implements ItemNewsClickListener {
         rc.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         rc.setLayoutManager(layoutManager);
-        firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore fireStore = FirebaseFirestore.getInstance();
         listNews = new ArrayList<>();
         adapter = new NewsAdapter(listNews, this);
         rc.setAdapter(adapter);
 
-        firestore.collection("newstable").orderBy("created", Query.Direction.DESCENDING)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                News newsModel = document.toObject(News.class);
-                                listNews.add(newsModel);
-                                adapter.notifyDataSetChanged();
-                                loadView.setVisibility(View.GONE);
-                                rc.setVisibility(View.VISIBLE);
-                            }
+        fireStore.collection("newstable").orderBy("created", Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            News newsModel = document.toObject(News.class);
+                            listNews.add(newsModel);
+                            adapter.notifyDataSetChanged();
+                            loadView.setVisibility(View.GONE);
+                            rc.setVisibility(View.VISIBLE);
                         }
                     }
                 });

@@ -18,8 +18,7 @@ import com.example.vkumaps.activities.MainActivity;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 
 public class FeedbackFragment extends Fragment {
-    private ChangeFragmentListener listener;
-    private float userRate = 0;
+    private final ChangeFragmentListener listener;
     public FeedbackFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
@@ -33,52 +32,42 @@ public class FeedbackFragment extends Fragment {
         final AppCompatButton rateLaterBtn = rootView.findViewById(R.id.rateLaterBtn);
         final RatingBar ratingBar = rootView.findViewById(R.id.ratingBar);
         final ImageView ratingImage = rootView.findViewById(R.id.ratingImage);
-        rateNowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //save database...
-
-                //success notifications
-
-                Intent intent = new Intent(requireContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+        rateNowBtn.setOnClickListener(view -> {
+            //save database...
+            //success notifications
+            Intent intent = new Intent(requireContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         });
 
-        rateLaterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finishAndRemoveTask();
-            }
+        rateLaterBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(requireContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         });
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, b) -> {
 
-                if (rating <= 1) {
-                    ratingImage.setImageResource(R.drawable.one_star);
-                }
-                else if (rating <= 2) {
-                    ratingImage.setImageResource(R.drawable.two_star);
-                }
-                else if (rating <= 3) {
-                    ratingImage.setImageResource(R.drawable.three_star);
-                }
-                else if (rating <= 4) {
-                    ratingImage.setImageResource(R.drawable.four_star);
-                }
-                else if (rating <= 5){
-                    ratingImage.setImageResource(R.drawable.five_star);
-                }
-
-                //animate emoji image
-                animateImage(ratingImage);
-
-                //selected rating by user
-                userRate = rating;
+            if (rating <= 1) {
+                ratingImage.setImageResource(R.drawable.one_star);
             }
+            else if (rating <= 2) {
+                ratingImage.setImageResource(R.drawable.two_star);
+            }
+            else if (rating <= 3) {
+                ratingImage.setImageResource(R.drawable.three_star);
+            }
+            else if (rating <= 4) {
+                ratingImage.setImageResource(R.drawable.four_star);
+            }
+            else if (rating <= 5){
+                ratingImage.setImageResource(R.drawable.five_star);
+            }
+
+            //animate emoji image
+            animateImage(ratingImage);
+
+            //selected rating by user
         });
         return rootView;
     }

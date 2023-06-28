@@ -13,7 +13,7 @@ import com.example.vkumaps.R;
 import java.util.List;
 
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHolder> {
-    private List<String> mList;
+    private final List<String> mList;
 
     public NestedAdapter(List<String> mList) {
         this.mList = mList;
@@ -36,9 +36,9 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
         return mList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView mTv;
+        private final TextView mTv;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mTv = itemView.findViewById(R.id.nestedItemTv);

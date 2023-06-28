@@ -1,5 +1,6 @@
 package com.example.vkumaps.activities;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -26,7 +26,9 @@ import androidx.databinding.DataBindingUtil;
 import com.example.vkumaps.R;
 import com.example.vkumaps.databinding.ActivityBrowserBinding;
 
-public class BrowserActivity extends AppCompatActivity {
+import java.util.Objects;
+
+public class BrowserActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     private ActivityBrowserBinding binding;
     private Toolbar toolbar;
 
@@ -34,6 +36,7 @@ public class BrowserActivity extends AppCompatActivity {
     private static final String DOMAIN = "vku.udn.vn";
     private String url = "";
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,7 @@ public class BrowserActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setTitle("");
         if (intent.hasExtra("url")) {
@@ -93,6 +96,7 @@ public class BrowserActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -104,42 +108,7 @@ public class BrowserActivity extends AppCompatActivity {
                 PopupMenu popupMenu = new PopupMenu(this, toolbar.findViewById(R.id.toolbar_more));
                 popupMenu.getMenuInflater().inflate(R.menu.menu_popup_item, popupMenu.getMenu());
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int itemId = item.getItemId();
-                        if (itemId == R.id.po_copy_link) {
-                            // Lấy nội dung cần copy
-                            String textToCopy = url;
-
-                            // Khởi tạo ClipboardManager từ context
-                            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-
-                            // Tạo ClipData để chứa nội dung cần copy
-                            ClipData clipData = ClipData.newPlainText("label", textToCopy);
-
-                            // Sao chép ClipData vào clipboard
-                            clipboardManager.setPrimaryClip(clipData);
-
-                            return true;
-                        }
-                        if (itemId == R.id.po_open_as_default_browser) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                            startActivity(intent);
-                            return true;
-                        }
-                        if (itemId == R.id.po_share) {
-                            Intent intent = new Intent(Intent.ACTION_SEND);
-                            intent.setType("text/plain");
-                            String body = "Chia sẻ";
-                            String sub = url;
-                            intent.putExtra(Intent.EXTRA_TEXT, body);
-                            intent.putExtra(Intent.EXTRA_TEXT, sub);
-                            startActivity(Intent.createChooser(intent, "share using"));
-                        }
-                        return false;
-                    }
-                });
+                popupMenu.setOnMenuItemClickListener(this);
 
                 popupMenu.show();
                 return true;
@@ -187,5 +156,40 @@ public class BrowserActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.po_copy_link) {
+            // Lấy nội dung cần copy
+            String textToCopy = url;
+
+            // Khởi tạo ClipboardManager từ context
+            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+            // Tạo ClipData để chứa nội dung cần copy
+            ClipData clipData = ClipData.newPlainText("label", textToCopy);
+
+            // Sao chép ClipData vào clipboard
+            clipboardManager.setPrimaryClip(clipData);
+
+            return true;
+        }
+        if (itemId == R.id.po_open_as_default_browser) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        }
+        if (itemId == R.id.po_share) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String body = "Chia sẻ";
+            String sub = url;
+            intent.putExtra(Intent.EXTRA_TEXT, body);
+            intent.putExtra(Intent.EXTRA_TEXT, sub);
+            startActivity(Intent.createChooser(intent, "share using"));
+        }
+        return false;
     }
 }
