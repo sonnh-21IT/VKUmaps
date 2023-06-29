@@ -59,6 +59,7 @@ public class SearchByAreaFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String name = document.getId();
+                                String iconUrl = document.get("icon").toString();
                                 firestore.collection("Area").document(name).collection("contains").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -69,7 +70,7 @@ public class SearchByAreaFragment extends Fragment {
                                             }
 
                                             // Thêm DataModel vào danh sách mList
-                                            mList.add(new DataModel(nestedList1, name));
+                                            mList.add(new DataModel(nestedList1, name, iconUrl));
                                             Collections.sort(mList);
                                             if (!mList.isEmpty()) {
                                                 // Cập nhật adapter và hiển thị danh sách
