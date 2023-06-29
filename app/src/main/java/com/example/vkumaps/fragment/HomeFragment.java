@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView titlePlace;
+    private ImageView imgPlace;
     private TextView desPlace;
     private FrameLayout sheet;
     private GoogleMap map;
@@ -124,9 +125,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         ImageView zoomIn = rootView.findViewById(R.id.zoom_in);
         ImageView rotate = rootView.findViewById(R.id.rotate);
         sheet = rootView.findViewById(R.id.sheet);
-        ImageView imgPlace = rootView.findViewById(R.id.img_place);
+        imgPlace = rootView.findViewById(R.id.img_place);
         TextView directionBtn = rootView.findViewById(R.id.btn_direction);
-        desPlace=rootView.findViewById(R.id.des_place);
         titlePlace=rootView.findViewById(R.id.title_place);
         TextView shareBtn = rootView.findViewById(R.id.btn_share);
         ImageView mapType = rootView.findViewById(R.id.map_type);
@@ -285,12 +285,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                             String name = document.getId();
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
                             addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
-                                    markerModel.getIconURL(), name);
+                                    markerModel.getIconURL(), name, markerModel.getImgURL());
                             map.setOnMarkerClickListener(marker -> {
-                                Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
                                 cameraSetup(marker.getPosition(),20,0);
                                 titlePlace.setText(marker.getTitle());
-                                desPlace.setText(marker.getSnippet());
+//                                desPlace.setText(marker.getSnippet());
+                                Glide.with(getContext()).load(marker.getSnippet()).into(imgPlace);
                                 shareLocation=marker;
                                 if (currentState==0){
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -326,9 +327,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     }
 
     //add marker
-    private void addMarker(LatLng latMarker, String imageUrl, String name) {
+    private void addMarker(LatLng latMarker, String iconUrl, String name, String imgUrl) {
         Glide.with(this)
-                .load(imageUrl)
+                .load(iconUrl)
                 .into(new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable drawable, @Nullable Transition<? super Drawable> transition) {
@@ -338,6 +339,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         MarkerOptions markerOptions = new MarkerOptions()
                                 .position(latMarker)
                                 .title(name)
+                                .snippet(imgUrl)
                                 .icon(bitmapDescriptor);
                         Marker marker = map.addMarker(markerOptions);
                         assert marker != null;
