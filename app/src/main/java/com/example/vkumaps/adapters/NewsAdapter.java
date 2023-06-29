@@ -1,7 +1,7 @@
 package com.example.vkumaps.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,14 +12,12 @@ import com.example.vkumaps.databinding.ItemNewsBinding;
 import com.example.vkumaps.listener.ItemNewsClickListener;
 import com.example.vkumaps.models.News;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
-    private List<News> list;
-    private ItemNewsClickListener listener;
+    private final List<News> list;
+    private final ItemNewsClickListener listener;
     public NewsAdapter(List<News> list,ItemNewsClickListener listener){
         this.list=list;
         this.listener=listener;
@@ -35,16 +33,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         News news = list.get(position);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = formatter.format(news.getCreated());
         holder.binding.title.setText(news.getTitle());
         holder.binding.date.setText(formattedDate);
-        holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onItemClick(news);
-            }
-        });
+        holder.binding.getRoot().setOnClickListener(view -> listener.onItemClick(news));
         Glide.with(holder.itemView).load(list.get(position).getImg()).into(holder.binding.imgNews);
     }
 
@@ -53,8 +46,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
         return list.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        private ItemNewsBinding binding;
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        private final ItemNewsBinding binding;
 
         public MyViewHolder(ItemNewsBinding binding) {
             super(binding.getRoot());

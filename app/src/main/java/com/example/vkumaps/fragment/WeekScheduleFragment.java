@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class WeekScheduleFragment extends Fragment {
-    private ChangeFragmentListener listener;
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final ChangeFragmentListener listener;
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public WeekScheduleFragment(ChangeFragmentListener listener) {
         this.listener = listener;
     }

@@ -20,10 +20,9 @@ import com.example.vkumaps.models.DataModel;
 import java.util.List;
 
 public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapter.MyViewHolder> {
-    private List<DataModel> mList;
+    private final List<DataModel> mList;
     private List<String> list;
 
-    private SearchByAreaAdapter.MyViewHolder mLastViewHolder;
     public SearchByAreaAdapter(List<DataModel> mList) {
         this.mList = mList;
     }
@@ -56,13 +55,10 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         holder.nestedRecyclerView.setHasFixedSize(true);
         NestedAdapter adapter = new NestedAdapter(list);
         holder.nestedRecyclerView.setAdapter(adapter);
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                list = model.getNestedList();
-                notifyItemChanged(holder.getAdapterPosition());
-                model.setExpandable(!model.isExpandable());
-            }
+        holder.linearLayout.setOnClickListener(v -> {
+            list = model.getNestedList();
+            notifyItemChanged(holder.getAdapterPosition());
+            model.setExpandable(!model.isExpandable());
         });
     }
 
@@ -71,11 +67,13 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         return mList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout linearLayout, expanderLinearLayout;
-        private TextView textView;
-        private ImageView icon, img;
-        private RecyclerView nestedRecyclerView;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        private final LinearLayout linearLayout;
+        private final LinearLayout expanderLinearLayout;
+        private final TextView textView;
+//        private ImageView icon;
+        private final ImageView img;
+        private final RecyclerView nestedRecyclerView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

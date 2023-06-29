@@ -11,7 +11,7 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 
 public class AdmissionsFragment extends Fragment {
-    private ChangeFragmentListener listener;
+    private final ChangeFragmentListener listener;
     public AdmissionsFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }

@@ -18,10 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchByAreaFragment extends Fragment {
-    private ChangeFragmentListener listener;
-    private RecyclerView recyclerView;
-    private List<DataModel> mList;
-    private SearchByAreaAdapter adapter;
+    private final ChangeFragmentListener listener;
+
     public SearchByAreaFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
@@ -31,11 +29,11 @@ public class SearchByAreaFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_search_by_area, container, false);
         listener.changeTitle("Tra cứu khu vực");
-        recyclerView = view.findViewById(R.id.rc_main);
+        RecyclerView recyclerView = view.findViewById(R.id.rc_main);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        mList = new ArrayList<>();
+        List<DataModel> mList = new ArrayList<>();
         //list1
         List<String> nestedList1 = new ArrayList<>();
         nestedList1.add("Jams and Honey");
@@ -116,7 +114,7 @@ public class SearchByAreaFragment extends Fragment {
         mList.add(new DataModel(nestedList6,"Baby Care"));
         mList.add(new DataModel(nestedList7 ,"Personal Care"));
 
-        adapter = new SearchByAreaAdapter(mList);
+        SearchByAreaAdapter adapter = new SearchByAreaAdapter(mList);
         recyclerView.setAdapter(adapter);
         return view;
     }

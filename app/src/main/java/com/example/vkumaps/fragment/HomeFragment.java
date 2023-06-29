@@ -3,7 +3,6 @@ package com.example.vkumaps.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,16 +10,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,17 +48,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
-import com.google.maps.android.data.kml.KmlPoint;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -73,29 +62,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback {
-    private ChangeFragmentListener listener;
-    private SharePlaceListener sharePlaceListener;
-    public static int currentstate;
+public class HomeFragment extends Fragment implements OnMapReadyCallback , View.OnClickListener , GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener ,GoogleMap.OnMyLocationButtonClickListener {
+    private final ChangeFragmentListener listener;
+    private final SharePlaceListener sharePlaceListener;
+    public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
-    private ImageView oc, zoomIn, zoomOut, rotate, mapType,imgPlace;
-    private TextView shareBtn,directionBtn,titlePlace,desPlace;
+    private TextView titlePlace;
+    private TextView desPlace;
     private FrameLayout sheet;
-    private static final String TAG = "PERMISSION_TAG";
     private GoogleMap map;
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
     private KmlLayer kmlLayer;
-    private List<Marker> markerList=new ArrayList<>();
+    private final List<Marker> markerList=new ArrayList<>();
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
     );
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private ActivityResultLauncher<String> resultLauncher;
-    private SupportMapFragment mapFragment;
     private Marker shareLocation;
-
+    private View rootView;
     public HomeFragment(ChangeFragmentListener listener,SharePlaceListener sharePlaceListener) {
         this.listener = listener;
         this.sharePlaceListener=sharePlaceListener;
@@ -106,66 +93,57 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        oc = rootView.findViewById(R.id.btn);
-        zoomOut = rootView.findViewById(R.id.zoom_out);
-        zoomIn = rootView.findViewById(R.id.zoom_in);
-        rotate = rootView.findViewById(R.id.rotate);
-        sheet = rootView.findViewById(R.id.sheet);
-        imgPlace = rootView.findViewById(R.id.img_place);
-        directionBtn=rootView.findViewById(R.id.btn_direction);
-        desPlace=rootView.findViewById(R.id.des_place);
-        titlePlace=rootView.findViewById(R.id.title_place);
-        shareBtn=rootView.findViewById(R.id.btn_share);
-
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        initializeViews();
         firestore = FirebaseFirestore.getInstance();
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-
-        mapType = rootView.findViewById(R.id.map_type);
-        mapFragment = SupportMapFragment.newInstance();
-        getActivity().getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.map_view, mapFragment)
                 .commit();
         mapFragment.getMapAsync(this);
-        locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
 
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
                     if (isGranted) {
-                        if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                             map.setMyLocationEnabled(true);
-                            // Disable the My Location layer on the map
-//                        map.setMyLocationEnabled(false);
-                            //vị trí hiện tại
                         }
                     }
                 }
         );
         requestPermission();
-
         return rootView;
     }
+    private void initializeViews() {
+        ImageView oc = rootView.findViewById(R.id.btn);
+        ImageView zoomOut = rootView.findViewById(R.id.zoom_out);
+        ImageView zoomIn = rootView.findViewById(R.id.zoom_in);
+        ImageView rotate = rootView.findViewById(R.id.rotate);
+        sheet = rootView.findViewById(R.id.sheet);
+        ImageView imgPlace = rootView.findViewById(R.id.img_place);
+        TextView directionBtn = rootView.findViewById(R.id.btn_direction);
+        desPlace=rootView.findViewById(R.id.des_place);
+        titlePlace=rootView.findViewById(R.id.title_place);
+        TextView shareBtn = rootView.findViewById(R.id.btn_share);
+        ImageView mapType = rootView.findViewById(R.id.map_type);
 
+        shareBtn.setOnClickListener(this);
+        directionBtn.setOnClickListener(this);
+        zoomOut.setOnClickListener(this);
+        zoomIn.setOnClickListener(this);
+        rotate.setOnClickListener(this);
+        mapType.setOnClickListener(this);
+        oc.setOnClickListener(this);
+
+        firestore = FirebaseFirestore.getInstance();
+    }
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-//                                    LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    cameraSetup(latLng, 20, 0);
-                    if (currentstate == 1) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                }
-                return true;
-            }
-        });
+        map.setOnMyLocationButtonClickListener(this);
         try {
             mapSetup();
         } catch (XmlPullParserException e) {
@@ -187,107 +165,39 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         listener.changeTitle("Bản đồ");
         //bottom sheet
         bottomSheetBehavior = BottomSheetBehavior.from(sheet);
-
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //chiều cao mặc định
         bottomSheetBehavior.setPeekHeight(0);
-        currentstate = 0;
-
+        currentState = 0;
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     // Do something when the bottom sheet is expanded
-                    currentstate = 1;
+                    currentState = 1;
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     // Do something when the bottom sheet is collapsed
-                    currentstate = 0;
+                    currentState = 0;
                 }
             }
-
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 // Do something while the bottom sheet is sliding
             }
         });
-        oc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentstate == 0) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-        });
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sharePlaceListener.onSharePlace(shareLocation);
-            }
-        });
     }
 
     private void uiSettings() {
-//        map.getUiSettings().setZoomControlsEnabled(true);
-        zoomIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.animateCamera(CameraUpdateFactory.zoomIn());
-            }
-        });
-        if (!(ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (location != null && allowedArea.contains(new LatLng(location.getLatitude(), location.getLongitude()))) {
-                // The user's current location is within the allowed area
-                map.setMyLocationEnabled(true);
-            } else {
-                // The user's current location is outside the allowed area
-                map.setMyLocationEnabled(false);
-            }
-            map.setMyLocationEnabled(true);
+            map.setMyLocationEnabled(location != null && allowedArea.contains(new LatLng(location.getLatitude(), location.getLongitude())));
         }
-        zoomOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.animateCamera(CameraUpdateFactory.zoomOut());
-            }
-        });
         map.getUiSettings().setMapToolbarEnabled(false);
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull LatLng latLng) {
-                if (currentstate == 1) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-        });
-        rotate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Tạo một đối tượng CameraPosition mới với hướng mong muốn
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(map.getCameraPosition().target) // Giữ nguyên tọa độ trung tâm của camera
-                        .zoom(map.getCameraPosition().zoom) // Giữ nguyên mức zoom của camera
-                        .tilt(0) // Điều chỉnh góc nghiêng của camera
-//                        .tilt(map.getCameraPosition().tilt) // Điều chỉnh góc nghiêng của camera
-                        .bearing(calculateBearing()) // Điều chỉnh hướng của camera
-                        .build();
-                // Sử dụng animateCamera để chuyển đổi hướng của camera
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
-        mapType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(view);
-            }
-        });
+        map.setOnMapClickListener(this);
     }
-
     private float calculateBearing() {
         float currentBearing = map.getCameraPosition().bearing;
-        float bearing = 0;
+        float bearing;
         float temp = 1;
         boolean left = true;
         if (currentBearing == 360) {
@@ -296,33 +206,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             return currentBearing + 90;
         } else {
             if (currentBearing > 0 && currentBearing < 90) {
-                temp = 1;
-                if (currentBearing < 45) {
-                    left = false;
-                } else {
-                    left = true;
-                }
+                left = !(currentBearing < 45);
             } else if (currentBearing > 90 && currentBearing < 180) {
                 temp = 2;
-                if (currentBearing < 135) {
-                    left = false;
-                } else {
-                    left = true;
-                }
+                left = !(currentBearing < 135);
             } else if (currentBearing > 180 && currentBearing < 270) {
                 temp = 3;
-                if (currentBearing < 225) {
-                    left = false;
-                } else {
-                    left = true;
-                }
+                left = !(currentBearing < 225);
             } else if (currentBearing > 270 && currentBearing < 360) {
                 temp = 4;
-                if (currentBearing < 315) {
-                    left = false;
-                } else {
-                    left = true;
-                }
+                left = !(currentBearing < 315);
             }
             if (left) {
                 if (temp == 1) {
@@ -331,7 +224,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     bearing = 180;
                 } else if (temp == 3) {
                     bearing = 270;
-                } else if (temp == 4) {
+                } else {
                     bearing = 360;
                 }
             } else {
@@ -341,7 +234,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                     bearing = 90;
                 } else if (temp == 3) {
                     bearing = 180;
-                } else if (temp == 4) {
+                } else {
                     bearing = 270;
                 }
             }
@@ -349,13 +242,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     private void mapSetup() throws XmlPullParserException, IOException {
         cameraSetup(VKU_LOCATION, 16.5f, 30);
 
         map.setTrafficEnabled(false);
 
         //Vẽ các khu vực lên maps
-        kmlLayer = new KmlLayer(map, R.raw.vkustudent, getContext());
+        kmlLayer = new KmlLayer(map, R.raw.vkustudent, requireContext());
         kmlLayer.addLayerToMap();
 
         if (kmlLayer.isLayerOnMap()) {
@@ -384,67 +278,52 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
         //Hiển thị các maker
         firestore.collection("Khu K")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.getId();
-                                MarkerModel markerModel = document.toObject(MarkerModel.class);
-                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
-                                        markerModel.getIconURL(), name);
-                                map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(@NonNull Marker marker) {
-                                        if (marker!=null){
-                                            Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
-                                            cameraSetup(marker.getPosition(),20,0);
-                                            titlePlace.setText(marker.getTitle());
-                                            desPlace.setText(marker.getSnippet());
-                                            shareLocation=marker;
-                                            if (currentstate==0){
-                                                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                                            }
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                });
-                            }
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getId();
+                            MarkerModel markerModel = document.toObject(MarkerModel.class);
+                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                                    markerModel.getIconURL(), name);
+                            map.setOnMarkerClickListener(marker -> {
+                                Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
+                                cameraSetup(marker.getPosition(),20,0);
+                                titlePlace.setText(marker.getTitle());
+                                desPlace.setText(marker.getSnippet());
+                                shareLocation=marker;
+                                if (currentState==0){
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                                }
+                                return true;
+                            });
                         }
                     }
                 });
         firestore.collection("Khu V")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.getId();
-                                MarkerModel markerModel = document.toObject(MarkerModel.class);
-                                addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
-                                        markerModel.getIconURL(), name);
-                            }
-                            map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-                                @Override
-                                public void onCameraIdle() {
-                                    // Get the current camera zoom level
-                                    float zoomLevel = map.getCameraPosition().zoom;
-                                    if (zoomLevel < 17) {
-                                        // Hide all markers if the zoom level is less than 12
-                                        for (Marker marker : markerList) {
-                                            marker.setVisible(false);
-                                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                                        }
-                                    } else {
-                                        // Show all markers if the zoom level is 12 or greater
-                                        for (Marker marker : markerList) {
-                                            marker.setVisible(true);
-                                        }
-                                    }
-                                }
-                            });
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getId();
+                            MarkerModel markerModel = document.toObject(MarkerModel.class);
+                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                                    markerModel.getIconURL(), name);
                         }
+                        map.setOnCameraIdleListener(() -> {
+                            // Get the current camera zoom level
+                            float zoomLevel = map.getCameraPosition().zoom;
+                            if (zoomLevel < 17) {
+                                // Hide all markers if the zoom level is less than 12
+                                for (Marker marker : markerList) {
+                                    marker.setVisible(false);
+                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                }
+                            } else {
+                                // Show all markers if the zoom level is 12 or greater
+                                for (Marker marker : markerList) {
+                                    marker.setVisible(true);
+                                }
+                            }
+                        });
                     }
                 });
 
@@ -469,6 +348,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                                 .title(name)
                                 .icon(bitmapDescriptor);
                         Marker marker = map.addMarker(markerOptions);
+                        assert marker != null;
                         marker.setVisible(false);
                         markerList.add(marker);
 //                        for (Marker markerItem : markerList) {
@@ -509,20 +389,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-
-    private BitmapDescriptor bitmapDescriptorFromVectorForMarker(Context context, int vectorId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
     private void requestPermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return;
-        }
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             resultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
@@ -531,21 +398,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     private void showPopupMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(requireContext(), v);
         popupMenu.inflate(R.menu.menu_popup_maptype);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.pop_normal:
-                        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        return true;
-                    case R.id.pop_satellite:
-                        map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+        popupMenu.setOnMenuItemClickListener(this);
         popupMenu.show();
     }
     @Override
@@ -556,5 +409,83 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn:{
+                if (currentState == 0) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                break;
+            }
+            case R.id.btn_share:{
+                sharePlaceListener.onSharePlace(shareLocation);
+                break;
+            }
+            case R.id.zoom_in:{
+                map.animateCamera(CameraUpdateFactory.zoomIn());
+                break;
+            }
+            case R.id.zoom_out:{
+                map.animateCamera(CameraUpdateFactory.zoomOut());
+                break;
+            }
+            case R.id.rotate:{
+                // Tạo một đối tượng CameraPosition mới với hướng mong muốn
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(map.getCameraPosition().target) // Giữ nguyên tọa độ trung tâm của camera
+                        .zoom(map.getCameraPosition().zoom) // Giữ nguyên mức zoom của camera
+                        .tilt(0) // Điều chỉnh góc nghiêng của camera
+//                        .tilt(map.getCameraPosition().tilt) // Điều chỉnh góc nghiêng của camera
+                        .bearing(calculateBearing()) // Điều chỉnh hướng của camera
+                        .build();
+                // Sử dụng animateCamera để chuyển đổi hướng của camera
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                break;
+            }
+            case R.id.map_type:{
+                showPopupMenu(view);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        if (currentState == 1) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.pop_normal:
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                return true;
+            case R.id.pop_satellite:
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                return true;
+            default:
+                return false;
+        }
+    }
+    @Override
+    public boolean onMyLocationButtonClick() {
+        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            cameraSetup(latLng, 20, 0);
+            if (currentState == 1) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }
+        return true;
     }
 }
