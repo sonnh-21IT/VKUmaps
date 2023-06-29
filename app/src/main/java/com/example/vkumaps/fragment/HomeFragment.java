@@ -314,6 +314,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                                 }
                             });
                         }
+                    } else {
+                        Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                     }
                 });
 

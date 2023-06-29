@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.vkumaps.R;
 import com.example.vkumaps.models.DataModel;
 
@@ -44,6 +45,7 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         boolean isExpandable = model.isExpandable();
 
         holder.expanderLinearLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+        Glide.with(holder.itemView.getContext()).load(model.getIconUrl()).into(holder.icon);
         if (isExpandable) {
             holder.img.startAnimation(animation(-90));
             holder.img.setRotation(180f);
@@ -71,7 +73,7 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         private final LinearLayout linearLayout;
         private final LinearLayout expanderLinearLayout;
         private final TextView textView;
-//        private ImageView icon;
+        private ImageView icon;
         private final ImageView img;
         private final RecyclerView nestedRecyclerView;
 
@@ -81,6 +83,7 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
             expanderLinearLayout = itemView.findViewById(R.id.expandable_layout);
             textView = itemView.findViewById(R.id.tv);
             img = itemView.findViewById(R.id.img);
+            icon = itemView.findViewById(R.id.item_img);
             nestedRecyclerView = itemView.findViewById(R.id.child_rv);
         }
     }
