@@ -146,18 +146,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         map.setOnMyLocationButtonClickListener(this);
         try {
             mapSetup();
-            kmlLayer.setOnFeatureClickListener(feature -> {
-                Geometry geometry = feature.getGeometry();
-                if (geometry != null) {
-                    //khi click lên đa giác
-                    if (currentState == 1) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }else {
-                        map.animateCamera(CameraUpdateFactory.zoomTo(17));
-                    }
-                }
-            });
-        } catch (XmlPullParserException | IOException e) {
+        } catch (XmlPullParserException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         uiSettings();
@@ -269,6 +260,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         } else {
             Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
         }
+
+        kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
+            @Override
+            public void onFeatureClick(Feature feature) {
+                Geometry geometry = feature.getGeometry();
+                if (geometry != null) {
+                    //khi click lên đa giác
+                    if (currentstate == 1) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }else {
+                        map.animateCamera(CameraUpdateFactory.zoomTo(17));
+                    }
+                }
+            }
+        });
+
         //Hiển thị các maker
         firestore.collection("Khu K")
                 .get().addOnCompleteListener(task -> {
@@ -322,10 +329,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
-//        LatLngBounds bounds = new LatLngBounds(
-//                new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
-//                new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
-//        );
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
     }
