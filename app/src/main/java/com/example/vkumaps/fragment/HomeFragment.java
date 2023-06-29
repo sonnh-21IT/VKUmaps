@@ -147,9 +147,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         map.setOnMyLocationButtonClickListener(this);
         try {
             mapSetup();
-        } catch (XmlPullParserException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+            kmlLayer.setOnFeatureClickListener(feature -> {
+                Geometry geometry = feature.getGeometry();
+                if (geometry != null) {
+                    //khi click lên đa giác
+                    if (currentState == 1) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }else {
+                        map.animateCamera(CameraUpdateFactory.zoomTo(17));
+                    }
+                }
+            });
+        } catch (XmlPullParserException | IOException e) {
             throw new RuntimeException(e);
         }
         uiSettings();
@@ -261,7 +270,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         } else {
             Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
         }
-
+      
         kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
             @Override
             public void onFeatureClick(Feature feature) {
@@ -284,8 +293,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String name = document.getId();
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
-                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                            addMarker(new LatLng(markerModel.getGeoPoint().getLatitude(), markerModel.getGeoPoint().getLongitude()),
                                     markerModel.getIconURL(), name);
+                          
                             map.setOnMarkerClickListener(marker -> {
                                 Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
                                 cameraSetup(marker.getPosition(),20,0);
@@ -321,6 +331,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
+//        LatLngBounds bounds = new LatLngBounds(
+//                new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
+//                new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
+//        );
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
     }
