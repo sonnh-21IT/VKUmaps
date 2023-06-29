@@ -70,7 +70,7 @@
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:lines="1"
-                            android:text="Hội trường trong khu k"
+                            android:text="Hội trường tròn khu k"
                             android:textColor="@color/black"
                             android:textSize="16dp"
                             android:textStyle="bold" />
@@ -82,7 +82,7 @@
                             android:layout_weight="2"
                             android:ellipsize="end"
                             android:lines="2"
-                            android:text="Hội trường trong khu k"
+                            android:text="Hội trường tròn khu k"
                             android:textColor="@android:color/darker_gray"
                             android:textSize="12dp" />
 

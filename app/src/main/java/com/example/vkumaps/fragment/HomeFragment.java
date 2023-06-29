@@ -51,6 +51,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
@@ -267,7 +268,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                 Geometry geometry = feature.getGeometry();
                 if (geometry != null) {
                     //khi click lên đa giác
-                    if (currentstate == 1) {
+                    if (currentState == 1) {
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     }else {
                         map.animateCamera(CameraUpdateFactory.zoomTo(17));
@@ -277,7 +278,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         });
 
         //Hiển thị các maker
-        firestore.collection("Khu K")
+        firestore.collection("Marker")
                 .get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -296,34 +297,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                                 }
                                 return true;
                             });
-                        }
-                    }
-                });
-        firestore.collection("Khu V")
-                .get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String name = document.getId();
-                            MarkerModel markerModel = document.toObject(MarkerModel.class);
-                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
-                                    markerModel.getIconURL(), name);
-                        }
-                        map.setOnCameraIdleListener(() -> {
-                            // Get the current camera zoom level
-                            float zoomLevel = map.getCameraPosition().zoom;
-                            if (zoomLevel < 17) {
-                                // Hide all markers if the zoom level is less than 12
-                                for (Marker marker : markerList) {
-                                    marker.setVisible(false);
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            map.setOnCameraIdleListener(() -> {
+                                // Get the current camera zoom level
+                                float zoomLevel = map.getCameraPosition().zoom;
+                                if (zoomLevel < 17) {
+                                    // Hide all markers if the zoom level is less than 12
+                                    for (Marker marker : markerList) {
+                                        marker.setVisible(false);
+                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                    }
+                                } else {
+                                    // Show all markers if the zoom level is 12 or greater
+                                    for (Marker marker : markerList) {
+                                        marker.setVisible(true);
+                                    }
                                 }
-                            } else {
-                                // Show all markers if the zoom level is 12 or greater
-                                for (Marker marker : markerList) {
-                                    marker.setVisible(true);
-                                }
-                            }
-                        });
+                            });
+                        }
                     }
                 });
 

@@ -2,7 +2,7 @@ package com.example.vkumaps.models;
 
 import java.util.List;
 
-public class DataModel {
+public class DataModel implements Comparable<DataModel> {
 
     private List<String> nestedList;
     private String itemText;
@@ -28,5 +28,10 @@ public class DataModel {
 
     public boolean isExpandable() {
         return isExpandable;
+    }
+
+    @Override
+    public int compareTo(DataModel dataModel) {
+        return this.itemText.compareTo(dataModel.itemText);
     }
 }
