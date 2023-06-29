@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -57,10 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
 
-//        if (auth.getCurrentUser() != null){
-//            findViewById(R.id.menu_user_email).setVisibility(View.VISIBLE);
-//        }
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -68,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -250,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Create a Uri that contains the place data
         String uri = "https://www.google.com/maps/place/" + placeName + "/@" + latLng.latitude + "," + latLng.longitude;
-        Uri gmmIntentUri = Uri.parse(uri);
 
         // Create an Intent to share the place data
         Intent shareIntent = new Intent(Intent.ACTION_SEND);

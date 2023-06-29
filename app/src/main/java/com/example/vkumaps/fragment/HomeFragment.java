@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
     );
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
-    private ActivityResultLauncher<String> resultLauncher;
     private Marker shareLocation;
     private View rootView;
     public HomeFragment(ChangeFragmentListener listener,SharePlaceListener sharePlaceListener) {
@@ -103,17 +102,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                 .commit();
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-
-        resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-                            map.setMyLocationEnabled(true);
-                        }
-                    }
-                }
-        );
         requestPermission();
         return rootView;
     }
@@ -123,7 +111,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         ImageView zoomIn = rootView.findViewById(R.id.zoom_in);
         ImageView rotate = rootView.findViewById(R.id.rotate);
         sheet = rootView.findViewById(R.id.sheet);
-        ImageView imgPlace = rootView.findViewById(R.id.img_place);
+//        ImageView imgPlace = rootView.findViewById(R.id.img_place);
         TextView directionBtn = rootView.findViewById(R.id.btn_direction);
         desPlace=rootView.findViewById(R.id.des_place);
         titlePlace=rootView.findViewById(R.id.title_place);
@@ -263,7 +251,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
         if (kmlLayer.isLayerOnMap()) {
             // Duyệt qua các đối tượng KmlPlacemark trong lớp KML
-            for (KmlPlacemark placemark : kmlLayer.getPlacemarks()) {
+            for (KmlPlacemark placeMark : kmlLayer.getPlacemarks()) {
 
             }
         } else {
@@ -276,7 +264,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String name = document.getId();
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
-                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                            addMarker(new LatLng(markerModel.getGeoPoint().getLatitude(), markerModel.getGeoPoint().getLongitude()),
                                     markerModel.getIconURL(), name);
                             map.setOnMarkerClickListener(marker -> {
                                 Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
@@ -298,7 +286,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String name = document.getId();
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
-                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                            addMarker(new LatLng(markerModel.getGeoPoint().getLatitude(), markerModel.getGeoPoint().getLongitude()),
                                     markerModel.getIconURL(), name);
                         }
                         map.setOnCameraIdleListener(() -> {
@@ -322,10 +310,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
-//        LatLngBounds bounds = new LatLngBounds(
-//                new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
-//                new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
-//        );
+
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
     }
@@ -348,9 +333,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         assert marker != null;
                         marker.setVisible(false);
                         markerList.add(marker);
-//                        for (Marker markerItem : markerList) {
-//                            markerItem.setVisible(false);
-//                        }
                     }
 
                     @Override
@@ -387,6 +369,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     }
 
     private void requestPermission() {
+        ActivityResultLauncher<String> resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                            map.setMyLocationEnabled(true);
+                        }
+                    }
+                }
+        );
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             resultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
