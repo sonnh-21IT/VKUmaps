@@ -58,7 +58,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
                                 }
                             }
                             if(isSearched){
-                                listener.onNestedClick(markerModel);
+                                listener.onNestedClick(markerModel, areaName);
                             } else {
                                 Toast.makeText(holder.itemView.getContext(), "Hiện chưa có thông tin tọa độ của địa điểm này!", Toast.LENGTH_SHORT).show();
                             }
