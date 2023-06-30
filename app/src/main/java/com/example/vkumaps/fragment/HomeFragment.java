@@ -300,7 +300,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String name = document.getId();
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
-                            addMarker(new LatLng(markerModel.getGeopoint().getLatitude(), markerModel.getGeopoint().getLongitude()),
+                            addMarker(new LatLng(markerModel.getGeoPoint().getLatitude(), markerModel.getGeoPoint().getLongitude()),
                                     markerModel.getIconURL(), name, markerModel.getImgURL());
                             map.setOnMarkerClickListener(marker -> {
 //                                Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
