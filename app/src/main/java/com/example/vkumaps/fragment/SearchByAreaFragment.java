@@ -74,7 +74,7 @@ public class SearchByAreaFragment extends Fragment {
                                             Collections.sort(mList);
                                             if (!mList.isEmpty()) {
                                                 // Cập nhật adapter và hiển thị danh sách
-                                                adapter = new SearchByAreaAdapter(mList);
+                                                adapter = new SearchByAreaAdapter(mList,listener);
                                                 recyclerView.setAdapter(adapter);
                                                 adapter.notifyDataSetChanged();
                                                 loadView.setVisibility(View.GONE);

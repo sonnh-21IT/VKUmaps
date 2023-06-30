@@ -36,6 +36,7 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.SharePlaceListener;
 import com.example.vkumaps.models.MarkerModel;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -144,6 +145,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude,VKU_LOCATION.longitude)));
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String data = bundle.getString("key");
+            Toast.makeText(requireContext(),data,Toast.LENGTH_SHORT).show();
+            cameraSetup(VKU_LOCATION, 20f, 0);
+        }
         map.setOnMyLocationButtonClickListener(this);
         try {
             mapSetup();
@@ -254,7 +262,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
     @SuppressLint("PotentialBehaviorOverride")
     private void mapSetup() throws XmlPullParserException, IOException {
-        cameraSetup(VKU_LOCATION, 16.5f, 30);
 
         map.setTrafficEnabled(false);
 
