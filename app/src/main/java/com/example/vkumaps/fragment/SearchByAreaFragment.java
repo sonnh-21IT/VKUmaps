@@ -58,7 +58,7 @@ public class SearchByAreaFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String name = document.getId();
+                                String name = document.getId().trim();
                                 String iconUrl = document.get("icon").toString();
                                 firestore.collection("Area").document(name).collection("contains").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -66,7 +66,7 @@ public class SearchByAreaFragment extends Fragment {
                                         if (task.isSuccessful()) {
                                             List<String> nestedList1 = new ArrayList<>();
                                             for (QueryDocumentSnapshot nestedDocument : task.getResult()) {
-                                                nestedList1.add(nestedDocument.getId());
+                                                nestedList1.add(nestedDocument.getId().trim());
                                             }
 
                                             // Thêm DataModel vào danh sách mList

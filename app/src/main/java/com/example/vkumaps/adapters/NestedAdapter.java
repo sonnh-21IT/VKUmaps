@@ -43,7 +43,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
         holder.mTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String areaName = holder.mTv.getText().toString();
+                String areaName = holder.mTv.getText().toString().trim();
                 firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -51,7 +51,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
                             boolean isSearched = false;
                             MarkerModel markerModel = null;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (areaName.equals(document.getId())) {
+                                if (areaName.equals(document.getId().trim())) {
                                     isSearched = true;
                                     markerModel = document.toObject(MarkerModel.class);
                                     break;
