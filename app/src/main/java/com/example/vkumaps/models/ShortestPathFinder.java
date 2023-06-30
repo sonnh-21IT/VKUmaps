@@ -9,7 +9,7 @@ public class ShortestPathFinder {
         this.graph = graph;
     }
 
-    public List<Vertex> findShortestPath(Vertex startVertex, Vertex targetVertex) {
+    public ShortestPathResult findShortestPath(Vertex startVertex, Vertex targetVertex) {
         // Khởi tạo khoảng cách từ đỉnh bắt đầu đến tất cả các đỉnh khác là vô cùng
         Map<Vertex, Integer> distances = new HashMap<>();
         for (Vertex vertex : graph.getVertices()) {
@@ -63,7 +63,9 @@ public class ShortestPathFinder {
             currentVertex = previousVertices.get(currentVertex);
         }
 
-        return shortestPath;
+        // Trả về kết quả đường đi ngắn nhất và khoảng cách cuối cùng
+        int shortestDistance = distances.get(targetVertex);
+        return new ShortestPathResult(shortestPath, shortestDistance);
     }
     public static void main(String[] args) {
         // Tạo đồ thị
@@ -87,23 +89,28 @@ public class ShortestPathFinder {
         graph.addEdge(B, D, 2);
         graph.addEdge(C, D, 4);
         graph.addEdge(C, E, 6);
-        graph.addEdge(D, E, 3);
+        graph.addEdge(D, E, 7);
 
         // Tạo đối tượng DijkstraShortestPath
         ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
 
-        // Tìm đường đi ngắn nhất từ đỉnh A đến E
-        Vertex startVertex = A;
-        Vertex targetVertex = D;
-        List<Vertex> shortestPath = dijkstra.findShortestPath(startVertex, targetVertex);
+        // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
+        Vertex startVertex = B;
+        Vertex targetVertex = E;
+        ShortestPathResult result= dijkstra.findShortestPath(startVertex, targetVertex);
 
-        // In đường đi ngắn nhất
+// Lấy đường đi ngắn nhất và khoảng cách cuối cùng
+        List<Vertex> shortestPath = result.getPath();
+        int shortestDistance = result.getDistance();
+
+// In đường đi ngắn nhất và khoảng cách cuối cùng
         if (shortestPath != null) {
             System.out.print("Đường đi ngắn nhất từ " + startVertex.getLabel() + " đến " + targetVertex.getLabel() + ": ");
             for (Vertex vertex : shortestPath) {
                 System.out.print(vertex.getLabel() + " ");
             }
             System.out.println();
+            System.out.println("Khoảng cách ngắn nhất từ " + startVertex.getLabel() + " đến " + targetVertex.getLabel() + ": " + shortestDistance);
         } else {
             System.out.println("Không tìm thấy đường đi từ " + startVertex.getLabel() + " đến " + targetVertex.getLabel());
         }

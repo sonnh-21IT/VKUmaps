@@ -40,7 +40,9 @@
                 android:title="@string/menu_event" />
         </menu>
     </item>
-    <item android:title="@string/menu_more">
+    <item
+        android:id="@+id/menu_more"
+        android:title="@string/menu_more">
         <menu>
             <item
                 android:id="@+id/menu_account"

@@ -24,11 +24,11 @@ public class MarkerModel {
         this.iconURL = iconURL;
     }
 
-    public GeoPoint getGeopoint() {
+    public GeoPoint getGeoPoint() {
         return geopoint;
     }
 
-    public void setGeopoint(GeoPoint geopoint) {
+    public void setGeoPoint(GeoPoint geopoint) {
         this.geopoint = geopoint;
     }
 
