@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,12 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.models.MarkerModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHolder> {
     private final List<String> mList;
     private ChangeFragmentListener listener;
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public NestedAdapter(List<String> mList,ChangeFragmentListener listener) {
         this.mList = mList;
@@ -36,8 +43,28 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
         holder.mTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                listener.onNestedClick(new MarkerModel());
+                String areaName = holder.mTv.getText().toString();
+                firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            boolean isSearched = false;
+                            MarkerModel markerModel = null;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (areaName.equals(document.getId())) {
+                                    isSearched = true;
+                                    markerModel = document.toObject(MarkerModel.class);
+                                    break;
+                                }
+                            }
+                            if(isSearched){
+                                listener.onNestedClick(markerModel);
+                            } else {
+                                Toast.makeText(holder.itemView.getContext(), "Hiện chưa có thông tin tọa độ của địa điểm này!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
             }
         });
     }
