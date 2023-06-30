@@ -1,8 +1,13 @@
 package com.example.vkumaps.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.GeoPoint;
 
-public class MarkerModel {
+public class MarkerModel implements Parcelable {
     String iconURL;
     GeoPoint geopoint;
     String imgURL;
@@ -15,6 +20,23 @@ public class MarkerModel {
         this.geopoint = geopoint;
         this.imgURL = imgURL;
     }
+
+    protected MarkerModel(Parcel in) {
+        iconURL = in.readString();
+        imgURL = in.readString();
+    }
+
+    public static final Creator<MarkerModel> CREATOR = new Creator<MarkerModel>() {
+        @Override
+        public MarkerModel createFromParcel(Parcel in) {
+            return new MarkerModel(in);
+        }
+
+        @Override
+        public MarkerModel[] newArray(int size) {
+            return new MarkerModel[size];
+        }
+    };
 
     public String getIconURL() {
         return iconURL;
@@ -38,5 +60,16 @@ public class MarkerModel {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(iconURL);
+        parcel.writeString(imgURL);
     }
 }

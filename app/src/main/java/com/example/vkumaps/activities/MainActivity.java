@@ -234,12 +234,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onNestedClick(MarkerModel markerModel) {
+    public void onNestedClick(MarkerModel markerModel,String name) {
         fragment=new HomeFragment(this,this);
 
         Bundle bundle = new Bundle();
-        bundle.putString("key", markerModel.getGeoPoint().toString());
-
+        bundle.putParcelable("marker", markerModel);
+        bundle.putString("name", name);
         replaceFragment(fragment,bundle);
         currentFragment = FRAGMENT_HOME;
     }
@@ -271,5 +271,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Start the share activity
         startActivity(Intent.createChooser(shareIntent, "Share using"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

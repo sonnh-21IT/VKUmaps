@@ -139,18 +139,36 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         rotate.setOnClickListener(this);
         mapType.setOnClickListener(this);
         oc.setOnClickListener(this);
+        titlePlace.setOnClickListener(this);
+        imgPlace.setOnClickListener(this);
+
+        //bottom sheet
+        bottomSheetBehavior = BottomSheetBehavior.from(sheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //chiều cao mặc định
+        bottomSheetBehavior.setPeekHeight(0);
+        currentState = 0;
 
         firestore = FirebaseFirestore.getInstance();
     }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude,VKU_LOCATION.longitude)));
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String data = bundle.getString("key");
-            Toast.makeText(requireContext(),data,Toast.LENGTH_SHORT).show();
-            cameraSetup(VKU_LOCATION, 20f, 0);
+            MarkerModel marker = bundle.getParcelable("marker");
+            String name=bundle.getString("name");
+            LatLng position=new LatLng(marker.getGeoPoint().getLatitude(),marker.getGeoPoint().getLongitude());
+            if (marker!=null){
+                titlePlace.setText(name);
+                Glide.with(requireContext()).load(marker.getImgURL()).into(imgPlace);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                map.moveCamera(CameraUpdateFactory.newLatLng(position));
+                cameraSetup(position,20f,0);
+            }
+        }else{
+            map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude,VKU_LOCATION.longitude)));
+            cameraSetup(new LatLng(VKU_LOCATION.latitude,VKU_LOCATION.longitude),16.5f,30);
         }
         map.setOnMyLocationButtonClickListener(this);
         try {
@@ -181,12 +199,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     public void onResume() {
         super.onResume();
         listener.changeTitle("Bản đồ");
-        //bottom sheet
-        bottomSheetBehavior = BottomSheetBehavior.from(sheet);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        //chiều cao mặc định
-        bottomSheetBehavior.setPeekHeight(0);
-        currentState = 0;
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -307,7 +319,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                                 cameraSetup(marker.getPosition(),20,0);
                                 titlePlace.setText(marker.getTitle());
 //                                desPlace.setText(marker.getSnippet());
-                                Glide.with(getContext()).load(marker.getSnippet()).into(imgPlace);
+                                Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
                                 shareLocation=marker;
                                 if (currentState==0){
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -501,5 +513,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
             }
         }
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
