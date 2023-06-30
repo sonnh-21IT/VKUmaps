@@ -9,14 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vkumaps.R;
+import com.example.vkumaps.listener.ChangeFragmentListener;
+import com.example.vkumaps.models.MarkerModel;
 
 import java.util.List;
 
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHolder> {
     private final List<String> mList;
+    private ChangeFragmentListener listener;
 
-    public NestedAdapter(List<String> mList) {
+    public NestedAdapter(List<String> mList,ChangeFragmentListener listener) {
         this.mList = mList;
+        this.listener=listener;
     }
 
     @NonNull
@@ -29,6 +33,13 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.mTv.setText(mList.get(position));
+        holder.mTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                listener.onNestedClick(new MarkerModel());
+            }
+        });
     }
 
     @Override

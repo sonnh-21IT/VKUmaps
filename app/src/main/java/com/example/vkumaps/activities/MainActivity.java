@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -31,6 +32,7 @@ import com.example.vkumaps.fragment.SearchByAreaFragment;
 import com.example.vkumaps.fragment.WeekScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.SharePlaceListener;
+import com.example.vkumaps.models.MarkerModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onDrawerClosed(View drawerView) {
                     if (fragment!=null){
                         drawerLayout.closeDrawer(GravityCompat.START);
-                        replaceFragment(fragment);
+                        replaceFragment(fragment,null);
                     }
                 }
             });
@@ -210,7 +212,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment,Bundle bundle) {
+        if (bundle!=null){
+            fragment.setArguments(bundle);
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in,  // enter
                 R.anim.fade_out,  // exit
@@ -226,6 +231,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
+    }
+
+    @Override
+    public void onNestedClick(MarkerModel markerModel) {
+        fragment=new HomeFragment(this,this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("key", markerModel.getGeoPoint().toString());
+
+        replaceFragment(fragment,bundle);
+        currentFragment = FRAGMENT_HOME;
     }
 
     @Override

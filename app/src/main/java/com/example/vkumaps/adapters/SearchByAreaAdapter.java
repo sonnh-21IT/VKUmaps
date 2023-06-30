@@ -16,16 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.vkumaps.R;
+import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.models.DataModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
 public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapter.MyViewHolder> {
     private final List<DataModel> mList;
     private List<String> list;
+    private ChangeFragmentListener listener;
 
-    public SearchByAreaAdapter(List<DataModel> mList) {
+    public SearchByAreaAdapter(List<DataModel> mList, ChangeFragmentListener listener) {
         this.mList = mList;
+        this.listener=listener;
     }
 
     @NonNull
@@ -55,7 +60,7 @@ public class SearchByAreaAdapter extends RecyclerView.Adapter<SearchByAreaAdapte
         }
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
-        NestedAdapter adapter = new NestedAdapter(list);
+        NestedAdapter adapter = new NestedAdapter(list,listener);
         holder.nestedRecyclerView.setAdapter(adapter);
         holder.linearLayout.setOnClickListener(v -> {
             list = model.getNestedList();
