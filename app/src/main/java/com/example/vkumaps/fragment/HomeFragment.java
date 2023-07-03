@@ -449,6 +449,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                 }
                 break;
             }
+            case R.id.btn_direction:{
+
+                break;
+            }
             case R.id.btn_share:{
                 sharePlaceListener.onSharePlace(shareLocation);
                 break;

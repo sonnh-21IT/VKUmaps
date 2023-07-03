@@ -28,6 +28,7 @@ import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.FeedbackFragment;
 import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.fragment.LoginFragment;
+import com.example.vkumaps.fragment.MyInfoFragment;
 import com.example.vkumaps.fragment.SearchByAreaFragment;
 import com.example.vkumaps.fragment.WeekScheduleFragment;
 import com.example.vkumaps.listener.ChangeFragmentListener;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
     private static final int FRAGMENT_ACCOUNT = 5;
     private static final int FRAGMENT_FEEDBACK = 6;
+    private static final int FRAGMENT_MY_INFORMATION = 7;
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
@@ -128,11 +130,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.menu_account: {
-                if (currentFragment != FRAGMENT_ACCOUNT) {
-                    fragment = new LoginFragment(this);
+                if (auth.getCurrentUser()!=null){
+                    if (currentFragment != FRAGMENT_MY_INFORMATION)
+                    fragment = new MyInfoFragment(this);
 //                    replaceFragment(fragment);
                     drawerLayout.closeDrawer(GravityCompat.START);
-                    currentFragment = FRAGMENT_ACCOUNT;
+                    currentFragment = FRAGMENT_MY_INFORMATION;
+                }else{
+                    if (currentFragment != FRAGMENT_ACCOUNT) {
+                        fragment = new LoginFragment(this);
+//                    replaceFragment(fragment);
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        currentFragment = FRAGMENT_ACCOUNT;
+                    }
                 }
                 break;
             }
