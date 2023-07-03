@@ -1,6 +1,13 @@
 package com.example.vkumaps.models;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class ShortestPathFinder {
     private Graph graph;
@@ -66,53 +73,5 @@ public class ShortestPathFinder {
         // Trả về kết quả đường đi ngắn nhất và khoảng cách cuối cùng
         int shortestDistance = distances.get(targetVertex);
         return new ShortestPathResult(shortestPath, shortestDistance);
-    }
-    public static void main(String[] args) {
-        // Tạo đồ thị
-        Graph graph = new Graph();
-
-        Vertex A = new Vertex("A");
-        Vertex B = new Vertex("B");
-        Vertex C = new Vertex("C");
-        Vertex D = new Vertex("D");
-        Vertex E = new Vertex("E");
-
-        graph.addVertex(A);
-        graph.addVertex(B);
-        graph.addVertex(C);
-        graph.addVertex(D);
-        graph.addVertex(E);
-
-        graph.addEdge(A, B, 5);
-        graph.addEdge(A, C, 3);
-        graph.addEdge(B, C, 1);
-        graph.addEdge(B, D, 2);
-        graph.addEdge(C, D, 4);
-        graph.addEdge(C, E, 6);
-        graph.addEdge(D, E, 7);
-
-        // Tạo đối tượng DijkstraShortestPath
-        ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
-
-        // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
-        Vertex startVertex = B;
-        Vertex targetVertex = E;
-        ShortestPathResult result= dijkstra.findShortestPath(startVertex, targetVertex);
-
-// Lấy đường đi ngắn nhất và khoảng cách cuối cùng
-        List<Vertex> shortestPath = result.getPath();
-        int shortestDistance = result.getDistance();
-
-// In đường đi ngắn nhất và khoảng cách cuối cùng
-        if (shortestPath != null) {
-            System.out.print("Đường đi ngắn nhất từ " + startVertex.getLabel() + " đến " + targetVertex.getLabel() + ": ");
-            for (Vertex vertex : shortestPath) {
-                System.out.print(vertex.getLabel() + " ");
-            }
-            System.out.println();
-            System.out.println("Khoảng cách ngắn nhất từ " + startVertex.getLabel() + " đến " + targetVertex.getLabel() + ": " + shortestDistance);
-        } else {
-            System.out.println("Không tìm thấy đường đi từ " + startVertex.getLabel() + " đến " + targetVertex.getLabel());
-        }
     }
 }

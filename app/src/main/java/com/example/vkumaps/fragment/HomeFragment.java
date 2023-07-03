@@ -5,7 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -35,8 +38,11 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.SharePlaceListener;
+import com.example.vkumaps.models.Graph;
 import com.example.vkumaps.models.MarkerModel;
-import com.google.android.gms.maps.CameraUpdate;
+import com.example.vkumaps.models.ShortestPathFinder;
+import com.example.vkumaps.models.ShortestPathResult;
+import com.example.vkumaps.models.Vertex;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,11 +50,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.CustomCap;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
+import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -61,10 +77,10 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-
-public class HomeFragment extends Fragment implements OnMapReadyCallback , View.OnClickListener , GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener ,GoogleMap.OnMyLocationButtonClickListener {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener {
     private final ChangeFragmentListener listener;
     private final SharePlaceListener sharePlaceListener;
     public static int currentState;
@@ -77,7 +93,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
     private KmlLayer kmlLayer;
-    private final List<Marker> markerList=new ArrayList<>();
+    private final List<Marker> markerList = new ArrayList<>();
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
@@ -86,9 +102,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     private ActivityResultLauncher<String> resultLauncher;
     private Marker shareLocation;
     private View rootView;
-    public HomeFragment(ChangeFragmentListener listener,SharePlaceListener sharePlaceListener) {
+
+    public HomeFragment(ChangeFragmentListener listener, SharePlaceListener sharePlaceListener) {
         this.listener = listener;
-        this.sharePlaceListener=sharePlaceListener;
+        this.sharePlaceListener = sharePlaceListener;
     }
 
     @SuppressLint("MissingInflatedId")
@@ -120,6 +137,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         requestPermission();
         return rootView;
     }
+
     private void initializeViews() {
         ImageView oc = rootView.findViewById(R.id.btn);
         ImageView zoomOut = rootView.findViewById(R.id.zoom_out);
@@ -128,7 +146,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         sheet = rootView.findViewById(R.id.sheet);
         imgPlace = rootView.findViewById(R.id.img_place);
         TextView directionBtn = rootView.findViewById(R.id.btn_direction);
-        titlePlace=rootView.findViewById(R.id.title_place);
+        titlePlace = rootView.findViewById(R.id.title_place);
         TextView shareBtn = rootView.findViewById(R.id.btn_share);
         ImageView mapType = rootView.findViewById(R.id.map_type);
 
@@ -151,24 +169,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
         firestore = FirebaseFirestore.getInstance();
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         Bundle bundle = getArguments();
         if (bundle != null) {
             MarkerModel marker = bundle.getParcelable("marker");
-            String name=bundle.getString("name");
-            LatLng position=new LatLng(marker.getGeoPoint().getLatitude(),marker.getGeoPoint().getLongitude());
-            if (marker!=null){
-                titlePlace.setText(name);
-                Glide.with(requireContext()).load(marker.getImgURL()).into(imgPlace);
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                map.moveCamera(CameraUpdateFactory.newLatLng(position));
-                cameraSetup(position,20f,0);
-            }
-        }else{
-            map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude,VKU_LOCATION.longitude)));
-            cameraSetup(new LatLng(VKU_LOCATION.latitude,VKU_LOCATION.longitude),16.5f,30);
+            String name = bundle.getString("name");
+            LatLng position = new LatLng(marker.getGeoPoint().getLatitude(), marker.getGeoPoint().getLongitude());
+            titlePlace.setText(name);
+            Glide.with(requireContext()).load(marker.getImgURL()).into(imgPlace);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            map.moveCamera(CameraUpdateFactory.newLatLng(position));
+            cameraSetup(position, 20f, 0);
+        } else {
+            map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude, VKU_LOCATION.longitude)));
+            cameraSetup(new LatLng(VKU_LOCATION.latitude, VKU_LOCATION.longitude), 16.5f, 30);
         }
         map.setOnMyLocationButtonClickListener(this);
         try {
@@ -179,7 +196,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                     //khi click lên đa giác
                     if (currentState == 1) {
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }else {
+                    } else {
                         map.animateCamera(CameraUpdateFactory.zoomTo(17));
                     }
                 }
@@ -188,6 +205,92 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
             throw new RuntimeException(e);
         }
         uiSettings();
+        path();
+    }
+
+    public void path() {
+        // Tạo đồ thị
+        Graph graph = new Graph();
+
+        Vertex A = new Vertex("A", new LatLng(15.97442740761159, 108.25164667073183));
+        Vertex B = new Vertex("B", new LatLng(15.974451942655994, 108.25191131747602));
+        Vertex C = new Vertex("C", new LatLng(15.974372004981687, 108.25190327084869));
+        Vertex D = new Vertex("D", new LatLng(15.974377162251166, 108.2534509054637));
+        Vertex E = new Vertex("E", new LatLng(15.974828422885512, 108.25190595301983));
+        Vertex F = new Vertex("F", new LatLng(15.974843894660657, 108.25340799011803));
+        Vertex G = new Vertex("G", new LatLng(15.975491353493227, 108.25342347330124));
+
+        graph.addVertex(A);
+        graph.addVertex(B);
+        graph.addVertex(C);
+        graph.addVertex(D);
+        graph.addVertex(E);
+        graph.addVertex(F);
+        graph.addVertex(G);
+
+        graph.addEdge(A, B, 20);
+        graph.addEdge(B, C, 5);
+        graph.addEdge(C, D, 100);
+        graph.addEdge(B, E, 25);
+        graph.addEdge(E, F, 100);
+        graph.addEdge(F, G, 60);
+        graph.addEdge(G, D, 99);
+
+        // Tạo đối tượng DijkstraShortestPath
+        ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
+
+        // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
+        Vertex startVertex = A;
+        Vertex targetVertex = G;
+        ShortestPathResult result = dijkstra.findShortestPath(startVertex, targetVertex);
+
+// Lấy đường đi ngắn nhất và khoảng cách cuối cùng
+        List<Vertex> shortestPath = result.getPath();
+        int shortestDistance = result.getDistance();
+
+        PolylineOptions po=new PolylineOptions();
+        po.color(Color.BLACK).width(16);
+
+        // In đường đi ngắn nhất và khoảng cách cuối cùng
+        if (shortestPath != null) {
+            StringBuilder path = new StringBuilder();
+            for (Vertex vertex : shortestPath) {
+                path.append(vertex.getLabel());
+                po.add(vertex.getPosition());
+            }
+            cameraSetup(shortestPath.get(0).getPosition(), 20, 0);
+            Toast.makeText(requireContext(), path, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(requireContext(), "Khong the tim thay duong di", Toast.LENGTH_SHORT).show();
+        }
+
+        // Tính toán độ rộng của đường vẽ theo đơn vị pixel
+        float strokeWidthInPixel = 1.5f;
+        float strokeWidthInMeter = strokeWidthInPixel / getResources().getDisplayMetrics().density;
+
+        // Vẽ hình tròn tại điểm đầu của Polyline
+        // Tạo đối tượng CircleOptions và thiết lập thuộc tính
+        CircleOptions circleOptionsStart = new CircleOptions()
+                .center(shortestPath.get(0).getPosition())
+                .radius(strokeWidthInMeter)
+                .strokeWidth(1)
+                .fillColor(Color.GRAY)
+                .zIndex(1);
+
+        // Vẽ hình tròn tại điểm cuối của Polyline
+        // Tạo đối tượng CircleOptions và thiết lập thuộc tính
+        CircleOptions circleOptionsEnd = new CircleOptions()
+                .center(shortestPath.get(shortestPath.size()-1).getPosition())
+                .radius(strokeWidthInMeter)
+                .strokeWidth(1)
+                .fillColor(Color.WHITE)
+                .zIndex(1);
+
+        Polyline polyline = map.addPolyline(po);
+        po.color(Color.parseColor("#4285F4")).width(14);
+        polyline = map.addPolyline(po);
+        map.addCircle(circleOptionsEnd);
+        map.addCircle(circleOptionsStart);
     }
 
     @Override
@@ -210,6 +313,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                     currentState = 0;
                 }
             }
+
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 // Do something while the bottom sheet is sliding
@@ -225,6 +329,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         map.getUiSettings().setMapToolbarEnabled(false);
         map.setOnMapClickListener(this);
     }
+
     private float calculateBearing() {
         float currentBearing = map.getCameraPosition().bearing;
         float bearing;
@@ -232,7 +337,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         boolean left = true;
         if (currentBearing == 360) {
             return 90;
-        }else if (currentBearing == 90 || currentBearing == 0 || currentBearing == 180 || currentBearing == 270) {
+        } else if (currentBearing == 90 || currentBearing == 0 || currentBearing == 180 || currentBearing == 270) {
             return currentBearing + 90;
         } else {
             if (currentBearing > 0 && currentBearing < 90) {
@@ -289,7 +394,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         } else {
             Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
         }
-      
+
         kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
             @Override
             public void onFeatureClick(Feature feature) {
@@ -298,7 +403,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                     //khi click lên đa giác
                     if (currentState == 1) {
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }else {
+                    } else {
                         map.animateCamera(CameraUpdateFactory.zoomTo(17));
                     }
                 }
@@ -316,12 +421,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                                     markerModel.getIconURL(), name, markerModel.getImgURL());
                             map.setOnMarkerClickListener(marker -> {
 //                                Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
-                                cameraSetup(marker.getPosition(),20,0);
+                                cameraSetup(marker.getPosition(), 20, 0);
                                 titlePlace.setText(marker.getTitle());
 //                                desPlace.setText(marker.getSnippet());
                                 Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
-                                shareLocation=marker;
-                                if (currentState==0){
+                                shareLocation = marker;
+                                if (currentState == 0) {
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                                 }
                                 return true;
@@ -350,10 +455,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
 
         map.setMaxZoomPreference(23);
         map.setMinZoomPreference(16.5f);
-//        LatLngBounds bounds = new LatLngBounds(
-//                new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
-//                new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
-//        );
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
     }
@@ -377,9 +478,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                         assert marker != null;
                         marker.setVisible(false);
                         markerList.add(marker);
-//                        for (Marker markerItem : markerList) {
-//                            markerItem.setVisible(false);
-//                        }
                     }
 
                     @Override
@@ -427,6 +525,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.show();
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -440,8 +539,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btn:{
+        switch (view.getId()) {
+            case R.id.btn: {
                 if (currentState == 0) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
@@ -449,23 +548,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                 }
                 break;
             }
-            case R.id.btn_direction:{
+            case R.id.btn_direction: {
 
                 break;
             }
-            case R.id.btn_share:{
+            case R.id.btn_share: {
                 sharePlaceListener.onSharePlace(shareLocation);
                 break;
             }
-            case R.id.zoom_in:{
+            case R.id.zoom_in: {
                 map.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
             }
-            case R.id.zoom_out:{
+            case R.id.zoom_out: {
                 map.animateCamera(CameraUpdateFactory.zoomOut());
                 break;
             }
-            case R.id.rotate:{
+            case R.id.rotate: {
                 // Tạo một đối tượng CameraPosition mới với hướng mong muốn
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(map.getCameraPosition().target) // Giữ nguyên tọa độ trung tâm của camera
@@ -478,7 +577,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 break;
             }
-            case R.id.map_type:{
+            case R.id.map_type: {
                 showPopupMenu(view);
                 break;
             }
@@ -506,6 +605,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback , View.
                 return false;
         }
     }
+
     @Override
     public boolean onMyLocationButtonClick() {
         if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
