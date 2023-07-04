@@ -223,22 +223,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             firestore.collection("point")
                                     .get().addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
-                                            Vertex A = null;
-                                            Vertex B = null;
+                                            Vertex start = null;
+                                            Vertex end = null;
                                             for (QueryDocumentSnapshot document1 : task.getResult()) {
                                                 String name = document1.getId();
                                                 if (name.equals(weightModel.getStart())) {
                                                     PointModel pointModel = document1.toObject(PointModel.class);
-                                                    A = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
-                                                    graph.addVertex(A);
+                                                    start = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
+                                                    graph.addVertex(start);
                                                 }
                                                 if (name.equals(weightModel.getEnd())) {
                                                     PointModel pointModel = document1.toObject(PointModel.class);
-                                                    B = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
-                                                    graph.addVertex(B);
+                                                    end = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
+                                                    graph.addVertex(end);
                                                 }
                                             }
-                                            graph.addEdge(A, B, weightModel.getWeight());
+                                            graph.addEdge(start, end, weightModel.getWeight());
                                         } else {
                                             Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                                         }
