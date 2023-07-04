@@ -299,10 +299,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
         Vertex startVertex = null, targetVertex = null;
         for (Vertex item : graph.getVertices()){
-            if (item.getLabel().equals("AK")){
+            if (item.getLabel().equals("TTKTX")){
                 startVertex = item;
             }
-            if (item.getLabel().equals("CVV")){
+            if (item.getLabel().equals("BDa")){
                 targetVertex = item;
             }
         }
