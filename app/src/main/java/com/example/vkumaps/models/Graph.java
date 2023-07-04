@@ -14,8 +14,9 @@ public class Graph {
         adjacencyMap = new HashMap<>();
     }
 
-    public void addVertex(Vertex vertex) {
+    public Vertex addVertex(Vertex vertex) {
         vertices.add(vertex);
+        return vertex;
     }
 
     public void addEdge(Vertex sourceVertex, Vertex targetVertex, int weight) {
