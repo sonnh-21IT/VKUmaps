@@ -5,10 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -38,6 +36,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.SharePlaceListener;
+import com.example.vkumaps.models.EdgeTemp;
 import com.example.vkumaps.models.Graph;
 import com.example.vkumaps.models.MarkerModel;
 import com.example.vkumaps.models.PointModel;
@@ -52,21 +51,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.CustomCap;
-import com.google.android.gms.maps.model.Dot;
-import com.google.android.gms.maps.model.Gap;
-import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
-import com.google.android.gms.maps.model.SquareCap;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -79,7 +72,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener {
@@ -104,6 +96,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private ActivityResultLauncher<String> resultLauncher;
     private Marker shareLocation;
     private View rootView;
+    private Circle circleEnd, circleStart;
 
     public HomeFragment(ChangeFragmentListener listener, SharePlaceListener sharePlaceListener) {
         this.listener = listener;
@@ -213,104 +206,108 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public void path() {
         // Tạo đồ thị
         Graph graph = new Graph();
+      
+        List<Vertex> vertexList=new ArrayList<>();
+        vertexList.add(new Vertex("A", new LatLng(15.97442740761159, 108.25164667073183)));
+        vertexList.add(new Vertex("B", new LatLng(15.974451942655994, 108.25191131747602)));
+        vertexList.add(new Vertex("C", new LatLng(15.974372004981687, 108.25190327084869)));
+        vertexList.add(new Vertex("D", new LatLng(15.974377162251166, 108.2534509054637)));
+        vertexList.add(new Vertex("E", new LatLng(15.974828422885512, 108.25190595301983)));
+        vertexList.add(new Vertex("F", new LatLng(15.974843894660657, 108.25340799011803)));
+        vertexList.add(new Vertex("G", new LatLng(15.975491353493227, 108.25342347330124)));
+        List<Vertex> vertices=new ArrayList<>();
+        for (Vertex item:vertexList){
+            vertices.add(graph.addVertex(item));
+        }
+        List<EdgeTemp> list=new ArrayList<>();
+        list.add(new EdgeTemp("A","B",20));
+        list.add(new EdgeTemp("B","C",5));
+        list.add(new EdgeTemp("C","D",100));
+        list.add(new EdgeTemp("D","G",99));
+        list.add(new EdgeTemp("B","E",30));
+        list.add(new EdgeTemp("E","F",99));
+        list.add(new EdgeTemp("F","G",60));
+        for (EdgeTemp eItem:list) {
+            Vertex a = null,b = null;
+            for (Vertex item : vertices){
+                if (eItem.getA().equals(item.getLabel())){
+                    a=item;
+                }
+            }
+            for (Vertex item:vertices){
+                if (eItem.getB().equals(item.getLabel())){
+                    b=item;
+                }
+            }
+            if (a!=null&&b!=null){
+                graph.addEdge(a,b,eItem.getWeight());
+            }
+        }
 
-        firestore.collection("weight")
-                .get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            WeightModel weightModel = document.toObject(WeightModel.class);
-
-                            firestore.collection("point")
-                                    .get().addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            Vertex start = null;
-                                            Vertex end = null;
-                                            for (QueryDocumentSnapshot document1 : task.getResult()) {
-                                                String name = document1.getId().trim();
-                                                if (name.equals(weightModel.getStart().trim())) {
-                                                    PointModel pointModel = document1.toObject(PointModel.class);
-                                                    start = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
-                                                    graph.addVertex(start);
-                                                }
-                                                if (name.equals(weightModel.getEnd().trim())) {
-                                                    PointModel pointModel = document1.toObject(PointModel.class);
-                                                    end = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
-                                                    graph.addVertex(end);
-                                                }
-                                            }
-                                            graph.addEdge(start, end, weightModel.getWeight());
-                                        } else {
-                                            Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+        // Tạo đối tượng DijkstraShortestPath
         ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
-
-        // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
-        Vertex startVertex = null;
-        Vertex targetVertex = null;
-        for (Vertex vertex : graph.getVertices()) {
-            if (vertex.getLabel().equals("AK")) {
-                startVertex = vertex;
+        Vertex startVertex=null,targetVertex=null;
+        for (Vertex item:graph.getVertices()){
+            if (item.getLabel().equals("A")){
+                startVertex=item;
             }
-            if (vertex.getLabel().equals("KTXDV")) {
-                targetVertex = vertex;
+            if (item.getLabel().equals("G")){
+                targetVertex=item;
             }
         }
-        ShortestPathResult result = dijkstra.findShortestPath(startVertex, targetVertex);
+        if(startVertex!=null&&targetVertex!=null){
+            // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
+            ShortestPathResult result = dijkstra.findShortestPath(startVertex, targetVertex);
 
-        // Lấy đường đi ngắn nhất và khoảng cách cuối cùng
-        List<Vertex> shortestPath = result.getPath();
-        int shortestDistance = result.getDistance();
+// Lấy đường đi ngắn nhất và khoảng cách cuối cùng
+            List<Vertex> shortestPath = result.getPath();
+            int shortestDistance = result.getDistance();
 
-        PolylineOptions po = new PolylineOptions();
-        po.color(Color.BLACK).width(16);
+            PolylineOptions po = new PolylineOptions();
+            po.color(Color.BLACK).width(16);
 
-        // In đường đi ngắn nhất và khoảng cách cuối cùng
-        if (shortestPath != null) {
-            StringBuilder path = new StringBuilder();
-            for (Vertex vertex : shortestPath) {
-                path.append(vertex.getLabel());
-                po.add(vertex.getPosition());
+            // In đường đi ngắn nhất và khoảng cách cuối cùng
+            if (shortestPath != null) {
+                StringBuilder path = new StringBuilder();
+                for (Vertex vertex : shortestPath) {
+                    path.append(vertex.getLabel());
+                    po.add(vertex.getPosition());
+                }
+                cameraSetup(shortestPath.get(0).getPosition(), 20, 0);
+                Toast.makeText(requireContext(), path, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Khong the tim thay duong di", Toast.LENGTH_SHORT).show();
             }
-            cameraSetup(shortestPath.get(0).getPosition(), 20, 0);
-            Toast.makeText(requireContext(), path, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(requireContext(), "Khong the tim thay duong di", Toast.LENGTH_SHORT).show();
+
+            // Vẽ hình tròn tại điểm đầu của Polyline
+            // Tạo đối tượng CircleOptions và thiết lập thuộc tính
+            assert shortestPath != null;
+            CircleOptions circleOptionsStart = new CircleOptions()
+                    .center(shortestPath.get(0).getPosition())
+                    .radius(calculateRadius())
+                    .strokeWidth(1)
+                    .fillColor(Color.GRAY)
+                    .zIndex(1);
+
+            // Vẽ hình tròn tại điểm cuối của Polyline
+            // Tạo đối tượng CircleOptions và thiết lập thuộc tính
+            CircleOptions circleOptionsEnd = new CircleOptions()
+                    .center(shortestPath.get(shortestPath.size() - 1).getPosition())
+                    .radius(calculateRadius())
+                    .strokeWidth(1)
+                    .fillColor(Color.WHITE)
+                    .zIndex(1);
+
+            Polyline polyline = map.addPolyline(po);
+            po.color(Color.parseColor("#4285F4")).width(14);
+            polyline = map.addPolyline(po);
+            circleEnd = map.addCircle(circleOptionsEnd);
+            circleStart = map.addCircle(circleOptionsStart);
         }
+    }
 
-        // Tính toán độ rộng của đường vẽ theo đơn vị pixel
-        float strokeWidthInPixel = 1.5f;
-        float strokeWidthInMeter = strokeWidthInPixel / getResources().getDisplayMetrics().density;
-
-        // Vẽ hình tròn tại điểm đầu của Polyline
-        // Tạo đối tượng CircleOptions và thiết lập thuộc tính
-        CircleOptions circleOptionsStart = new CircleOptions()
-                .center(shortestPath.get(0).getPosition())
-                .radius(strokeWidthInMeter)
-                .strokeWidth(1)
-                .fillColor(Color.GRAY)
-                .zIndex(1);
-
-        // Vẽ hình tròn tại điểm cuối của Polyline
-        // Tạo đối tượng CircleOptions và thiết lập thuộc tính
-        CircleOptions circleOptionsEnd = new CircleOptions()
-                .center(shortestPath.get(shortestPath.size() - 1).getPosition())
-                .radius(strokeWidthInMeter)
-                .strokeWidth(1)
-                .fillColor(Color.WHITE)
-                .zIndex(1);
-
-        Polyline polyline = map.addPolyline(po);
-        po.color(Color.parseColor("#4285F4")).width(14);
-        polyline = map.addPolyline(po);
-        map.addCircle(circleOptionsEnd);
-        map.addCircle(circleOptionsStart);
+    private float calculateRadius() {
+        return (float) (1000 * Math.pow(2, - map.getCameraPosition().zoom));
     }
 
     @Override
@@ -466,6 +463,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                                         marker.setVisible(true);
                                     }
                                 }
+                                circleStart.setRadius(calculateRadius());
+                                circleEnd.setRadius(calculateRadius());
                             });
                         }
                     } else {
