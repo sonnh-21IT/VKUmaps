@@ -226,13 +226,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                                             Vertex start = null;
                                             Vertex end = null;
                                             for (QueryDocumentSnapshot document1 : task.getResult()) {
-                                                String name = document1.getId();
-                                                if (name.equals(weightModel.getStart())) {
+                                                String name = document1.getId().trim();
+                                                if (name.equals(weightModel.getStart().trim())) {
                                                     PointModel pointModel = document1.toObject(PointModel.class);
                                                     start = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
                                                     graph.addVertex(start);
                                                 }
-                                                if (name.equals(weightModel.getEnd())) {
+                                                if (name.equals(weightModel.getEnd().trim())) {
                                                     PointModel pointModel = document1.toObject(PointModel.class);
                                                     end = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
                                                     graph.addVertex(end);
@@ -249,43 +249,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                     }
                 });
 
-        Vertex A = new Vertex("A", new LatLng(15.97442740761159, 108.25164667073183));
-        Vertex B = new Vertex("B", new LatLng(15.974451942655994, 108.25191131747602));
-        Vertex C = new Vertex("C", new LatLng(15.974372004981687, 108.25190327084869));
-        Vertex D = new Vertex("D", new LatLng(15.974377162251166, 108.2534509054637));
-        Vertex E = new Vertex("E", new LatLng(15.974828422885512, 108.25190595301983));
-        Vertex F = new Vertex("F", new LatLng(15.974843894660657, 108.25340799011803));
-        Vertex G = new Vertex("G", new LatLng(15.975491353493227, 108.25342347330124));
-
-        graph.addVertex(A);
-        graph.addVertex(B);
-        graph.addVertex(C);
-        graph.addVertex(D);
-        graph.addVertex(E);
-        graph.addVertex(F);
-        graph.addVertex(G);
-
-        graph.addEdge(A, B, 20);
-        graph.addEdge(B, C, 5);
-        graph.addEdge(C, D, 100);
-        graph.addEdge(B, E, 25);
-        graph.addEdge(E, F, 100);
-        graph.addEdge(F, G, 60);
-        graph.addEdge(G, D, 99);
-
-        // Tạo đối tượng DijkstraShortestPath
         ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
 
         // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
-        Vertex startVertex = A;
-        Vertex targetVertex = G;
+        Vertex startVertex = null;
+        Vertex targetVertex = null;
+        for (Vertex vertex : graph.getVertices()) {
+            if (vertex.getLabel().equals("AK")) {
+                startVertex = vertex;
+            }
+            if (vertex.getLabel().equals("KTXDV")) {
+                targetVertex = vertex;
+            }
+        }
         ShortestPathResult result = dijkstra.findShortestPath(startVertex, targetVertex);
 
         // Lấy đường đi ngắn nhất và khoảng cách cuối cùng
         List<Vertex> shortestPath = result.getPath();
         int shortestDistance = result.getDistance();
 
-        PolylineOptions po =new PolylineOptions();
+        PolylineOptions po = new PolylineOptions();
         po.color(Color.BLACK).width(16);
 
         // In đường đi ngắn nhất và khoảng cách cuối cùng
@@ -317,7 +300,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         // Vẽ hình tròn tại điểm cuối của Polyline
         // Tạo đối tượng CircleOptions và thiết lập thuộc tính
         CircleOptions circleOptionsEnd = new CircleOptions()
-                .center(shortestPath.get(shortestPath.size()-1).getPosition())
+                .center(shortestPath.get(shortestPath.size() - 1).getPosition())
                 .radius(strokeWidthInMeter)
                 .strokeWidth(1)
                 .fillColor(Color.WHITE)

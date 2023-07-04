@@ -131,11 +131,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.menu_account: {
                 if (auth.getCurrentUser()!=null){
-                    if (currentFragment != FRAGMENT_MY_INFORMATION)
-                    fragment = new MyInfoFragment(this);
-//                    replaceFragment(fragment);
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    currentFragment = FRAGMENT_MY_INFORMATION;
+                    if (currentFragment != FRAGMENT_MY_INFORMATION) {
+                        fragment = new MyInfoFragment(this);
+//                      replaceFragment(fragment);
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        currentFragment = FRAGMENT_MY_INFORMATION;
+                    }
                 }else{
                     if (currentFragment != FRAGMENT_ACCOUNT) {
                         fragment = new LoginFragment(this);
@@ -245,12 +246,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onNestedClick(MarkerModel markerModel,String name) {
-        fragment=new HomeFragment(this,this);
+        fragment = new HomeFragment(this,this);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("marker", markerModel);
         bundle.putString("name", name);
-        replaceFragment(fragment,bundle);
+        replaceFragment(fragment, bundle);
         currentFragment = FRAGMENT_HOME;
     }
 
