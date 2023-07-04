@@ -60,9 +60,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
@@ -207,59 +211,106 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         // Tạo đồ thị
         Graph graph = new Graph();
       
-        List<Vertex> vertexList=new ArrayList<>();
-        vertexList.add(new Vertex("A", new LatLng(15.97442740761159, 108.25164667073183)));
-        vertexList.add(new Vertex("B", new LatLng(15.974451942655994, 108.25191131747602)));
-        vertexList.add(new Vertex("C", new LatLng(15.974372004981687, 108.25190327084869)));
-        vertexList.add(new Vertex("D", new LatLng(15.974377162251166, 108.2534509054637)));
-        vertexList.add(new Vertex("E", new LatLng(15.974828422885512, 108.25190595301983)));
-        vertexList.add(new Vertex("F", new LatLng(15.974843894660657, 108.25340799011803)));
-        vertexList.add(new Vertex("G", new LatLng(15.975491353493227, 108.25342347330124)));
-        List<Vertex> vertices=new ArrayList<>();
-        for (Vertex item:vertexList){
-            vertices.add(graph.addVertex(item));
-        }
-        List<EdgeTemp> list=new ArrayList<>();
-        list.add(new EdgeTemp("A","B",20));
-        list.add(new EdgeTemp("B","C",5));
-        list.add(new EdgeTemp("C","D",100));
-        list.add(new EdgeTemp("D","G",99));
-        list.add(new EdgeTemp("B","E",30));
-        list.add(new EdgeTemp("E","F",99));
-        list.add(new EdgeTemp("F","G",60));
-        for (EdgeTemp eItem:list) {
-            Vertex a = null,b = null;
-            for (Vertex item : vertices){
-                if (eItem.getA().equals(item.getLabel())){
-                    a=item;
-                }
-            }
-            for (Vertex item:vertices){
-                if (eItem.getB().equals(item.getLabel())){
-                    b=item;
-                }
-            }
-            if (a!=null&&b!=null){
-                graph.addEdge(a,b,eItem.getWeight());
-            }
-        }
+        List<Vertex> vertexList = new ArrayList<>();
+        List<EdgeTemp> list = new ArrayList<>();
 
+        Task<QuerySnapshot> pointTask = firestore.collection("point").get();
+        Task<QuerySnapshot> weightTask = firestore.collection("weight").get();
+        Tasks.whenAllComplete(pointTask, weightTask)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot pointSnapshot = pointTask.getResult();
+                        QuerySnapshot weightSnapshot = weightTask.getResult();
+
+                        for (QueryDocumentSnapshot document : pointSnapshot) {
+                            String name = document.getId().trim();
+                            PointModel pointModel = document.toObject(PointModel.class);
+                            vertexList.add(new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude())));
+                        }
+
+                        List<Vertex> vertices = new ArrayList<>();
+                        for (Vertex item : vertexList){
+                            vertices.add(graph.addVertex(item));
+                        }
+
+                        for (QueryDocumentSnapshot document : weightSnapshot) {
+                            WeightModel weightModel = document.toObject(WeightModel.class);
+                            list.add(new EdgeTemp(weightModel.getStart().trim(), weightModel.getEnd().trim(), weightModel.getWeight()));
+                        }
+
+                        for (EdgeTemp eItem : list) {
+                            Vertex a = null, b = null;
+                            for (Vertex item : vertices){
+                                if (eItem.getA().equals(item.getLabel())){
+                                    a = item;
+                                }
+                            }
+                            for (Vertex item:vertices){
+                                if (eItem.getB().equals(item.getLabel())){
+                                    b = item;
+                                }
+                            }
+                            if (a != null && b != null){
+                                graph.addEdge(a, b, eItem.getWeight());
+                            }
+                        }
+
+                        // Tiếp tục thực thi đoạn mã ở dưới sau khi cả hai tác vụ Firestore hoàn thành
+                        continueExecution(graph);
+                    } else {
+                        Toast.makeText(requireContext(), "Lỗi dữ liệu", Toast.LENGTH_SHORT).show();
+                    }
+                });
+//        firestore.collection("point").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if(task.isSuccessful()){
+//                    for (QueryDocumentSnapshot document : task.getResult()){
+//                        String name = document.getId().trim();
+//                        PointModel pointModel = document.toObject(PointModel.class);
+//                        vertexList.add(new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude())));
+//                    }
+//                } else {
+//                    Toast.makeText(requireContext(), "Lỗi dữ liệu", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+
+//        firestore.collection("weight").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if(task.isSuccessful()){
+//                    for (QueryDocumentSnapshot document : task.getResult()){
+//                        WeightModel weightModel = document.toObject(WeightModel.class);
+//                        list.add(new EdgeTemp(weightModel.getStart().trim(), weightModel.getEnd().trim(), weightModel.getWeight()));
+//                    }
+//                } else {
+//                    Toast.makeText(requireContext(), "Lỗi dữ liệu", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+
+
+    }
+    private void continueExecution(Graph graph) {
         // Tạo đối tượng DijkstraShortestPath
         ShortestPathFinder dijkstra = new ShortestPathFinder(graph);
-        Vertex startVertex=null,targetVertex=null;
-        for (Vertex item:graph.getVertices()){
-            if (item.getLabel().equals("A")){
-                startVertex=item;
+        Vertex startVertex = null, targetVertex = null;
+        for (Vertex item : graph.getVertices()){
+            if (item.getLabel().equals("AK")){
+                startVertex = item;
             }
-            if (item.getLabel().equals("G")){
-                targetVertex=item;
+            if (item.getLabel().equals("CVV")){
+                targetVertex = item;
             }
         }
-        if(startVertex!=null&&targetVertex!=null){
+        if (startVertex != null && targetVertex != null){
             // Tìm đường đi ngắn nhất từ đỉnh bắt đầu đến đỉnh đích
             ShortestPathResult result = dijkstra.findShortestPath(startVertex, targetVertex);
 
-// Lấy đường đi ngắn nhất và khoảng cách cuối cùng
+            // Lấy đường đi ngắn nhất và khoảng cách cuối cùng
             List<Vertex> shortestPath = result.getPath();
             int shortestDistance = result.getDistance();
 
@@ -303,6 +354,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             polyline = map.addPolyline(po);
             circleEnd = map.addCircle(circleOptionsEnd);
             circleStart = map.addCircle(circleOptionsStart);
+        } else  {
+            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -463,8 +516,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                                         marker.setVisible(true);
                                     }
                                 }
-                                circleStart.setRadius(calculateRadius());
-                                circleEnd.setRadius(calculateRadius());
+//                                circleStart.setRadius(calculateRadius());
+//                                circleEnd.setRadius(calculateRadius());
                             });
                         }
                     } else {
