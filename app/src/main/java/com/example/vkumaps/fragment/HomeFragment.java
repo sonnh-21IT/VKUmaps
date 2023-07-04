@@ -40,9 +40,11 @@ import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.SharePlaceListener;
 import com.example.vkumaps.models.Graph;
 import com.example.vkumaps.models.MarkerModel;
+import com.example.vkumaps.models.PointModel;
 import com.example.vkumaps.models.ShortestPathFinder;
 import com.example.vkumaps.models.ShortestPathResult;
 import com.example.vkumaps.models.Vertex;
+import com.example.vkumaps.models.WeightModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -212,6 +214,41 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         // Tạo đồ thị
         Graph graph = new Graph();
 
+        firestore.collection("weight")
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            WeightModel weightModel = document.toObject(WeightModel.class);
+
+                            firestore.collection("point")
+                                    .get().addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Vertex A = null;
+                                            Vertex B = null;
+                                            for (QueryDocumentSnapshot document1 : task.getResult()) {
+                                                String name = document1.getId();
+                                                if (name.equals(weightModel.getStart())) {
+                                                    PointModel pointModel = document1.toObject(PointModel.class);
+                                                    A = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
+                                                    graph.addVertex(A);
+                                                }
+                                                if (name.equals(weightModel.getEnd())) {
+                                                    PointModel pointModel = document1.toObject(PointModel.class);
+                                                    B = new Vertex(name, new LatLng(pointModel.getGeo().getLatitude(), pointModel.getGeo().getLongitude()));
+                                                    graph.addVertex(B);
+                                                }
+                                            }
+                                            graph.addEdge(A, B, weightModel.getWeight());
+                                        } else {
+                                            Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         Vertex A = new Vertex("A", new LatLng(15.97442740761159, 108.25164667073183));
         Vertex B = new Vertex("B", new LatLng(15.974451942655994, 108.25191131747602));
         Vertex C = new Vertex("C", new LatLng(15.974372004981687, 108.25190327084869));
@@ -244,11 +281,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         Vertex targetVertex = G;
         ShortestPathResult result = dijkstra.findShortestPath(startVertex, targetVertex);
 
-// Lấy đường đi ngắn nhất và khoảng cách cuối cùng
+        // Lấy đường đi ngắn nhất và khoảng cách cuối cùng
         List<Vertex> shortestPath = result.getPath();
         int shortestDistance = result.getDistance();
 
-        PolylineOptions po=new PolylineOptions();
+        PolylineOptions po =new PolylineOptions();
         po.color(Color.BLACK).width(16);
 
         // In đường đi ngắn nhất và khoảng cách cuối cùng
