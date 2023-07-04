@@ -39,9 +39,11 @@ import com.example.vkumaps.listener.SharePlaceListener;
 import com.example.vkumaps.models.EdgeTemp;
 import com.example.vkumaps.models.Graph;
 import com.example.vkumaps.models.MarkerModel;
+import com.example.vkumaps.models.PointModel;
 import com.example.vkumaps.models.ShortestPathFinder;
 import com.example.vkumaps.models.ShortestPathResult;
 import com.example.vkumaps.models.Vertex;
+import com.example.vkumaps.models.WeightModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -204,6 +206,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public void path() {
         // Tạo đồ thị
         Graph graph = new Graph();
+      
         List<Vertex> vertexList=new ArrayList<>();
         vertexList.add(new Vertex("A", new LatLng(15.97442740761159, 108.25164667073183)));
         vertexList.add(new Vertex("B", new LatLng(15.974451942655994, 108.25191131747602)));
