@@ -2,13 +2,9 @@ package com.example.vkumaps.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -31,8 +27,8 @@ import com.example.vkumaps.fragment.LoginFragment;
 import com.example.vkumaps.fragment.MyInfoFragment;
 import com.example.vkumaps.fragment.SearchByAreaFragment;
 import com.example.vkumaps.fragment.WeekScheduleFragment;
+import com.example.vkumaps.listener.BottomSheetListener;
 import com.example.vkumaps.listener.ChangeFragmentListener;
-import com.example.vkumaps.listener.SharePlaceListener;
 import com.example.vkumaps.models.MarkerModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -40,7 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener, SharePlaceListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener, BottomSheetListener {
     private DrawerLayout drawerLayout;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
