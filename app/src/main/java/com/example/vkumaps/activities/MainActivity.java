@@ -93,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             }
+            case R.id.menu_direction: {
+                startActivity(new Intent(getApplicationContext(), DirectionActivity.class));
+                break;
+            }
             case R.id.menu_admissions: {
                 if (currentFragment != FRAGMENT_ADMISSION) {
                     fragment = new AdmissionsFragment(this);

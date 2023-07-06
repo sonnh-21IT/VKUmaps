@@ -3,6 +3,7 @@ package com.example.vkumaps.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -34,6 +35,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
+import com.example.vkumaps.activities.DirectionActivity;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.listener.SharePlaceListener;
 import com.example.vkumaps.models.EdgeTemp;
@@ -621,7 +623,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 break;
             }
             case R.id.btn_direction: {
-
+                Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.btn_share: {
