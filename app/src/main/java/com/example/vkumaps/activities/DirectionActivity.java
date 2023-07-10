@@ -83,7 +83,7 @@ public class DirectionActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             list.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 list.add(document.getId());
@@ -117,7 +117,7 @@ public class DirectionActivity extends AppCompatActivity {
         firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     String startDir = null;
                     String endDir = null;
                     for (QueryDocumentSnapshot document : task.getResult()) {
