@@ -69,7 +69,7 @@ public class MarkerModel implements Parcelable {
     }
 
     public void setSubname(String subname) {
-        this.subname = subname;
+        this.subname =subname;
     }
 
     @Override

@@ -64,6 +64,7 @@ public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.MyVi
             });
         }
     }
+
     public interface ItemClickListener {
         void onItemClick(String text);
     }
