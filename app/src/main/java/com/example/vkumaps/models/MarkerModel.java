@@ -11,14 +11,16 @@ public class MarkerModel implements Parcelable {
     String iconURL;
     GeoPoint geopoint;
     String imgURL;
+    String subname;
 
     public MarkerModel() {
     }
 
-    public MarkerModel(String iconURL, GeoPoint geopoint, String imgURL) {
+    public MarkerModel(String iconURL, GeoPoint geopoint, String imgURL, String subname) {
         this.iconURL = iconURL;
         this.geopoint = geopoint;
         this.imgURL = imgURL;
+        this.subname = subname;
     }
 
     protected MarkerModel(Parcel in) {
@@ -60,6 +62,14 @@ public class MarkerModel implements Parcelable {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public String getSubname() {
+        return subname;
+    }
+
+    public void setSubname(String subname) {
+        this.subname = subname;
     }
 
     @Override
