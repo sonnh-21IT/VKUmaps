@@ -30,7 +30,7 @@ public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.MyVi
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.direction_item , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.direction_item, parent, false);
         return new DirectionAdapter.MyViewHolder(view);
     }
 
@@ -44,8 +44,9 @@ public class DirectionAdapter extends RecyclerView.Adapter<DirectionAdapter.MyVi
         return mList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView mTv;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mTv = itemView.findViewById(R.id.directionItemTv);
