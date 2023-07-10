@@ -3,19 +3,17 @@ package com.example.vkumaps.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +37,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.BottomSheetListener;
+import com.example.vkumaps.activities.DirectionActivity;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.models.EdgeTemp;
 import com.example.vkumaps.models.Graph;
@@ -50,7 +49,6 @@ import com.example.vkumaps.models.Vertex;
 import com.example.vkumaps.models.WeightModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -58,8 +56,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -84,37 +80,42 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener {
-    private ChangeFragmentListener listener;
-    private BottomSheetListener sharePlaceListener;
+    private final ChangeFragmentListener listener;
+    private final BottomSheetListener sharePlaceListener;
     public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView titlePlace;
     private ImageView imgPlace;
+    private TextView desPlace;
+    private GoogleMap map;
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
     private KmlLayer kmlLayer;
     private final List<Marker> markerList = new ArrayList<>();
     private FusedLocationProviderClient fusedLocationClient;
-    private GoogleMap map;
-    private String namePlace;
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
     );
+    private Bitmap resizedBitmap;
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
+    private ActivityResultLauncher<String> resultLauncher;
     private Marker shareLocation;
     private View rootView;
+    private Marker circleMarker;
+
     public HomeFragment(ChangeFragmentListener listener, BottomSheetListener sharePlaceListener) {
         this.listener = listener;
         this.sharePlaceListener = sharePlaceListener;
     }
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         initializeViews();
@@ -127,6 +128,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
 
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+//                            map.setMyLocationEnabled(true);
+                            // Lấy vị trí cuối cùng đã biết
+                            fusedLocationClient.getLastLocation()
+                                    .addOnSuccessListener((Executor) this, location -> {
+                                        if (location != null) {
+                                            LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
+                                            boolean isWithinArea = allowedArea.contains(area);
+                                            if (isWithinArea) {
+                                                map.setMyLocationEnabled(true);
+                                            } else {
+                                                map.setMyLocationEnabled(false);
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
+        );
+        requestPermission();
         return rootView;
     }
 
@@ -176,17 +201,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 titlePlace.setText(name);
                 Glide.with(requireContext()).load(marker.getImgURL()).into(imgPlace);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                map.moveCamera(CameraUpdateFactory.newLatLng(position));
                 cameraSetup(position, 20f, 0);
-            }
-            if (bundle.getString("startPoint") != null && bundle.getString("endPoint") != null) {
-                path(bundle.getString("startPoint"), bundle.getString("endPoint"));
+            } else {
+                Toast.makeText(requireContext(), "vị trí này chưa được cập nhật", Toast.LENGTH_SHORT).show();
             }
         } else {
             map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude, VKU_LOCATION.longitude)));
             cameraSetup(new LatLng(VKU_LOCATION.latitude, VKU_LOCATION.longitude), 16.5f, 30);
         }
-        googleMap.setOnMyLocationButtonClickListener(this);
+        map.setOnMyLocationButtonClickListener(this);
         try {
             mapSetup();
             kmlLayer.setOnFeatureClickListener(feature -> {
@@ -196,7 +220,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                     if (currentState == 1) {
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     } else {
-                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+                        map.animateCamera(CameraUpdateFactory.zoomTo(17));
                     }
                 }
             });
@@ -204,6 +228,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             throw new RuntimeException(e);
         }
         uiSettings();
+        path("VKU4", "CSK");
     }
 
     public void path(String startVertexLabel, String targetVertexLabel) {
@@ -280,36 +305,53 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             List<Vertex> shortestPath = result.getPath();
             int shortestDistance = result.getDistance();
 
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerStart = getResources().getDrawable(R.drawable.ic_circle_white, requireActivity().getTheme());
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerTarget = getResources().getDrawable(R.drawable.ic_circle_gray, requireActivity().getTheme());
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerEnd = getResources().getDrawable(R.drawable.marker, requireActivity().getTheme());
-            MarkerOptions markerOptionsStart = new MarkerOptions()
-                    .position(shortestPath.get(0).getPosition()).anchor(0.5f, 0.5f).icon(getMarkerIconFromDrawable(drawableMarkerStart)).draggable(false).title("noneClick");
-            MarkerOptions markerOptionsTarget = new MarkerOptions()
-                    .position(shortestPath.get(shortestPath.size() - 1).getPosition()).anchor(0.5f, 0.5f).icon(getMarkerIconFromDrawable(drawableMarkerTarget)).draggable(false).title("noneClick");
-            MarkerOptions markerOptionsEnd = new MarkerOptions()
-                    .position(shortestPath.get(shortestPath.size() - 1).getPosition()).draggable(false).title("noneClick").icon(getMarkerIconFromDrawable(drawableMarkerEnd));
-            markerOptionsEnd.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerStart=getResources().getDrawable(R.drawable.ic_circle_white,requireActivity().getTheme());
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerTarget=getResources().getDrawable(R.drawable.ic_circle_gray,requireActivity().getTheme());
 
-            Marker markerStart = map.addMarker(markerOptionsStart);
-            Marker markerTarget = map.addMarker(markerOptionsTarget);
-            Marker markerEnd = map.addMarker(markerOptionsEnd);
+            MarkerOptions markerOptionsStart = new MarkerOptions()
+                    .position(shortestPath.get(0).getPosition()).anchor(0.5f, 0.5f).icon(getMarkerIconFromDrawable(drawableMarkerStart));
+            MarkerOptions markerOptionsTarget = new MarkerOptions()
+                    .position(shortestPath.get(shortestPath.size()-1).getPosition()).anchor(0.5f, 0.5f).icon(getMarkerIconFromDrawable(drawableMarkerTarget));
+            MarkerOptions markerOptionsEnd = new MarkerOptions()
+                    .position(shortestPath.get(shortestPath.size()-1).getPosition());
+
+            circleMarker = map.addMarker(markerOptionsStart);
+            circleMarker = map.addMarker(markerOptionsTarget);
+
+            map.addMarker(markerOptionsEnd);
+//            updateCircleSize();
 
             PolylineOptions po = new PolylineOptions();
             po.color(Color.BLACK).width(10);
             po.startCap(new RoundCap());
             po.endCap(new RoundCap());
             // In đường đi ngắn nhất và khoảng cách cuối cùng
-            for (Vertex vertex : shortestPath) {
-                po.add(vertex.getPosition());
+            if (shortestPath != null) {
+                StringBuilder path = new StringBuilder();
+                for (Vertex vertex : shortestPath) {
+                    path.append(vertex.getLabel());
+                    po.add(vertex.getPosition());
+                }
+                cameraSetup(shortestPath.get(0).getPosition(), 20, 0);
+                Toast.makeText(requireContext(), path, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Khong the tim thay duong di", Toast.LENGTH_SHORT).show();
             }
             Polyline polyline = map.addPolyline(po);
             po.color(Color.parseColor("#4285F4")).width(8);
-            showDirection(markerStart, markerTarget, po);
             polyline = map.addPolyline(po);
         } else {
             Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
         }
+    }
+//    private void updateCircleSize() {
+//        float zoomLevel = map.getCameraPosition().zoom;
+//        float scale = (float) Math.pow(2, zoomLevel - 12);
+//        float radius = (float) (circleMarker.getZIndex() * scale);
+//        circleMarker.setRadius(radius);
+//    }
+    private float calculateRadius() {
+        return (float) (1000 * Math.pow(2, -map.getCameraPosition().zoom));
     }
 
     @Override
@@ -341,6 +383,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     private void uiSettings() {
+//        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
+//            map.setMyLocationEnabled(allowedArea.contains(area));
+//        }
         if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 //                            map.setMyLocationEnabled(true);
             // Lấy vị trí cuối cùng đã biết
@@ -437,14 +484,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             }
         });
 
-        // Thêm chữ vào bản đồ
-        GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
-                .position(VKU_LOCATION, 5f, 5f) // Điều chỉnh kích thước theo nhu cầu của bạn
-                .image(createTextOverlay("A110", 20, Color.BLACK, Typeface.DEFAULT));
-        GroundOverlay overlay = map.addGroundOverlay(overlayOptions);
-        overlay.setBearing(-90);
-        overlay.setZIndex(2);
-
         //Hiển thị các maker
         firestore.collection("Marker")
                 .get().addOnCompleteListener(task -> {
@@ -454,43 +493,35 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
                             addMarker(new LatLng(markerModel.getGeoPoint().getLatitude(), markerModel.getGeoPoint().getLongitude()),
                                     markerModel.getIconURL(), name, markerModel.getImgURL());
-                        }
-                        map.setOnMarkerClickListener(marker -> {
-                            if (marker.getTitle().equalsIgnoreCase("noneClick")) {
-                                cameraSetup(marker.getPosition(), 20, 0);
-                                if (currentState == 1) {
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                                }
-                                return true;
-                            } else {
+                            map.setOnMarkerClickListener(marker -> {
+//                                Toast.makeText(requireContext(), "marker click", Toast.LENGTH_SHORT).show();
                                 cameraSetup(marker.getPosition(), 20, 0);
                                 titlePlace.setText(marker.getTitle());
 //                                desPlace.setText(marker.getSnippet());
                                 Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
                                 shareLocation = marker;
-                                namePlace = marker.getTitle();
                                 if (currentState == 0) {
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                                 }
-                            }
-                            return true;
-                        });
-                        map.setOnCameraIdleListener(() -> {
-                            // Get the current camera zoom level
-                            float zoomLevel = map.getCameraPosition().zoom;
-                            if (zoomLevel < 17) {
-                                // Hide all markers if the zoom level is less than 12
-                                for (Marker marker : markerList) {
-                                    marker.setVisible(false);
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                return true;
+                            });
+                            map.setOnCameraIdleListener(() -> {
+                                // Get the current camera zoom level
+                                float zoomLevel = map.getCameraPosition().zoom;
+                                if (zoomLevel < 17) {
+                                    // Hide all markers if the zoom level is less than 12
+                                    for (Marker marker : markerList) {
+                                        marker.setVisible(false);
+                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                    }
+                                } else {
+                                    // Show all markers if the zoom level is 12 or greater
+                                    for (Marker marker : markerList) {
+                                        marker.setVisible(true);
+                                    }
                                 }
-                            } else {
-                                // Show all markers if the zoom level is 12 or greater
-                                for (Marker marker : markerList) {
-                                    marker.setVisible(true);
-                                }
-                            }
-                        });
+                            });
+                        }
                     } else {
                         Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                     }
@@ -500,24 +531,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         map.setMinZoomPreference(16.5f);
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
-    }
-
-    private BitmapDescriptor createTextOverlay(String text, float fontSize, int textColor, Typeface typeface) {
-        Paint paint = new Paint();
-        paint.setTextSize(fontSize);
-        paint.setColor(textColor);
-        paint.setTypeface(typeface);
-        paint.setAntiAlias(true);
-        paint.setTextAlign(Paint.Align.CENTER);
-
-        float textWidth = paint.measureText(text);
-        float textHeight = paint.descent() - paint.ascent();
-
-        Bitmap bitmap = Bitmap.createBitmap((int) textWidth, (int) textHeight, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawText(text, textWidth / 2, textHeight - paint.descent(), paint);
-
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     //add marker
@@ -575,26 +588,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     private void requestPermission() {
-        ActivityResultLauncher<String> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-//                            map.setMyLocationEnabled(true);
-                            // Lấy vị trí cuối cùng đã biết
-
-                            fusedLocationClient.getLastLocation()
-                                    .addOnSuccessListener(ContextCompat.getMainExecutor(requireContext()), location -> {
-                                        if (location != null) {
-                                            LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
-                                            boolean isWithinArea = allowedArea.contains(area);
-                                            map.setMyLocationEnabled(isWithinArea);
-                                        }
-                                    });
-                        }
-                    }
-                }
-        );
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
@@ -633,7 +626,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 break;
             }
             case R.id.btn_direction: {
-                listener.onDirectionClick(namePlace);
+                Intent intent = new Intent(requireContext(), DirectionActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.btn_share: {
@@ -665,55 +659,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 showPopupMenu(view);
                 break;
             }
-        }
-    }
-
-    public void showDirection(Marker markerStart, Marker markerTarget, PolylineOptions po) {
-///cần sửa
-        if (po.getPoints().size() <= 1) {
-            cameraSetup(new LatLng(po.getPoints().get(0).latitude, po.getPoints().get(0).longitude), 20, 0);
-        } else {
-            LatLng firstPoint = po.getPoints().get(0);
-            LatLng secondPoint = po.getPoints().get(1);
-            float bearing = (float) Math.toDegrees(Math.atan2(secondPoint.longitude - firstPoint.longitude, secondPoint.latitude - firstPoint.latitude));
-
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            builder.include(markerStart.getPosition());
-            builder.include(markerTarget.getPosition());
-            LatLngBounds bounds = builder.build();
-
-            int padding = 150; // Khoảng cách từ biên của màn hình đến giới hạn
-            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            int width = displayMetrics.widthPixels;
-            int height = displayMetrics.heightPixels;
-
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(bounds.getCenter())      // Sets the center of the map to Mountain View
-//                .bearing(bearing)
-//                .build();                   // Creates a CameraPosition from the builder
-//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//
-//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-//        map.animateCamera(cameraUpdate);
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-            map.animateCamera(cameraUpdate);
-            map.animateCamera(cameraUpdate, new GoogleMap.CancelableCallback() {
-                @Override
-                public void onFinish() {
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(po.getPoints().get(0))
-                            .zoom(map.getCameraPosition().zoom)
-                            .bearing(bearing)
-                            .build();
-                    CameraUpdate rotateCamera = CameraUpdateFactory.newCameraPosition(cameraPosition);
-                    map.animateCamera(rotateCamera);
-                }
-
-                @Override
-                public void onCancel() {
-                    // Xử lý khi hủy animation (nếu cần thiết)
-                }
-            });
         }
     }
 
@@ -762,40 +707,5 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    public float calculateDistance(LatLng latLng1, LatLng latLng2) {
-        Location location1 = new Location("Location1");
-        location1.setLatitude(latLng1.latitude);
-        location1.setLongitude(latLng1.longitude);
-
-        Location location2 = new Location("Location2");
-        location2.setLatitude(latLng2.latitude);
-        location2.setLongitude(latLng2.longitude);
-
-        // Tính khoảng cách giữa hai tọa độ LatLng (đơn vị là mét)
-        return location1.distanceTo(location2);
-    }
-
-    public void showShortDistance() {
-        List<LatLng> latLngList = new ArrayList<>();
-        latLngList.add(new LatLng(15.975306336582696, 108.25191137217618));
-        latLngList.add(new LatLng(15.975320923477389, 108.25259415109005));
-        latLngList.add(new LatLng(15.975295396410973, 108.25339072648954));
-
-        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            int position = 0;
-            float minDistance = calculateDistance(latLng, latLngList.get(0));
-            for (int i = 1; i <= latLngList.size() - 1; i++) {
-                float distance = calculateDistance(latLng, latLngList.get(i));
-                if (distance <= minDistance) {
-                    minDistance = distance;
-                    position = i;
-                }
-            }
-            Toast.makeText(requireContext(), position + "   " + minDistance, Toast.LENGTH_SHORT).show();
-        }
     }
 }
