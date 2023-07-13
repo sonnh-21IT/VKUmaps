@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -28,7 +29,7 @@ import java.util.List;
 
 public class DirectionActivity extends AppCompatActivity {
     private LinearLayout recommend, history;
-    private ImageView back;
+    private ImageView back, swap;
     private EditText start, end;
     private RecyclerView rv_recommend, rv_history;
     private DirectionAdapter adapter;
@@ -154,6 +155,18 @@ public class DirectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finishAndRemoveTask();
+            }
+        });
+        swap = findViewById(R.id.swap);
+        swap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s1 = start.getText().toString().trim();
+                String s2 = end.getText().toString().trim();
+                if (!TextUtils.isEmpty(s1) || !TextUtils.isEmpty(s2)) {
+                    start.setText(s2);
+                    end.setText(s1);
+                }
             }
         });
     }
