@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -130,7 +131,10 @@ public class DirectionActivity extends AppCompatActivity {
                             endDir = model.getSubname();
                         }
                     }
-                    Toast.makeText(DirectionActivity.this, startDir + " " + endDir, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("startPoint",startDir);
+                    intent.putExtra("endPoint",endDir);
+                    startActivity(intent);
                 }
             }
         });
