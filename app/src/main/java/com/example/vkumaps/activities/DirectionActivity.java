@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -46,7 +47,7 @@ public class DirectionActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // Xử lý khi nội dung của EditText thay đổi
             String input = s.toString().trim();
-            if (!input.isEmpty()) {
+            if (!input.equals("")) {
                 // Hiển thị RecyclerView và tải dữ liệu từ Firestore
                 history.setVisibility(View.GONE);
                 recommend.setVisibility(View.VISIBLE);
@@ -106,7 +107,7 @@ public class DirectionActivity extends AppCompatActivity {
                     end.requestFocus();
                 } else if (end.isFocused()) {
                     end.setText(text);
-                    findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+//                    findDirection(start.getText().toString().trim(), end.getText().toString().trim());
                 }
                 recommend.setVisibility(View.GONE);
                 history.setVisibility(View.VISIBLE);
@@ -131,7 +132,10 @@ public class DirectionActivity extends AppCompatActivity {
                             endDir = model.getSubname();
                         }
                     }
-                    Toast.makeText(DirectionActivity.this, startDir + " " + endDir, Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("startPoint",startDir);
+                    intent.putExtra("endPoint",endDir);
+                    startActivity(intent);
                 }
             }
         });
@@ -142,10 +146,8 @@ public class DirectionActivity extends AppCompatActivity {
         recommend = findViewById(R.id.recommend);
         history = findViewById(R.id.history);
         start = findViewById(R.id.start);
-        start.addTextChangedListener(editTextWatcher);
         start.requestFocus();
         end = findViewById(R.id.end);
-        end.addTextChangedListener(editTextWatcher);
         rv_recommend = findViewById(R.id.rv_recommend);
         rv_recommend.setHasFixedSize(true);
         rv_recommend.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -169,6 +171,12 @@ public class DirectionActivity extends AppCompatActivity {
                 }
             }
         });
+        if (getIntent().getStringExtra("name")!=null){
+            end.setText(getIntent().getStringExtra("name"));
+            start.requestFocus();
+        }
+        end.addTextChangedListener(editTextWatcher);
+        start.addTextChangedListener(editTextWatcher);
     }
 
     private List<String> searchPhrases(List<String> phraseList, String keyword) {

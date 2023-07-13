@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +70,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, new HomeFragment(this,this));
-        transaction.commit();
+        fragment = new HomeFragment(this, this);
+        Intent intent = getIntent();
+        if (intent != null) {
+            String startPoint = intent.getStringExtra("startPoint");
+            String endPoint = intent.getStringExtra("endPoint");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("startPoint", startPoint);
+            bundle.putString("endPoint", endPoint);
+
+            replaceFragment(fragment, bundle);
+        } else {
+            replaceFragment(fragment, null);
+        }
         currentFragment = FRAGMENT_HOME;
     }
 
@@ -82,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.menu_main_maps: {
                 if (currentFragment != FRAGMENT_HOME) {
-                    fragment = new HomeFragment(this,this);
+                    fragment = new HomeFragment(this, this);
 //                    replaceFragment(fragment);
                     drawerLayout.closeDrawer(GravityCompat.START);
                     currentFragment = FRAGMENT_HOME;
@@ -130,14 +143,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.menu_account: {
-                if (auth.getCurrentUser()!=null){
+                if (auth.getCurrentUser() != null) {
                     if (currentFragment != FRAGMENT_MY_INFORMATION) {
                         fragment = new MyInfoFragment(this);
 //                      replaceFragment(fragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         currentFragment = FRAGMENT_MY_INFORMATION;
                     }
-                }else{
+                } else {
                     if (currentFragment != FRAGMENT_ACCOUNT) {
                         fragment = new LoginFragment(this);
 //                    replaceFragment(fragment);
@@ -170,9 +183,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                 @Override
                 public void onDrawerClosed(View drawerView) {
-                    if (fragment!=null){
+                    if (fragment != null) {
                         drawerLayout.closeDrawer(GravityCompat.START);
-                        replaceFragment(fragment,null);
+                        replaceFragment(fragment, null);
                     }
                 }
             });
@@ -223,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void replaceFragment(Fragment fragment,Bundle bundle) {
-        if (bundle!=null){
+    private void replaceFragment(Fragment fragment, Bundle bundle) {
+        if (bundle != null) {
             fragment.setArguments(bundle);
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -236,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
     @Override
     public void changeTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
@@ -245,14 +259,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onNestedClick(MarkerModel markerModel,String name) {
-        fragment = new HomeFragment(this,this);
+    public void onNestedClick(MarkerModel markerModel, String name) {
+        fragment = new HomeFragment(this, this);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("marker", markerModel);
         bundle.putString("name", name);
         replaceFragment(fragment, bundle);
         currentFragment = FRAGMENT_HOME;
+    }
+
+    @Override
+    public void onDirectionClick(String name) {
+        Intent intent = new Intent(getApplicationContext(), DirectionActivity.class);
+        intent.putExtra("name",name);
+        startActivity(intent);
+//        Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
     }
 
     @Override
