@@ -242,6 +242,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         currentFragment = FRAGMENT_HOME;
     }
+
+    @Override
+    public void onDirectionClick(String name) {
+        Intent intent=new Intent(getApplicationContext(),DirectionActivity.class);
+        intent.putExtra("name",name);
+        startActivity(intent);
+    }
+
     @Override
     protected void onStop() {
         super.onStop();

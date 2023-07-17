@@ -1,10 +1,6 @@
 package com.example.vkumaps.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,11 +9,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vkumaps.R;
 import com.example.vkumaps.adapters.DirectionAdapter;
+import com.example.vkumaps.adapters.HistoryAdapter;
 import com.example.vkumaps.models.MarkerModel;
+import com.example.vkumaps.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +31,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.paperdb.Paper;
+
 public class DirectionActivity extends AppCompatActivity {
     private LinearLayout recommend, history;
     private ImageView back;
@@ -35,6 +41,8 @@ public class DirectionActivity extends AppCompatActivity {
     private DirectionAdapter adapter;
     private List<String> list;
     private FirebaseFirestore firestore;
+    private TextView delete;
+    private HistoryAdapter historyAdapter;
 
     private TextWatcher editTextWatcher = new TextWatcher() {
         @Override
@@ -42,6 +50,7 @@ public class DirectionActivity extends AppCompatActivity {
             // Không cần xử lý trước sự thay đổi
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // Xử lý khi nội dung của EditText thay đổi
@@ -82,6 +91,7 @@ public class DirectionActivity extends AppCompatActivity {
         firestore.collection("Marker")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -108,6 +118,27 @@ public class DirectionActivity extends AppCompatActivity {
                     end.setText(text);
                     findDirection(start.getText().toString().trim(), end.getText().toString().trim());
                 }
+                Utils.listHistory = Paper.book().read("history");
+                boolean checkExit = false;
+                int n = 0;
+                if (Utils.listHistory != null) {
+                    if (Utils.listHistory.size() > 0) {
+                        for (int i = 0; i < Utils.listHistory.size() - 1; i++) {
+                            if (Utils.listHistory.get(i).equals(text)) {
+                                checkExit = true;
+                                n = i;
+                            }
+                        }
+                    }
+                    Utils.listHistory.add(text);
+                } else {
+                    Utils.listHistory = new ArrayList<>();
+                }
+                if (checkExit) {
+                    Utils.listHistory.remove(n);
+                }
+                Paper.book().write("history", Utils.listHistory);
+
                 recommend.setVisibility(View.GONE);
                 history.setVisibility(View.VISIBLE);
             }
@@ -131,9 +162,9 @@ public class DirectionActivity extends AppCompatActivity {
                             endDir = model.getSubname();
                         }
                     }
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                    intent.putExtra("startPoint",startDir);
-                    intent.putExtra("endPoint",endDir);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("startPoint", startDir);
+                    intent.putExtra("endPoint", endDir);
                     startActivity(intent);
                 }
             }
@@ -145,21 +176,71 @@ public class DirectionActivity extends AppCompatActivity {
         recommend = findViewById(R.id.recommend);
         history = findViewById(R.id.history);
         start = findViewById(R.id.start);
-        start.addTextChangedListener(editTextWatcher);
         start.requestFocus();
         end = findViewById(R.id.end);
-        end.addTextChangedListener(editTextWatcher);
         rv_recommend = findViewById(R.id.rv_recommend);
         rv_recommend.setHasFixedSize(true);
         rv_recommend.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rv_history = findViewById(R.id.rv_history);
+        rv_history.setHasFixedSize(true);
+        rv_history.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         back = findViewById(R.id.back);
+        delete = findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finishAndRemoveTask();
             }
         });
+        if (getIntent().getStringExtra("name") != null) {
+            end.setText(getIntent().getStringExtra("name"));
+        }
+        start.addTextChangedListener(editTextWatcher);
+        end.addTextChangedListener(editTextWatcher);
+        Paper.init(getApplicationContext());
+        showHistory();
+
+    }
+
+    private void showHistory() {
+        List<String> listHistory = Paper.book().read("history");
+        if (listHistory != null) {
+            List<String> temp = new ArrayList<>();
+            for (int i = listHistory.size() - 1; i >= 0; i--) {
+                temp.add(listHistory.get(i));
+            }
+            historyAdapter = new HistoryAdapter(temp);
+            historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
+                @Override
+                public void onItemClick(String text) {
+
+                }
+
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onDeleteClick(String text) {
+                    for (int i = 0; i <= listHistory.size()-1; i++) {
+                        if (listHistory.get(i).equals(text)) {
+                            listHistory.remove(i);
+                        }
+                    }
+                    historyAdapter.setmList(listHistory);
+                    rv_history.setAdapter(historyAdapter);
+                }
+            });
+            rv_history.setAdapter(historyAdapter);
+            history.setVisibility(View.VISIBLE);
+            recommend.setVisibility(View.GONE);
+        } else {
+            history.setVisibility(View.GONE);
+            recommend.setVisibility(View.VISIBLE);
+        }
     }
 
     private List<String> searchPhrases(List<String> phraseList, String keyword) {
