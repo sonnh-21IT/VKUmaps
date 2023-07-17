@@ -1,5 +1,7 @@
 package com.example.vkumaps.activities;
 
+import static com.example.vkumaps.utils.Utils.listHistory;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -128,26 +130,26 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                     end.setText(text);
                     findDirection(start.getText().toString().trim(), end.getText().toString().trim());
                 }
-                Utils.listHistory = Paper.book().read("history");
+                listHistory = Paper.book().read("history");
                 boolean checkExit = false;
                 int n = 0;
-                if (Utils.listHistory != null) {
-                    if (Utils.listHistory.size() > 0) {
-                        for (int i = 0; i < Utils.listHistory.size() - 1; i++) {
-                            if (text.equals(Utils.listHistory.get(i))) {
+                if (listHistory != null) {
+                    if (listHistory.size() > 0) {
+                        for (int i = 0; i < listHistory.size() - 1; i++) {
+                            if (text.equals(listHistory.get(i))) {
                                 checkExit = true;
                                 n = i;
                             }
                         }
                     }
                 } else {
-                    Utils.listHistory = new ArrayList<>();
+                    listHistory = new ArrayList<>();
                 }
                 if (checkExit) {
-                    Utils.listHistory.remove(n);
+                    listHistory.remove(n);
                 }
-                Utils.listHistory.add(text);
-                Paper.book().write("history", Utils.listHistory);
+                listHistory.add(text);
+                Paper.book().write("history", listHistory);
 
                 showHistory();
                 recommend.setVisibility(View.GONE);
@@ -217,7 +219,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         back = findViewById(R.id.back);
         delete = findViewById(R.id.delete);
         dialog=new WarningDeleteHistoryDialog(this,this);
-        Utils.listHistory = Paper.book().read("history");
+        listHistory = Paper.book().read("history");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -227,7 +229,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory!=null){
+                if (listHistory!=null){
                     dialog.showDialog();
                 }else {
                     Toast.makeText(getApplicationContext(),"Lịch sử đang rỗng",Toast.LENGTH_SHORT).show();
@@ -253,13 +255,13 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDeleteClick(String text) {
-                for (int i = 0; i <= Utils.listHistory.size()-1; i++) {
-                    if (Utils.listHistory.get(i).equals(text)) {
-                        Utils.listHistory.remove(i);
+                for (int i = 0; i <= listHistory.size()-1; i++) {
+                    if (listHistory.get(i).equals(text)) {
+                        listHistory.remove(i);
                     }
                 }
-                Paper.book().write("history",Utils.listHistory);
-                historyAdapter.setmList(Utils.listHistory);
+                Paper.book().write("history", listHistory);
+                historyAdapter.setmList(listHistory);
                 rv_history.setAdapter(historyAdapter);
             }
         });
@@ -267,10 +269,10 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     }
 
     private void showHistory() {
-        if (Utils.listHistory != null) {
+        if (listHistory != null) {
             List<String> temp = new ArrayList<>();
-            for (int i = Utils.listHistory.size() - 1; i >= 0; i--) {
-                temp.add(Utils.listHistory.get(i));
+            for (int i = listHistory.size() - 1; i >= 0; i--) {
+                temp.add(listHistory.get(i));
             }
             historyAdapter = new HistoryAdapter(temp);
             historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
@@ -313,7 +315,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
 
     @Override
     public void onClear() {
-        Utils.listHistory.clear();
+        listHistory.clear();
         Paper.book().delete("history");
         historyAdapter.setmList(new ArrayList<>());
         rv_history.setAdapter(historyAdapter);
