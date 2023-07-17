@@ -1,6 +1,8 @@
 package com.example.vkumaps.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -113,7 +115,11 @@ public class DirectionActivity extends AppCompatActivity {
             public void onItemClick(String text) {
                 if (start.isFocused()) {
                     start.setText(text);
-                    end.requestFocus();
+                    if (!end.getText().toString().equals("")) {
+                        findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+                    } else {
+                        end.requestFocus();
+                    }
                 } else if (end.isFocused()) {
                     end.setText(text);
                     findDirection(start.getText().toString().trim(), end.getText().toString().trim());
@@ -162,15 +168,34 @@ public class DirectionActivity extends AppCompatActivity {
                             endDir = model.getSubname();
                         }
                     }
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("startPoint", startDir);
-                    intent.putExtra("endPoint", endDir);
-                    startActivity(intent);
+                    if (startDir != null && endDir != null) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("startPoint", startDir);
+                        intent.putExtra("endPoint", endDir);
+                        startActivity(intent);
+                    } else {
+                        opeDialog("Địa điểm bạn chọn không tồn tại!");
+                    }
                 }
             }
         });
     }
 
+    private void opeDialog(String s) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DirectionActivity.this);
+        builder.setTitle("Lỗi");
+        builder.setMessage(s);
+        builder.setIcon(R.drawable.ic_error);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     private void initView() {
         recommend = findViewById(R.id.recommend);
@@ -225,7 +250,7 @@ public class DirectionActivity extends AppCompatActivity {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onDeleteClick(String text) {
-                    for (int i = 0; i <= listHistory.size()-1; i++) {
+                    for (int i = 0; i <= listHistory.size() - 1; i++) {
                         if (listHistory.get(i).equals(text)) {
                             listHistory.remove(i);
                         }

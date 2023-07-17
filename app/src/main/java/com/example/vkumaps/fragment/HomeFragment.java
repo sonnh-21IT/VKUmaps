@@ -3,11 +3,12 @@ package com.example.vkumaps.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -37,9 +38,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.vkumaps.R;
-import com.example.vkumaps.activities.DirectionActivity;
 import com.example.vkumaps.listener.BottomSheetListener;
-import com.example.vkumaps.activities.DirectionActivity;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.models.EdgeTemp;
 import com.example.vkumaps.models.Graph;
@@ -59,6 +58,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -77,6 +78,7 @@ import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
+import com.google.maps.android.data.kml.KmlRenderer;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -182,8 +184,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 cameraSetup(position, 20f, 0);
             }
-            if (bundle.getString("startPoint")!=null&&bundle.getString("endPoint")!=null){
-                path(bundle.getString("startPoint"),bundle.getString("endPoint"));
+            if (bundle.getString("startPoint") != null && bundle.getString("endPoint") != null) {
+                path(bundle.getString("startPoint"), bundle.getString("endPoint"));
             }
         } else {
             map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude, VKU_LOCATION.longitude)));
@@ -294,9 +296,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                     .position(shortestPath.get(shortestPath.size() - 1).getPosition()).draggable(false).title("noneClick").icon(getMarkerIconFromDrawable(drawableMarkerEnd));
             markerOptionsEnd.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-            Marker markerStart=map.addMarker(markerOptionsStart);
-            Marker markerTarget=map.addMarker(markerOptionsTarget);
-            Marker markerEnd=map.addMarker(markerOptionsEnd);
+            Marker markerStart = map.addMarker(markerOptionsStart);
+            Marker markerTarget = map.addMarker(markerOptionsTarget);
+            Marker markerEnd = map.addMarker(markerOptionsEnd);
 
             PolylineOptions po = new PolylineOptions();
             po.color(Color.BLACK).width(10);
@@ -308,7 +310,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             }
             Polyline polyline = map.addPolyline(po);
             po.color(Color.parseColor("#4285F4")).width(8);
-            showDirection(markerStart,markerTarget,po);
+            showDirection(markerStart, markerTarget, po);
             polyline = map.addPolyline(po);
         } else {
             Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
@@ -439,6 +441,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 }
             }
         });
+
+        // Thêm chữ vào bản đồ
+        GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
+                .position(VKU_LOCATION, 5f, 5f) // Điều chỉnh kích thước theo nhu cầu của bạn
+                .image(createTextOverlay("A110", 20, Color.BLACK, Typeface.DEFAULT));
+        GroundOverlay overlay = map.addGroundOverlay(overlayOptions);
+        overlay.setBearing(-90);
+        overlay.setZIndex(2);
+
         //Hiển thị các maker
         firestore.collection("Marker")
                 .get().addOnCompleteListener(task -> {
@@ -461,7 +472,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 //                                desPlace.setText(marker.getSnippet());
                                     Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
                                     shareLocation = marker;
-                                    namePlace=marker.getTitle();
+                                    namePlace = marker.getTitle();
                                     if (currentState == 0) {
                                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                                     }
@@ -494,6 +505,24 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         map.setMinZoomPreference(16.5f);
         map.setLatLngBoundsForCameraTarget(allowedArea);
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.mymapstyle));
+    }
+
+    private BitmapDescriptor createTextOverlay(String text, float fontSize, int textColor, Typeface typeface) {
+        Paint paint = new Paint();
+        paint.setTextSize(fontSize);
+        paint.setColor(textColor);
+        paint.setTypeface(typeface);
+        paint.setAntiAlias(true);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        float textWidth = paint.measureText(text);
+        float textHeight = paint.descent() - paint.ascent();
+
+        Bitmap bitmap = Bitmap.createBitmap((int) textWidth, (int) textHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawText(text, textWidth / 2, textHeight - paint.descent(), paint);
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     //add marker
@@ -642,11 +671,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             }
         }
     }
-    public void showDirection(Marker markerStart,Marker markerTarget,PolylineOptions po){
+
+    public void showDirection(Marker markerStart, Marker markerTarget, PolylineOptions po) {
 ///cần sửa
-        if (po.getPoints().size()<=1){
-            cameraSetup(new LatLng(po.getPoints().get(0).latitude,po.getPoints().get(0).longitude),20,0);
-        }else {
+        if (po.getPoints().size() <= 1) {
+            cameraSetup(new LatLng(po.getPoints().get(0).latitude, po.getPoints().get(0).longitude), 20, 0);
+        } else {
             LatLng firstPoint = po.getPoints().get(0);
             LatLng secondPoint = po.getPoints().get(1);
             float bearing = (float) Math.toDegrees(Math.atan2(secondPoint.longitude - firstPoint.longitude, secondPoint.latitude - firstPoint.latitude));
@@ -690,6 +720,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             });
         }
     }
+
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
         if (currentState == 1) {
