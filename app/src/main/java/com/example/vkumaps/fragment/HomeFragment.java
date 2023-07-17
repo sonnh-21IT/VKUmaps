@@ -98,6 +98,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private final List<Marker> markerList = new ArrayList<>();
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
+    private String namePlace;
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
@@ -179,8 +180,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 cameraSetup(position, 20f, 0);
-            } else {
-                Toast.makeText(requireContext(), "vị trí này chưa được cập nhật", Toast.LENGTH_SHORT).show();
+            }
+            if (bundle.getString("startPoint")!=null&&bundle.getString("endPoint")!=null){
+                path(bundle.getString("startPoint"),bundle.getString("endPoint"));
             }
         } else {
             map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(VKU_LOCATION.latitude, VKU_LOCATION.longitude)));
@@ -204,7 +206,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             throw new RuntimeException(e);
         }
         uiSettings();
-        path("VCay", "KTX");
     }
 
     public void path(String startVertexLabel, String targetVertexLabel) {
@@ -283,13 +284,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
             @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerStart = getResources().getDrawable(R.drawable.ic_circle_white, requireActivity().getTheme());
             @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerTarget = getResources().getDrawable(R.drawable.ic_circle_gray, requireActivity().getTheme());
-
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawableMarkerEnd = getResources().getDrawable(R.drawable.marker, requireActivity().getTheme());
             MarkerOptions markerOptionsStart = new MarkerOptions()
                     .position(shortestPath.get(0).getPosition()).anchor(0.5f, 0.5f).icon(getMarkerIconFromDrawable(drawableMarkerStart)).draggable(false).title("noneClick");
             MarkerOptions markerOptionsTarget = new MarkerOptions()
                     .position(shortestPath.get(shortestPath.size() - 1).getPosition()).anchor(0.5f, 0.5f).icon(getMarkerIconFromDrawable(drawableMarkerTarget)).draggable(false).title("noneClick");
             MarkerOptions markerOptionsEnd = new MarkerOptions()
-                    .position(shortestPath.get(shortestPath.size() - 1).getPosition()).draggable(false).title("noneClick");
+                    .position(shortestPath.get(shortestPath.size() - 1).getPosition()).draggable(false).title("noneClick").icon(getMarkerIconFromDrawable(drawableMarkerEnd));
+            markerOptionsEnd.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
             Marker markerStart=map.addMarker(markerOptionsStart);
             Marker markerTarget=map.addMarker(markerOptionsTarget);
@@ -300,15 +302,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             po.startCap(new RoundCap());
             po.endCap(new RoundCap());
             // In đường đi ngắn nhất và khoảng cách cuối cùng
-            if (shortestPath != null) {
-                StringBuilder path = new StringBuilder();
-                for (Vertex vertex : shortestPath) {
-                    path.append(vertex.getLabel());
-                    po.add(vertex.getPosition());
-                }
-                Toast.makeText(requireContext(), path, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(requireContext(), "Khong the tim thay duong di", Toast.LENGTH_SHORT).show();
+            for (Vertex vertex : shortestPath) {
+                po.add(vertex.getPosition());
             }
             Polyline polyline = map.addPolyline(po);
             po.color(Color.parseColor("#4285F4")).width(8);
@@ -465,6 +460,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 //                                desPlace.setText(marker.getSnippet());
                                     Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
                                     shareLocation = marker;
+                                    namePlace=marker.getTitle();
                                     if (currentState == 0) {
                                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                                     }
@@ -611,8 +607,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 break;
             }
             case R.id.btn_direction: {
-                Intent intent = new Intent(requireContext(), DirectionActivity.class);
-                startActivity(intent);
+                listener.onDirectionClick(namePlace);
                 break;
             }
             case R.id.btn_share: {
@@ -647,20 +642,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         }
     }
     public void showDirection(Marker markerStart,Marker markerTarget,PolylineOptions po){
+///cần sửa
+        if (po.getPoints().size()<=1){
+            cameraSetup(new LatLng(po.getPoints().get(0).latitude,po.getPoints().get(0).longitude),20,0);
+        }else {
+            LatLng firstPoint = po.getPoints().get(0);
+            LatLng secondPoint = po.getPoints().get(1);
+            float bearing = (float) Math.toDegrees(Math.atan2(secondPoint.longitude - firstPoint.longitude, secondPoint.latitude - firstPoint.latitude));
 
-        LatLng firstPoint = po.getPoints().get(0);
-        LatLng secondPoint = po.getPoints().get(1);
-        float bearing = (float) Math.toDegrees(Math.atan2(secondPoint.longitude - firstPoint.longitude, secondPoint.latitude - firstPoint.latitude));
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(markerStart.getPosition());
+            builder.include(markerTarget.getPosition());
+            LatLngBounds bounds = builder.build();
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(markerStart.getPosition());
-        builder.include(markerTarget.getPosition());
-        LatLngBounds bounds = builder.build();
-
-        int padding = 150; // Khoảng cách từ biên của màn hình đến giới hạn
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
+            int padding = 150; // Khoảng cách từ biên của màn hình đến giới hạn
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            int width = displayMetrics.widthPixels;
+            int height = displayMetrics.heightPixels;
 
 //        CameraPosition cameraPosition = new CameraPosition.Builder()
 //                .target(bounds.getCenter())      // Sets the center of the map to Mountain View
@@ -670,24 +668,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 //
 //        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 //        map.animateCamera(cameraUpdate);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-        map.animateCamera(cameraUpdate, new GoogleMap.CancelableCallback() {
-            @Override
-            public void onFinish() {
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(bounds.getCenter())
-                        .zoom(map.getCameraPosition().zoom)
-                        .bearing(bearing)
-                        .build();
-                CameraUpdate rotateCamera = CameraUpdateFactory.newCameraPosition(cameraPosition);
-                map.animateCamera(rotateCamera);
-            }
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+            map.animateCamera(cameraUpdate);
+            map.animateCamera(cameraUpdate, new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(po.getPoints().get(0))
+                            .zoom(map.getCameraPosition().zoom)
+                            .bearing(bearing)
+                            .build();
+                    CameraUpdate rotateCamera = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                    map.animateCamera(rotateCamera);
+                }
 
-            @Override
-            public void onCancel() {
-                // Xử lý khi hủy animation (nếu cần thiết)
-            }
-        });
+                @Override
+                public void onCancel() {
+                    // Xử lý khi hủy animation (nếu cần thiết)
+                }
+            });
+        }
     }
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
