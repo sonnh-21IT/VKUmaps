@@ -111,9 +111,9 @@
                 android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Xóa"
+                android:text="Xóa tất cả"
                 android:textAlignment="textEnd"
-                android:textColor="#094A91"
+                android:textColor="@android:color/holo_red_light"
                 android:textSize="16dp"
                 android:textStyle="bold|italic" />
         </LinearLayout>
