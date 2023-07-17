@@ -91,7 +91,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public static BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView titlePlace;
     private ImageView imgPlace;
-    private TextView desPlace;
     private LocationManager locationManager;
     private FirebaseFirestore firestore;
     private KmlLayer kmlLayer;
@@ -103,16 +102,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
     );
-    private Bitmap resizedBitmap;
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private Marker shareLocation;
     private View rootView;
-
     public HomeFragment(ChangeFragmentListener listener, BottomSheetListener sharePlaceListener) {
         this.listener = listener;
         this.sharePlaceListener = sharePlaceListener;
     }
-
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -607,6 +603,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 break;
             }
             case R.id.btn_direction: {
+                currentState=0;
                 listener.onDirectionClick(namePlace);
                 break;
             }
