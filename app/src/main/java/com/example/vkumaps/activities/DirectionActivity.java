@@ -282,12 +282,12 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onDeleteClick(String text) {
-                    for (int i = 0; i <= listHistory.size() - 1; i++) {
-                        if (listHistory.get(i).equals(text)) {
-                            listHistory.remove(i);
+                    for (int i = 0; i <= Utils.listHistory.size() - 1; i++) {
+                        if (Utils.listHistory.get(i).equals(text)) {
+                            Utils.listHistory.remove(i);
                         }
                     }
-                    historyAdapter.setmList(listHistory);
+                    historyAdapter.setmList(Utils.listHistory);
                     rv_history.setAdapter(historyAdapter);
                 }
             });
