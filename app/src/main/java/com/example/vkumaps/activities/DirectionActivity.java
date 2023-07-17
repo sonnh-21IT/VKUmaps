@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vkumaps.R;
 import com.example.vkumaps.adapters.DirectionAdapter;
 import com.example.vkumaps.adapters.HistoryAdapter;
+import com.example.vkumaps.dialog.WarningDeleteHistoryDialog;
+import com.example.vkumaps.listener.DialogListener;
 import com.example.vkumaps.models.MarkerModel;
 import com.example.vkumaps.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import io.paperdb.Paper;
 
-public class DirectionActivity extends AppCompatActivity {
+public class DirectionActivity extends AppCompatActivity implements DialogListener {
     private LinearLayout recommend, history;
     private ImageView back;
     private EditText start, end;
@@ -45,6 +47,7 @@ public class DirectionActivity extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private TextView delete;
     private HistoryAdapter historyAdapter;
+    private WarningDeleteHistoryDialog dialog;
 
     private TextWatcher editTextWatcher = new TextWatcher() {
         @Override
@@ -81,6 +84,7 @@ public class DirectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
+        Paper.init(getApplicationContext());
         initView();
 
         firestore = FirebaseFirestore.getInstance();
@@ -130,21 +134,22 @@ public class DirectionActivity extends AppCompatActivity {
                 if (Utils.listHistory != null) {
                     if (Utils.listHistory.size() > 0) {
                         for (int i = 0; i < Utils.listHistory.size() - 1; i++) {
-                            if (Utils.listHistory.get(i).equals(text)) {
+                            if (text.equals(Utils.listHistory.get(i))) {
                                 checkExit = true;
                                 n = i;
                             }
                         }
                     }
-                    Utils.listHistory.add(text);
                 } else {
                     Utils.listHistory = new ArrayList<>();
                 }
                 if (checkExit) {
                     Utils.listHistory.remove(n);
                 }
+                Utils.listHistory.add(text);
                 Paper.book().write("history", Utils.listHistory);
 
+                showHistory();
                 recommend.setVisibility(View.GONE);
                 history.setVisibility(View.VISIBLE);
             }
@@ -211,16 +216,22 @@ public class DirectionActivity extends AppCompatActivity {
         rv_history.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         back = findViewById(R.id.back);
         delete = findViewById(R.id.delete);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        dialog=new WarningDeleteHistoryDialog(this,this);
+        Utils.listHistory = Paper.book().read("history");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finishAndRemoveTask();
+                onBackPressed();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Utils.listHistory!=null){
+                    dialog.showDialog();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Lịch sử đang rỗng",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         if (getIntent().getStringExtra("name") != null) {
@@ -228,17 +239,38 @@ public class DirectionActivity extends AppCompatActivity {
         }
         start.addTextChangedListener(editTextWatcher);
         end.addTextChangedListener(editTextWatcher);
-        Paper.init(getApplicationContext());
-        showHistory();
+        historyAdapter = new HistoryAdapter(new ArrayList<>());
+        historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
+            @Override
+            public void onItemClick(String text) {
+                if (end.isFocused()){
+                    end.setText(text);
+                }else if(start.isFocused()){
+                    start.setText(text);
+                }
+            }
 
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDeleteClick(String text) {
+                for (int i = 0; i <= Utils.listHistory.size()-1; i++) {
+                    if (Utils.listHistory.get(i).equals(text)) {
+                        Utils.listHistory.remove(i);
+                    }
+                }
+                Paper.book().write("history",Utils.listHistory);
+                historyAdapter.setmList(Utils.listHistory);
+                rv_history.setAdapter(historyAdapter);
+            }
+        });
+        showHistory();
     }
 
     private void showHistory() {
-        List<String> listHistory = Paper.book().read("history");
-        if (listHistory != null) {
+        if (Utils.listHistory != null) {
             List<String> temp = new ArrayList<>();
-            for (int i = listHistory.size() - 1; i >= 0; i--) {
-                temp.add(listHistory.get(i));
+            for (int i = Utils.listHistory.size() - 1; i >= 0; i--) {
+                temp.add(Utils.listHistory.get(i));
             }
             historyAdapter = new HistoryAdapter(temp);
             historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
@@ -260,6 +292,7 @@ public class DirectionActivity extends AppCompatActivity {
                 }
             });
             rv_history.setAdapter(historyAdapter);
+
             history.setVisibility(View.VISIBLE);
             recommend.setVisibility(View.GONE);
         } else {
@@ -276,5 +309,15 @@ public class DirectionActivity extends AppCompatActivity {
             }
         }
         return searchResults;
+    }
+
+    @Override
+    public void onClear() {
+        Utils.listHistory.clear();
+        Paper.book().delete("history");
+        historyAdapter.setmList(new ArrayList<>());
+        rv_history.setAdapter(historyAdapter);
+        dialog.close();
+        Toast.makeText(this,"Đã xóa",Toast.LENGTH_SHORT).show();
     }
 }
