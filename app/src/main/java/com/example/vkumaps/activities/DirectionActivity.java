@@ -133,6 +133,8 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+        recommend.setVisibility(View.GONE);
+        history.setVisibility(View.GONE);
         directionDialog.setVisibility(View.VISIBLE);
         firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -156,6 +158,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                         intent.putExtra("endPoint", endDir);
                         startActivity(intent);
                     } else {
+                        recommend.setVisibility(View.GONE);
+                        history.setVisibility(View.VISIBLE);
+                        directionDialog.setVisibility(View.GONE);
                         opeDialog("Địa điểm bạn chọn không tồn tại!");
                     }
                 }
@@ -195,7 +200,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         directionDialog=findViewById(R.id.direction_dialog);
         directionDialog.setVisibility(View.GONE);
         dialog=new WarningDeleteHistoryDialog(this,this);
-      
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,13 +227,14 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                     dialog.showDialog();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Lịch sử đang rỗng", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Lịch sử đang rỗng",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        if (getIntent().getStringExtra("name") != null) {
+        if (getIntent().getStringExtra("name")!=null){
             end.setText(getIntent().getStringExtra("name"));
+            start.requestFocus();
         }
         start.addTextChangedListener(editTextWatcher);
         end.addTextChangedListener(editTextWatcher);
@@ -243,7 +248,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDeleteClick(String text) {
-                for (int i = 0; i <= Utils.listHistory.size() - 1; i++) {
+                for (int i = 0; i <= Utils.listHistory.size()-1; i++) {
                     if (Utils.listHistory.get(i).equals(text)) {
                         Utils.listHistory.remove(i);
                     }
@@ -288,7 +293,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setmList(new ArrayList<>());
         rv_history.setAdapter(historyAdapter);
         dialog.close();
-        Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Đã xóa",Toast.LENGTH_SHORT).show();
     }
     public void clickItemList(String text){
         if (start.isFocused()) {
@@ -323,7 +328,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             Utils.listHistory.add(text);
         }
         Paper.book().write("history", Utils.listHistory);
-
         showHistory();
         recommend.setVisibility(View.GONE);
         history.setVisibility(View.VISIBLE);
@@ -333,5 +337,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     protected void onStop() {
         super.onStop();
         directionDialog.setVisibility(View.GONE);
+        recommend.setVisibility(View.GONE);
+        history.setVisibility(View.VISIBLE);
     }
 }

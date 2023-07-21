@@ -78,16 +78,18 @@ import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.Geometry;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
+import com.google.maps.android.data.kml.KmlRenderer;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener {
-    private ChangeFragmentListener listener;
-    private BottomSheetListener sharePlaceListener;
+    private final ChangeFragmentListener listener;
+    private final BottomSheetListener sharePlaceListener;
     public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView titlePlace;
@@ -114,7 +116,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         initializeViews();
@@ -454,43 +455,43 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             MarkerModel markerModel = document.toObject(MarkerModel.class);
                             addMarker(new LatLng(markerModel.getGeoPoint().getLatitude(), markerModel.getGeoPoint().getLongitude()),
                                     markerModel.getIconURL(), name, markerModel.getImgURL());
-                        }
-                        map.setOnMarkerClickListener(marker -> {
-                            if (marker.getTitle().equalsIgnoreCase("noneClick")) {
-                                cameraSetup(marker.getPosition(), 20, 0);
-                                if (currentState == 1) {
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            map.setOnMarkerClickListener(marker -> {
+                                if (marker.getTitle().equalsIgnoreCase("noneClick")) {
+                                    cameraSetup(marker.getPosition(), 20, 0);
+                                    if (currentState == 1) {
+                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                    }
+                                    return true;
+                                } else {
+                                    cameraSetup(marker.getPosition(), 20, 0);
+                                    titlePlace.setText(marker.getTitle());
+//                                desPlace.setText(marker.getSnippet());
+                                    Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
+                                    shareLocation = marker;
+                                    namePlace = marker.getTitle();
+                                    if (currentState == 0) {
+                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                                    }
                                 }
                                 return true;
-                            } else {
-                                cameraSetup(marker.getPosition(), 20, 0);
-                                titlePlace.setText(marker.getTitle());
-//                                desPlace.setText(marker.getSnippet());
-                                Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
-                                shareLocation = marker;
-                                namePlace = marker.getTitle();
-                                if (currentState == 0) {
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            });
+                            map.setOnCameraIdleListener(() -> {
+                                // Get the current camera zoom level
+                                float zoomLevel = map.getCameraPosition().zoom;
+                                if (zoomLevel < 17) {
+                                    // Hide all markers if the zoom level is less than 12
+                                    for (Marker marker : markerList) {
+                                        marker.setVisible(false);
+                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                    }
+                                } else {
+                                    // Show all markers if the zoom level is 12 or greater
+                                    for (Marker marker : markerList) {
+                                        marker.setVisible(true);
+                                    }
                                 }
-                            }
-                            return true;
-                        });
-                        map.setOnCameraIdleListener(() -> {
-                            // Get the current camera zoom level
-                            float zoomLevel = map.getCameraPosition().zoom;
-                            if (zoomLevel < 17) {
-                                // Hide all markers if the zoom level is less than 12
-                                for (Marker marker : markerList) {
-                                    marker.setVisible(false);
-                                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                                }
-                            } else {
-                                // Show all markers if the zoom level is 12 or greater
-                                for (Marker marker : markerList) {
-                                    marker.setVisible(true);
-                                }
-                            }
-                        });
+                            });
+                        }
                     } else {
                         Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                     }
@@ -582,9 +583,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                         if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 //                            map.setMyLocationEnabled(true);
                             // Lấy vị trí cuối cùng đã biết
-
                             fusedLocationClient.getLastLocation()
-                                    .addOnSuccessListener(ContextCompat.getMainExecutor(requireContext()), location -> {
+                                    .addOnSuccessListener((Executor) this, location -> {
                                         if (location != null) {
                                             LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
                                             boolean isWithinArea = allowedArea.contains(area);
@@ -633,6 +633,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 break;
             }
             case R.id.btn_direction: {
+                currentState=0;
                 listener.onDirectionClick(namePlace);
                 break;
             }
@@ -762,40 +763,5 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    public float calculateDistance(LatLng latLng1, LatLng latLng2) {
-        Location location1 = new Location("Location1");
-        location1.setLatitude(latLng1.latitude);
-        location1.setLongitude(latLng1.longitude);
-
-        Location location2 = new Location("Location2");
-        location2.setLatitude(latLng2.latitude);
-        location2.setLongitude(latLng2.longitude);
-
-        // Tính khoảng cách giữa hai tọa độ LatLng (đơn vị là mét)
-        return location1.distanceTo(location2);
-    }
-
-    public void showShortDistance() {
-        List<LatLng> latLngList = new ArrayList<>();
-        latLngList.add(new LatLng(15.975306336582696, 108.25191137217618));
-        latLngList.add(new LatLng(15.975320923477389, 108.25259415109005));
-        latLngList.add(new LatLng(15.975295396410973, 108.25339072648954));
-
-        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            int position = 0;
-            float minDistance = calculateDistance(latLng, latLngList.get(0));
-            for (int i = 1; i <= latLngList.size() - 1; i++) {
-                float distance = calculateDistance(latLng, latLngList.get(i));
-                if (distance <= minDistance) {
-                    minDistance = distance;
-                    position = i;
-                }
-            }
-            Toast.makeText(requireContext(), position + "   " + minDistance, Toast.LENGTH_SHORT).show();
-        }
     }
 }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".activities.DirectionActivity">
+    tools:context=".activities.DirectionActivity"
+    android:background="@color/white">
 
     <FrameLayout
         android:id="@+id/sheet"
@@ -41,7 +41,10 @@
                 app:layout_constraintTop_toTopOf="@+id/start" />
 
             <EditText
+                android:textColor="#094A91"
                 android:id="@+id/start"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -51,20 +54,21 @@
                 android:drawableStart="@drawable/ic_location_start"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:hint="Nhập vị trí bắt đầu"
-                android:textColorHint="#094A91"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
                 android:padding="10dp"
-                android:textColor="#094A91"
+                android:hint="Nhập vị trí bắt đầu"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:textColorHint="#094A91"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
+                android:textColor="#094A91"
+                android:textColorHint="#094A91"
                 android:id="@+id/end"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -74,12 +78,8 @@
                 android:drawableStart="@drawable/ic_location_end"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:hint="Nhập điểm đến"
-                android:textColorHint="#094A91"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
                 android:padding="10dp"
-                android:textColor="#094A91"
+                android:hint="Nhập điểm đến"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/start"
@@ -135,6 +135,7 @@
 
     <LinearLayout
         android:id="@+id/recommend"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -142,32 +143,30 @@
         android:paddingTop="20dp"
         android:paddingEnd="40dp"
         android:paddingBottom="10dp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sheet">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:text="Gợi ý"
             android:textColor="#094A91"
             android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recommend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="130dp" />
+            android:layout_marginBottom="130dp"/>
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:background="@color/white"
         android:id="@+id/direction_dialog"
-        android:visibility="gone">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loader"
@@ -190,5 +189,6 @@
             android:textSize="12sp"
             android:textStyle="italic"
             android:textColor="@android:color/darker_gray"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
