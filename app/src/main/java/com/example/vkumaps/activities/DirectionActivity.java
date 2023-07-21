@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +66,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
 
         @SuppressLint("NotifyDataSetChanged")
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void onTextChanged(CharSequence s, int startt, int before, int count) {
             // Xử lý khi nội dung của EditText thay đổi
             String input = s.toString().trim();
             if (!input.isEmpty()) {
@@ -71,6 +74,11 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                 history.setVisibility(View.GONE);
                 recommend.setVisibility(View.VISIBLE);
                 loadMarkersFromFirestore(input);
+
+                // Tạo biểu tượng xóa
+                Drawable clearIcon = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear);
+                addIconClear(start, start.getCompoundDrawables()[0], clearIcon);
+                addIconClear(end, end.getCompoundDrawables()[0], clearIcon);
             } else {
                 // Ẩn RecyclerView khi không có nội dung trong EditText
                 history.setVisibility(View.VISIBLE);
@@ -127,6 +135,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             }
         });
     }
+
     private void findDirection(String s_start, String s_end) {
         View view = getCurrentFocus();
         if (view != null) {
@@ -182,6 +191,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void initView() {
         recommend = findViewById(R.id.recommend);
         history = findViewById(R.id.history);
@@ -197,9 +207,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         back = findViewById(R.id.back);
         swap = findViewById(R.id.swap);
         delete = findViewById(R.id.delete);
-        directionDialog=findViewById(R.id.direction_dialog);
+        directionDialog = findViewById(R.id.direction_dialog);
         directionDialog.setVisibility(View.GONE);
-        dialog=new WarningDeleteHistoryDialog(this,this);
+        dialog = new WarningDeleteHistoryDialog(this, this);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,7 +219,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         swap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s1 =start.getText().toString().trim();
+                String s1 = start.getText().toString().trim();
                 String s2 = end.getText().toString().trim();
                 if (!s1.isEmpty() || !s2.isEmpty()) {
                     start.setText(s2);
@@ -220,19 +230,19 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory!=null||Utils.listHistory.size()<=0){
+                if (Utils.listHistory != null || Utils.listHistory.size() <= 0) {
                     View immView = getCurrentFocus();
                     if (immView != null) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                     dialog.showDialog();
-                }else {
-                    Toast.makeText(getApplicationContext(),"Lịch sử đang rỗng",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lịch sử đang rỗng", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        if (getIntent().getStringExtra("name")!=null){
+        if (getIntent().getStringExtra("name") != null) {
             end.setText(getIntent().getStringExtra("name"));
             start.requestFocus();
         }
@@ -248,7 +258,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDeleteClick(String text) {
-                for (int i = 0; i <= Utils.listHistory.size()-1; i++) {
+                for (int i = 0; i <= Utils.listHistory.size() - 1; i++) {
                     if (Utils.listHistory.get(i).equals(text)) {
                         Utils.listHistory.remove(i);
                     }
@@ -259,6 +269,26 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             }
         });
         showHistory();
+    }
+
+    private void addIconClear(EditText editText, Drawable iconStart, Drawable clearIcon) {
+        clearIcon.setBounds(0, 0, clearIcon.getIntrinsicWidth(), clearIcon.getIntrinsicHeight());
+        editText.setCompoundDrawablesWithIntrinsicBounds(iconStart, null, clearIcon, null);
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                // Kiểm tra xem người dùng bấm vào phần tử xóa
+                if (event.getAction() == MotionEvent.ACTION_UP && event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    // Xóa nội dung trong EditText
+                    if (!editText.getText().toString().isEmpty()) {
+                        editText.setText("");
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void showHistory() {
@@ -293,9 +323,10 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setmList(new ArrayList<>());
         rv_history.setAdapter(historyAdapter);
         dialog.close();
-        Toast.makeText(this,"Đã xóa",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
     }
-    public void clickItemList(String text){
+
+    public void clickItemList(String text) {
         if (start.isFocused()) {
             start.setText(text);
             if (!end.getText().toString().equals("")) {
@@ -324,7 +355,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         }
         if (checkExit) {
             Utils.listHistory.remove(n);
-        }else {
+        } else {
             Utils.listHistory.add(text);
         }
         Paper.book().write("history", Utils.listHistory);
