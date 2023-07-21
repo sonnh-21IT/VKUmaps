@@ -25,25 +25,17 @@ public class WarningDeleteHistoryDialog {
     }
     public void showDialog(){
         dialog=new Dialog(context);
-        dialog.setContentView(R.layout.dialog_warning);
+        dialog.setContentView(R.layout.dialog_warning_for_clear_history);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ImageView img=dialog.findViewById(R.id.close);
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                close();
-            }
-        });
-
-        TextView tvCancel=dialog.findViewById(R.id.cancel);
+        TextView tvCancel=dialog.findViewById(R.id.tv_cancel);
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 close();
             }
         });
-        TextView tvClear=dialog.findViewById(R.id.clear);
+        TextView tvClear=dialog.findViewById(R.id.tv_clear);
         tvClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

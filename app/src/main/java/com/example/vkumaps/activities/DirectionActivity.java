@@ -26,13 +26,11 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.adapters.DirectionAdapter;
 import com.example.vkumaps.adapters.HistoryAdapter;
 import com.example.vkumaps.dialog.WarningDeleteHistoryDialog;
-import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.listener.DialogListener;
 import com.example.vkumaps.models.MarkerModel;
 import com.example.vkumaps.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -68,8 +66,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             String input = s.toString().trim();
             if (!input.isEmpty()) {
                 // Hiển thị RecyclerView và tải dữ liệu từ Firestore
-                history.setVisibility(View.GONE);
-                recommend.setVisibility(View.VISIBLE);
                 loadMarkersFromFirestore(input);
             } else {
                 // Ẩn RecyclerView khi không có nội dung trong EditText
@@ -98,8 +94,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     }
 
     private void loadMarkersFromFirestore(String input) {
-        history.setVisibility(View.GONE);
-        recommend.setVisibility(View.VISIBLE);
         firestore.collection("Marker")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -112,12 +106,14 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                                 list.add(document.getId());
                             }
                             adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(getApplicationContext(), task.getException() + "", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
         List<String> searchResults = searchPhrases(list, input);
+        if (!searchResults.isEmpty()){
+            history.setVisibility(View.GONE);
+            recommend.setVisibility(View.VISIBLE);
+        }
         adapter = new DirectionAdapter(getApplicationContext(), searchResults);
         rv_recommend.setAdapter(adapter);
         adapter.setItemClickListener(new DirectionAdapter.ItemClickListener() {
@@ -127,6 +123,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             }
         });
     }
+
     private void findDirection(String s_start, String s_end) {
         View view = getCurrentFocus();
         if (view != null) {
@@ -182,6 +179,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void initView() {
         recommend = findViewById(R.id.recommend);
         history = findViewById(R.id.history);
@@ -196,9 +194,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         rv_history.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         back = findViewById(R.id.back);
         delete = findViewById(R.id.delete);
-        directionDialog=findViewById(R.id.direction_dialog);
+        directionDialog = findViewById(R.id.direction_dialog);
         directionDialog.setVisibility(View.GONE);
-        dialog=new WarningDeleteHistoryDialog(this,this);
+        dialog = new WarningDeleteHistoryDialog(this, this);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,19 +206,19 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory!=null||Utils.listHistory.size()<=0){
+                if (Utils.listHistory != null) {
                     View immView = getCurrentFocus();
                     if (immView != null) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                     dialog.showDialog();
-                }else {
-                    Toast.makeText(getApplicationContext(),"Lịch sử đang rỗng",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lịch sử đang rỗng", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        if (getIntent().getStringExtra("name")!=null){
+        if (getIntent().getStringExtra("name") != null) {
             end.setText(getIntent().getStringExtra("name"));
             start.requestFocus();
         }
@@ -236,7 +234,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDeleteClick(String text) {
-                for (int i = 0; i <= Utils.listHistory.size()-1; i++) {
+                for (int i = 0; i <= Utils.listHistory.size() - 1; i++) {
                     if (Utils.listHistory.get(i).equals(text)) {
                         Utils.listHistory.remove(i);
                     }
@@ -281,9 +279,10 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setmList(new ArrayList<>());
         rv_history.setAdapter(historyAdapter);
         dialog.close();
-        Toast.makeText(this,"Đã xóa",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
     }
-    public void clickItemList(String text){
+
+    public void clickItemList(String text) {
         if (start.isFocused()) {
             start.setText(text);
             if (!end.getText().toString().equals("")) {
@@ -312,9 +311,8 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         }
         if (checkExit) {
             Utils.listHistory.remove(n);
-        }else {
-            Utils.listHistory.add(text);
         }
+        Utils.listHistory.add(text);
         Paper.book().write("history", Utils.listHistory);
         showHistory();
         recommend.setVisibility(View.GONE);

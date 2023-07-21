@@ -77,10 +77,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bundle.putString("endPoint", intent.getStringExtra("endPoint"));
             fragment.setArguments(bundle);
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, fragment);
-        transaction.commit();
-        currentFragment = FRAGMENT_HOME;
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.commit();
+            currentFragment = FRAGMENT_HOME;
+        }
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -270,12 +272,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LatLng latLng = marker.getPosition();
 
         // Create a Uri that contains the place data
-        String uri = "https://www.google.com/maps/place/" + placeName + "/@" + latLng.latitude + "," + latLng.longitude;
+        String locationUri = "http://maps.google.com/maps?q=" + latLng.latitude + "," + latLng.longitude;
 
         // Create an Intent to share the place data
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this place: " + uri);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Ghé thăm "+marker.getTitle()+" trường VKU "+locationUri);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, placeName);
 
         // Start the share activity

@@ -163,6 +163,7 @@
             android:layout_marginBottom="130dp"/>
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
         android:background="@color/white"
         android:id="@+id/direction_dialog"
         android:layout_width="match_parent"
