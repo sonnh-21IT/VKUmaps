@@ -133,6 +133,8 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+        recommend.setVisibility(View.GONE);
+        history.setVisibility(View.GONE);
         directionDialog.setVisibility(View.VISIBLE);
         firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -156,6 +158,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                         intent.putExtra("endPoint", endDir);
                         startActivity(intent);
                     } else {
+                        recommend.setVisibility(View.GONE);
+                        history.setVisibility(View.VISIBLE);
+                        directionDialog.setVisibility(View.GONE);
                         opeDialog("Địa điểm bạn chọn không tồn tại!");
                     }
                 }
@@ -215,8 +220,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                 }
             }
         });
-        if (getIntent().getStringExtra("name") != null) {
+        if (getIntent().getStringExtra("name")!=null){
             end.setText(getIntent().getStringExtra("name"));
+            start.requestFocus();
         }
         start.addTextChangedListener(editTextWatcher);
         end.addTextChangedListener(editTextWatcher);
@@ -310,7 +316,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             Utils.listHistory.add(text);
         }
         Paper.book().write("history", Utils.listHistory);
-
         showHistory();
         recommend.setVisibility(View.GONE);
         history.setVisibility(View.VISIBLE);
@@ -320,5 +325,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     protected void onStop() {
         super.onStop();
         directionDialog.setVisibility(View.GONE);
+        recommend.setVisibility(View.GONE);
+        history.setVisibility(View.VISIBLE);
     }
 }

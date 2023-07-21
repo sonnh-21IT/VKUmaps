@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DirectionActivity">
+    tools:context=".activities.DirectionActivity"
+    android:background="@color/white">
 
     <FrameLayout
         android:id="@+id/sheet"
@@ -40,6 +41,7 @@
                 app:layout_constraintTop_toTopOf="@+id/start" />
 
             <EditText
+                android:textColor="#094A91"
                 android:id="@+id/start"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
@@ -56,11 +58,14 @@
                 android:hint="Nhập vị trí bắt đầu"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:textColorHint="#094A91"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
+                android:textColor="#094A91"
+                android:textColorHint="#094A91"
                 android:id="@+id/end"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
@@ -112,6 +117,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Xóa tất cả"
@@ -156,5 +162,33 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="130dp"/>
     </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
+        android:id="@+id/direction_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loader"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loader" />
+        <TextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="đang tìm đoạn đường tốt nhất..."
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:textColor="@android:color/darker_gray"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
