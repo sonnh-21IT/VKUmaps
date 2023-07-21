@@ -29,13 +29,11 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.adapters.DirectionAdapter;
 import com.example.vkumaps.adapters.HistoryAdapter;
 import com.example.vkumaps.dialog.WarningDeleteHistoryDialog;
-import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.listener.DialogListener;
 import com.example.vkumaps.models.MarkerModel;
 import com.example.vkumaps.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -71,8 +69,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             String input = s.toString().trim();
             if (!input.isEmpty()) {
                 // Hiển thị RecyclerView và tải dữ liệu từ Firestore
-                history.setVisibility(View.GONE);
-                recommend.setVisibility(View.VISIBLE);
                 loadMarkersFromFirestore(input);
 
                 // Tạo biểu tượng xóa
@@ -106,8 +102,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     }
 
     private void loadMarkersFromFirestore(String input) {
-        history.setVisibility(View.GONE);
-        recommend.setVisibility(View.VISIBLE);
         firestore.collection("Marker")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -120,12 +114,14 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                                 list.add(document.getId());
                             }
                             adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(getApplicationContext(), task.getException() + "", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
         List<String> searchResults = searchPhrases(list, input);
+        if (!searchResults.isEmpty()){
+            history.setVisibility(View.GONE);
+            recommend.setVisibility(View.VISIBLE);
+        }
         adapter = new DirectionAdapter(getApplicationContext(), searchResults);
         rv_recommend.setAdapter(adapter);
         adapter.setItemClickListener(new DirectionAdapter.ItemClickListener() {
@@ -230,7 +226,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory != null || Utils.listHistory.size() <= 0) {
+                if (Utils.listHistory != null) {
                     View immView = getCurrentFocus();
                     if (immView != null) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -355,9 +351,8 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         }
         if (checkExit) {
             Utils.listHistory.remove(n);
-        } else {
-            Utils.listHistory.add(text);
         }
+        Utils.listHistory.add(text);
         Paper.book().write("history", Utils.listHistory);
         showHistory();
         recommend.setVisibility(View.GONE);

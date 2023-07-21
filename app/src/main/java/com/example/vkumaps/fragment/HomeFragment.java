@@ -88,8 +88,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener {
-    private final ChangeFragmentListener listener;
-    private final BottomSheetListener sharePlaceListener;
+    private ChangeFragmentListener listener;
+    private BottomSheetListener sharePlaceListener;
     public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView titlePlace;
@@ -101,6 +101,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
     private String namePlace;
+    private ActivityResultLauncher<String> resultLauncher;
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
@@ -108,6 +109,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private Marker shareLocation;
     private View rootView;
+    public HomeFragment(){
+    }
     public HomeFragment(ChangeFragmentListener listener, BottomSheetListener sharePlaceListener) {
         this.listener = listener;
         this.sharePlaceListener = sharePlaceListener;
@@ -576,7 +579,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     private void requestPermission() {
-        ActivityResultLauncher<String> resultLauncher = registerForActivityResult(
+        resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
                     if (isGranted) {
@@ -616,8 +619,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        resultLauncher.unregister();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        resultLauncher.unregister();
     }
 
     @SuppressLint("NonConstantResourceId")

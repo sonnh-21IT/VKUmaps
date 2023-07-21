@@ -62,10 +62,6 @@ public class LoginFragment extends Fragment {
         client = GoogleSignIn.getClient(requireContext(), options);
 
         login_gg = root.findViewById(R.id.login_gg);
-        login_gg.setOnClickListener(view -> {
-            Intent i = client.getSignInIntent();
-            signInLauncher.launch(i);
-        });
 
         signInLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
@@ -78,6 +74,10 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        login_gg.setOnClickListener(view -> {
+            Intent i = client.getSignInIntent();
+            signInLauncher.launch(i);
+        });
         return root;
     }
 
