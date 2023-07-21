@@ -2,12 +2,14 @@ package com.example.vkumaps.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,11 +26,13 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.adapters.DirectionAdapter;
 import com.example.vkumaps.adapters.HistoryAdapter;
 import com.example.vkumaps.dialog.WarningDeleteHistoryDialog;
+import com.example.vkumaps.fragment.HomeFragment;
 import com.example.vkumaps.listener.DialogListener;
 import com.example.vkumaps.models.MarkerModel;
 import com.example.vkumaps.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -48,6 +53,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     private TextView delete;
     private HistoryAdapter historyAdapter;
     private WarningDeleteHistoryDialog dialog;
+    private ConstraintLayout directionDialog;
 
     private TextWatcher editTextWatcher = new TextWatcher() {
         @Override
@@ -117,46 +123,17 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         adapter.setItemClickListener(new DirectionAdapter.ItemClickListener() {
             @Override
             public void onItemClick(String text) {
-                if (start.isFocused()) {
-                    start.setText(text);
-                    if (!end.getText().toString().equals("")) {
-                        findDirection(start.getText().toString().trim(), end.getText().toString().trim());
-                    } else {
-                        end.requestFocus();
-                    }
-                } else if (end.isFocused()) {
-                    end.setText(text);
-                    findDirection(start.getText().toString().trim(), end.getText().toString().trim());
-                }
-                Utils.listHistory = Paper.book().read("history");
-                boolean checkExit = false;
-                int n = 0;
-                if (Utils.listHistory != null) {
-                    if (Utils.listHistory.size() > 0) {
-                        for (int i = 0; i < Utils.listHistory.size() - 1; i++) {
-                            if (text.equals(Utils.listHistory.get(i))) {
-                                checkExit = true;
-                                n = i;
-                            }
-                        }
-                    }
-                } else {
-                    Utils.listHistory = new ArrayList<>();
-                }
-                if (checkExit) {
-                    Utils.listHistory.remove(n);
-                }
-                Utils.listHistory.add(text);
-                Paper.book().write("history", Utils.listHistory);
-
-                showHistory();
-                recommend.setVisibility(View.GONE);
-                history.setVisibility(View.VISIBLE);
+                clickItemList(text);
             }
         });
     }
-
     private void findDirection(String s_start, String s_end) {
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        directionDialog.setVisibility(View.VISIBLE);
         firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -197,11 +174,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                 dialog.dismiss();
             }
         });
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     private void initView() {
         recommend = findViewById(R.id.recommend);
         history = findViewById(R.id.history);
@@ -217,8 +192,10 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         back = findViewById(R.id.back);
         swap = findViewById(R.id.swap);
         delete = findViewById(R.id.delete);
-        dialog = new WarningDeleteHistoryDialog(this, this);
-        Utils.listHistory = Paper.book().read("history");
+        directionDialog=findViewById(R.id.direction_dialog);
+        directionDialog.setVisibility(View.GONE);
+        dialog=new WarningDeleteHistoryDialog(this,this);
+      
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -239,7 +216,12 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory != null) {
+                if (Utils.listHistory!=null||Utils.listHistory.size()<=0){
+                    View immView = getCurrentFocus();
+                    if (immView != null) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
                     dialog.showDialog();
                 } else {
                     Toast.makeText(getApplicationContext(), "Lịch sử đang rỗng", Toast.LENGTH_SHORT).show();
@@ -255,11 +237,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
             @Override
             public void onItemClick(String text) {
-                if (end.isFocused()) {
-                    end.setText(text);
-                } else if (start.isFocused()) {
-                    start.setText(text);
-                }
+                clickItemList(text);
             }
 
             @SuppressLint("NotifyDataSetChanged")
@@ -279,37 +257,17 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     }
 
     private void showHistory() {
+        Utils.listHistory = Paper.book().read("history");
         if (Utils.listHistory != null) {
             List<String> temp = new ArrayList<>();
             for (int i = Utils.listHistory.size() - 1; i >= 0; i--) {
                 temp.add(Utils.listHistory.get(i));
             }
-            historyAdapter = new HistoryAdapter(temp);
-            historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
-                @Override
-                public void onItemClick(String text) {
-
-                }
-
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void onDeleteClick(String text) {
-                    for (int i = 0; i <= Utils.listHistory.size() - 1; i++) {
-                        if (Utils.listHistory.get(i).equals(text)) {
-                            Utils.listHistory.remove(i);
-                        }
-                    }
-                    historyAdapter.setmList(Utils.listHistory);
-                    rv_history.setAdapter(historyAdapter);
-                }
-            });
+            historyAdapter.setmList(temp);
             rv_history.setAdapter(historyAdapter);
 
             history.setVisibility(View.VISIBLE);
             recommend.setVisibility(View.GONE);
-        } else {
-            history.setVisibility(View.GONE);
-            recommend.setVisibility(View.VISIBLE);
         }
     }
 
@@ -331,5 +289,49 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         rv_history.setAdapter(historyAdapter);
         dialog.close();
         Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
+    }
+    public void clickItemList(String text){
+        if (start.isFocused()) {
+            start.setText(text);
+            if (!end.getText().toString().equals("")) {
+                findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+            } else {
+                end.requestFocus();
+            }
+        } else if (end.isFocused()) {
+            end.setText(text);
+            findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+        }
+        Utils.listHistory = Paper.book().read("history");
+        boolean checkExit = false;
+        int n = 0;
+        if (Utils.listHistory != null) {
+            if (Utils.listHistory.size() > 0) {
+                for (int i = 0; i < Utils.listHistory.size() - 1; i++) {
+                    if (text.equals(Utils.listHistory.get(i))) {
+                        checkExit = true;
+                        n = i;
+                    }
+                }
+            }
+        } else {
+            Utils.listHistory = new ArrayList<>();
+        }
+        if (checkExit) {
+            Utils.listHistory.remove(n);
+        }else {
+            Utils.listHistory.add(text);
+        }
+        Paper.book().write("history", Utils.listHistory);
+
+        showHistory();
+        recommend.setVisibility(View.GONE);
+        history.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        directionDialog.setVisibility(View.GONE);
     }
 }

@@ -15,6 +15,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="Map view showing the location of..."
             map:mapType="satellite" />
 
         <FrameLayout
@@ -31,13 +32,13 @@
                 android:paddingBottom="15dp">
 
                 <ImageView
-                    android:layout_marginVertical="10dp"
                     android:id="@+id/btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:rotation="90"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_go"
-                    android:rotation="90"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -49,10 +50,12 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
                         <ImageView
                             android:id="@+id/img_place"
                             android:layout_width="130dp"
@@ -93,8 +96,8 @@
                                 android:layout_gravity="start|center"
                                 android:layout_marginEnd="3dp"
                                 android:layout_weight="1"
-                                app:cardElevation="0dp"
-                                app:cardCornerRadius="15dp">
+                                app:cardCornerRadius="15dp"
+                                app:cardElevation="0dp">
 
                                 <TextView
                                     android:id="@+id/btn_share"
@@ -117,8 +120,8 @@
                                 android:layout_gravity="end|center"
                                 android:layout_marginStart="3dp"
                                 android:layout_weight="1"
-                                app:cardElevation="0dp"
-                                app:cardCornerRadius="15dp">
+                                app:cardCornerRadius="15dp"
+                                app:cardElevation="0dp">
 
                                 <TextView
                                     android:id="@+id/btn_direction"
