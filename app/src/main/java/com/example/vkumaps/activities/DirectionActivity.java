@@ -44,7 +44,7 @@ import io.paperdb.Paper;
 
 public class DirectionActivity extends AppCompatActivity implements DialogListener {
     private LinearLayout recommend, history;
-    private ImageView back;
+    private ImageView back, swap;
     private EditText start, end;
     private RecyclerView rv_recommend, rv_history;
     private DirectionAdapter adapter;
@@ -195,6 +195,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         rv_history.setHasFixedSize(true);
         rv_history.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         back = findViewById(R.id.back);
+        swap = findViewById(R.id.swap);
         delete = findViewById(R.id.delete);
         directionDialog=findViewById(R.id.direction_dialog);
         directionDialog.setVisibility(View.GONE);
@@ -203,6 +204,17 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+        swap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s1 =start.getText().toString().trim();
+                String s2 = end.getText().toString().trim();
+                if (!s1.isEmpty() || !s2.isEmpty()) {
+                    start.setText(s2);
+                    end.setText(s1);
+                }
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
