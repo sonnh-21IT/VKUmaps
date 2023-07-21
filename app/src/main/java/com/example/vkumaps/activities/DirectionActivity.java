@@ -39,7 +39,7 @@ import io.paperdb.Paper;
 
 public class DirectionActivity extends AppCompatActivity implements DialogListener {
     private LinearLayout recommend, history;
-    private ImageView back;
+    private ImageView back, swap;
     private EditText start, end;
     private RecyclerView rv_recommend, rv_history;
     private DirectionAdapter adapter;
@@ -215,8 +215,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         rv_history.setHasFixedSize(true);
         rv_history.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         back = findViewById(R.id.back);
+        swap = findViewById(R.id.swap);
         delete = findViewById(R.id.delete);
-        dialog=new WarningDeleteHistoryDialog(this,this);
+        dialog = new WarningDeleteHistoryDialog(this, this);
         Utils.listHistory = Paper.book().read("history");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,13 +225,24 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                 onBackPressed();
             }
         });
+        swap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s1 = start.getText().toString().trim();
+                String s2 = end.getText().toString().trim();
+                if (!s1.isEmpty() || !s2.isEmpty()) {
+                    start.setText(s2);
+                    end.setText(s1);
+                }
+            }
+        });
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory!=null){
+                if (Utils.listHistory != null) {
                     dialog.showDialog();
-                }else {
-                    Toast.makeText(getApplicationContext(),"Lịch sử đang rỗng",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Lịch sử đang rỗng", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -243,9 +255,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setListener(new HistoryAdapter.ItemHistoryListener() {
             @Override
             public void onItemClick(String text) {
-                if (end.isFocused()){
+                if (end.isFocused()) {
                     end.setText(text);
-                }else if(start.isFocused()){
+                } else if (start.isFocused()) {
                     start.setText(text);
                 }
             }
@@ -253,7 +265,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDeleteClick(String text) {
-                for (int i = 0; i <= Utils.listHistory.size()-1; i++) {
+                for (int i = 0; i <= Utils.listHistory.size() - 1; i++) {
                     if (Utils.listHistory.get(i).equals(text)) {
                         Utils.listHistory.remove(i);
                     }
@@ -318,6 +330,6 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setmList(new ArrayList<>());
         rv_history.setAdapter(historyAdapter);
         dialog.close();
-        Toast.makeText(this,"Đã xóa",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
     }
 }
