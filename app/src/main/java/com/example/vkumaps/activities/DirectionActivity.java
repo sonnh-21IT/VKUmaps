@@ -228,7 +228,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         swap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s1 = start.getText().toString().trim();
+                String s1 =start.getText().toString().trim();
                 String s2 = end.getText().toString().trim();
                 if (!s1.isEmpty() || !s2.isEmpty()) {
                     start.setText(s2);
