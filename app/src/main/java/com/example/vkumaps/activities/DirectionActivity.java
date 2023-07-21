@@ -235,7 +235,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                         Utils.listHistory.remove(i);
                     }
                 }
-                Paper.book().write("history",Utils.listHistory);
+                Paper.book().write("history", Utils.listHistory);
                 historyAdapter.setmList(Utils.listHistory);
                 rv_history.setAdapter(historyAdapter);
             }
