@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,13 +44,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_EVENT = 2;
     private static final int FRAGMENT_SEARCH_BY_AREA = 3;
     private static final int FRAGMENT_WEEKLY_SCHEDULE = 4;
-    private static final int FRAGMENT_ACCOUNT = 5;
+    private static final int FRAGMENT_LOGIN = 5;
+    private static final int FRAGMENT_ACCOUNT = 8;
     private static final int FRAGMENT_FEEDBACK = 6;
-    private static final int FRAGMENT_MY_INFORMATION = 7;
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,20 +142,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
             case R.id.menu_account: {
-                if (auth.getCurrentUser() != null) {
-                    if (currentFragment != FRAGMENT_MY_INFORMATION) {
-                        fragment = new MyInfoFragment(this);
-//                      replaceFragment(fragment);
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        currentFragment = FRAGMENT_MY_INFORMATION;
-                    }
-                } else {
-                    if (currentFragment != FRAGMENT_ACCOUNT) {
-                        fragment = new LoginFragment(this);
-//                    replaceFragment(fragment);
-                        drawerLayout.closeDrawer(GravityCompat.START);
+                if (auth.getCurrentUser()!=null){
+                    if (currentFragment!=FRAGMENT_ACCOUNT){
+                        fragment= new MyInfoFragment(this);
                         currentFragment = FRAGMENT_ACCOUNT;
                     }
+                }else {
+                    if (currentFragment!=FRAGMENT_LOGIN){
+                        fragment = new LoginFragment(this);
+                        currentFragment = FRAGMENT_LOGIN;
+                    }
+                }
+                if (currentFragment==FRAGMENT_ACCOUNT||currentFragment==FRAGMENT_LOGIN){
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 }
                 break;
             }
