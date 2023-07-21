@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_LOGIN = 5;
     private static final int FRAGMENT_ACCOUNT = 8;
     private static final int FRAGMENT_FEEDBACK = 6;
-    private static final int FRAGMENT_MY_INFORMATION = 7;
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
@@ -85,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
         currentFragment = FRAGMENT_HOME;
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

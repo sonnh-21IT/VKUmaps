@@ -86,8 +86,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener {
-    private final ChangeFragmentListener listener;
-    private final BottomSheetListener sharePlaceListener;
+    private ChangeFragmentListener listener;
+    private BottomSheetListener sharePlaceListener;
     public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
     private TextView titlePlace;
@@ -106,12 +106,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public static final LatLng VKU_LOCATION = new LatLng(15.9754993744594, 108.25236572354167);
     private Marker shareLocation;
     private View rootView;
-
     public HomeFragment(ChangeFragmentListener listener, BottomSheetListener sharePlaceListener) {
         this.listener = listener;
         this.sharePlaceListener = sharePlaceListener;
     }
-
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
