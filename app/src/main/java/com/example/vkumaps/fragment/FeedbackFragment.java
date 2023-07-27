@@ -10,6 +10,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -50,24 +51,34 @@ public class FeedbackFragment extends Fragment {
 
         firestore = FirebaseFirestore.getInstance();
 
-        rateNowBtn.setOnClickListener(view -> {
-            //save database...
-            Map<String, Object> data = new HashMap<>();
-            data.put("name", name.getText().toString().trim());
-            data.put("description", des.getText().toString().trim());
-            data.put("star", ratingBar.getNumStars());
+        String str_name = name.getText().toString().trim();
+        String str_des = des.getText().toString().trim();
+        int star = ratingBar.getNumStars();
 
-            firestore.collection("feedback").add(data)
-                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            //success notifications
-                            Intent intent = new Intent(requireContext(), MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
-                    });
-        });
+        if (str_name.equals("") && str_des.equals("")) {
+            rateNowBtn.setOnClickListener(view -> {
+                Toast.makeText(requireContext(), "Vui lòng điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            rateNowBtn.setOnClickListener(view -> {
+                //save database...
+                Map<String, Object> data = new HashMap<>();
+                data.put("name", str_name);
+                data.put("description", str_des);
+                data.put("star", star);
+
+                firestore.collection("feedback").add(data)
+                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                //success notifications
+                                Intent intent = new Intent(requireContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+            });
+        }
 
         rateLaterBtn.setOnClickListener(view -> {
             Intent intent = new Intent(requireContext(), MainActivity.class);
