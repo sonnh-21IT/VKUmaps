@@ -16,18 +16,6 @@
                 android:title="@string/menu_search_by_area" />
         </menu>
     </item>
-    <item android:title="@string/menu_learn">
-        <menu>
-            <item
-                android:id="@+id/menu_timetable"
-                android:icon="@drawable/ic_today"
-                android:title="@string/menu_timetable" />
-            <item
-                android:id="@+id/menu_learning_outcomes"
-                android:icon="@drawable/ic_admissions"
-                android:title="@string/menu_learning_outcomes" />
-        </menu>
-    </item>
     <item android:title="@string/menu_news">
         <menu>
             <item
@@ -48,10 +36,6 @@
                 android:id="@+id/menu_account"
                 android:icon="@drawable/ic_user"
                 android:title="@string/menu_account" />
-            <item
-                android:id="@+id/menu_logout"
-                android:icon="@drawable/ic_logout"
-                android:title="@string/menu_logout" />
             <item
                 android:id="@+id/menu_instruct"
                 android:icon="@drawable/ic_support"

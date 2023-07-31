@@ -15,10 +15,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.vkumaps.R;
 import com.example.vkumaps.activities.MainActivity;
+import com.example.vkumaps.dialog.SuccessDialog;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 
 public class FeedbackFragment extends Fragment {
     private final ChangeFragmentListener listener;
+    private SuccessDialog dialog;
     public FeedbackFragment(ChangeFragmentListener listener){
         this.listener=listener;
     }
@@ -27,6 +29,7 @@ public class FeedbackFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_feedback, container, false);
         // Inflate the layout for this fragment
+        dialog=new SuccessDialog(requireContext());
         listener.changeTitle("Đánh giá / Góp ý");
         final AppCompatButton rateNowBtn = rootView.findViewById(R.id.rateNowBtn);
         final AppCompatButton rateLaterBtn = rootView.findViewById(R.id.rateLaterBtn);
@@ -35,9 +38,10 @@ public class FeedbackFragment extends Fragment {
         rateNowBtn.setOnClickListener(view -> {
             //save database...
             //success notifications
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+//            Intent intent = new Intent(requireContext(), MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+            dialog.showDialog();
         });
 
         rateLaterBtn.setOnClickListener(view -> {

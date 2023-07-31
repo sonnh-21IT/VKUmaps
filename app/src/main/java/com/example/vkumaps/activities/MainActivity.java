@@ -1,10 +1,12 @@
 package com.example.vkumaps.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -36,7 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener, BottomSheetListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ChangeFragmentListener, BottomSheetListener, MyInfoFragment.MyInfoListener {
     private DrawerLayout drawerLayout;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_ADMISSION = 1;
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_account: {
                 if (auth.getCurrentUser() != null) {
                     if (currentFragment != FRAGMENT_MY_INFORMATION) {
-                        fragment = new MyInfoFragment(this);
+                        fragment = new MyInfoFragment(this, this);
 //                      replaceFragment(fragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         currentFragment = FRAGMENT_MY_INFORMATION;
@@ -159,19 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             }
-            case R.id.menu_timetable: {
-                if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
-                    fragment = new WeekScheduleFragment(this);
-//                    replaceFragment(fragment);
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
-                }
-                break;
-            }
-            case R.id.menu_logout: {
-                logout();
-                break;
-            }
             default: {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
@@ -182,22 +171,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                 @Override
                 public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
                     if (fragment != null) {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         replaceFragment(fragment, null);
                     }
                 }
+
+                @Override
+                public void onDrawerStateChanged(int newState) {
+                    super.onDrawerStateChanged(newState);
+                    View view = getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }
             });
         }
         return true;
-    }
-
-    private void logout() {
-        if (auth.getCurrentUser() != null) {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -277,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Create an Intent to share the place data
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Ghé thăm "+marker.getTitle()+" trường VKU "+locationUri);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Ghé thăm " + marker.getTitle() + " trường VKU " + locationUri);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, placeName);
 
         // Start the share activity
@@ -297,5 +289,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onLearnResultClick() {
+
+    }
+
+    @Override
+    public void onLogout() {
+        if (auth.getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onTimeTableClick() {
+        if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
+            fragment = new WeekScheduleFragment(this);
+            replaceFragment(fragment,null);
+            drawerLayout.closeDrawer(GravityCompat.START);
+            currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
+        }
     }
 }

@@ -95,11 +95,11 @@ public class LoginFragment extends Fragment {
                 FirebaseAuth.getInstance().signInWithCredential(credential)
                         .addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                Intent intent = new Intent(requireContext(), MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(getContext(), Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show();
                             }
                         });
             } else {
@@ -113,18 +113,13 @@ public class LoginFragment extends Fragment {
                 builder.show();
             }
         } catch (ApiException ignored) {
-
+            Toast.makeText(requireContext(),ignored.getMessage(),Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
-        }
     }
     @Override
     public void onStop() {
