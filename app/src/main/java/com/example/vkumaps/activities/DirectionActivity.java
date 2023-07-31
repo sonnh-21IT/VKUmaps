@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +45,7 @@ import io.paperdb.Paper;
 
 public class DirectionActivity extends AppCompatActivity implements DialogListener {
     private LinearLayout recommend, history;
-    private ImageView back;
+    private ImageView back, swap;
     private EditText start, end;
     private RecyclerView rv_recommend, rv_history;
     private DirectionAdapter adapter;
@@ -61,12 +64,17 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
 
         @SuppressLint("NotifyDataSetChanged")
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void onTextChanged(CharSequence s, int startt, int before, int count) {
             // Xử lý khi nội dung của EditText thay đổi
             String input = s.toString().trim();
             if (!input.isEmpty()) {
                 // Hiển thị RecyclerView và tải dữ liệu từ Firestore
                 loadMarkersFromFirestore(input);
+
+                // Tạo biểu tượng xóa
+                Drawable clearIcon = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear);
+                addIconClear(start, start.getCompoundDrawables()[0], clearIcon);
+                addIconClear(end, end.getCompoundDrawables()[0], clearIcon);
             } else {
                 // Ẩn RecyclerView khi không có nội dung trong EditText
                 history.setVisibility(View.VISIBLE);
@@ -193,6 +201,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         rv_history.setHasFixedSize(true);
         rv_history.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         back = findViewById(R.id.back);
+        swap = findViewById(R.id.swap);
         delete = findViewById(R.id.delete);
         directionDialog = findViewById(R.id.direction_dialog);
         directionDialog.setVisibility(View.GONE);
@@ -201,6 +210,17 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+        swap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s1 = start.getText().toString().trim();
+                String s2 = end.getText().toString().trim();
+                if (!s1.isEmpty() || !s2.isEmpty()) {
+                    start.setText(s2);
+                    end.setText(s1);
+                }
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
@@ -245,6 +265,26 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
             }
         });
         showHistory();
+    }
+
+    private void addIconClear(EditText editText, Drawable iconStart, Drawable clearIcon) {
+        clearIcon.setBounds(0, 0, clearIcon.getIntrinsicWidth(), clearIcon.getIntrinsicHeight());
+        editText.setCompoundDrawablesWithIntrinsicBounds(iconStart, null, clearIcon, null);
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                // Kiểm tra xem người dùng bấm vào phần tử xóa
+                if (event.getAction() == MotionEvent.ACTION_UP && event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    // Xóa nội dung trong EditText
+                    if (!editText.getText().toString().isEmpty()) {
+                        editText.setText("");
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void showHistory() {
