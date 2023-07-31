@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.vkumaps.R;
 import com.example.vkumaps.activities.MainActivity;
+import com.example.vkumaps.dialog.DialogSuccessListener;
+import com.example.vkumaps.dialog.SuccessDialog;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,17 +28,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FeedbackFragment extends Fragment {
+public class FeedbackFragment extends Fragment implements DialogSuccessListener {
     private EditText name, des;
     private final ChangeFragmentListener listener;
     private FirebaseFirestore firestore;
-    public FeedbackFragment(ChangeFragmentListener listener){
-        this.listener=listener;
+    private SuccessDialog dialog;
+
+    public FeedbackFragment(ChangeFragmentListener listener) {
+        this.listener = listener;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView=inflater.inflate(R.layout.fragment_feedback, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_feedback, container, false);
         // Inflate the layout for this fragment
         listener.changeTitle("Đánh giá / Góp ý");
 
@@ -49,6 +54,7 @@ public class FeedbackFragment extends Fragment {
         final ImageView ratingImage = rootView.findViewById(R.id.ratingImage);
 
         firestore = FirebaseFirestore.getInstance();
+        dialog = new SuccessDialog(requireContext(), this);
 
         rateNowBtn.setOnClickListener(view -> {
             //save database...
@@ -62,9 +68,9 @@ public class FeedbackFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             //success notifications
-                            Intent intent = new Intent(requireContext(), MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                            name.setText("");
+                            des.setText("");
+                            dialog.showDialog();
                         }
                     });
         });
@@ -79,17 +85,13 @@ public class FeedbackFragment extends Fragment {
 
             if (rating <= 1) {
                 ratingImage.setImageResource(R.drawable.one_star);
-            }
-            else if (rating <= 2) {
+            } else if (rating <= 2) {
                 ratingImage.setImageResource(R.drawable.two_star);
-            }
-            else if (rating <= 3) {
+            } else if (rating <= 3) {
                 ratingImage.setImageResource(R.drawable.three_star);
-            }
-            else if (rating <= 4) {
+            } else if (rating <= 4) {
                 ratingImage.setImageResource(R.drawable.four_star);
-            }
-            else if (rating <= 5){
+            } else if (rating <= 5) {
                 ratingImage.setImageResource(R.drawable.five_star);
             }
 
@@ -100,14 +102,16 @@ public class FeedbackFragment extends Fragment {
         });
         return rootView;
     }
+
     private void animateImage(ImageView ratingImage) {
-        ScaleAnimation scaleAnimation= new ScaleAnimation(0, 1f, 0, 1f,
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0, 1f, 0, 1f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
         scaleAnimation.setFillAfter(true);
         scaleAnimation.setDuration(200);
         ratingImage.startAnimation(scaleAnimation);
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -116,5 +120,12 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onDismiss() {
+        Intent intent = new Intent(requireContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

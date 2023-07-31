@@ -8,12 +8,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.vkumaps.R;
+import com.example.vkumaps.fragment.FeedbackFragment;
 
 public class SuccessDialog {
     private Context context;
+    private DialogSuccessListener listener;
     private Dialog dialog;
-    public SuccessDialog(Context context){
+    public SuccessDialog(Context context, DialogSuccessListener listener){
         this.context=context;
+        this.listener=listener;
     }
     public void showDialog(){
         dialog=new Dialog(context);
@@ -32,5 +35,6 @@ public class SuccessDialog {
     }
     public void close(){
         dialog.dismiss();
+        listener.onDismiss();
     }
 }
