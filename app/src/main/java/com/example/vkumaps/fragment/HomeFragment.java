@@ -442,12 +442,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         });
 
         // Thêm chữ vào bản đồ
-        GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
-                .position(VKU_LOCATION, 5f, 5f) // Điều chỉnh kích thước theo nhu cầu của bạn
-                .image(createTextOverlay("A110", 20, Color.BLACK, Typeface.DEFAULT));
-        GroundOverlay overlay = map.addGroundOverlay(overlayOptions);
-        overlay.setBearing(-90);
-        overlay.setZIndex(2);
+//        GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
+//                .position(VKU_LOCATION, 5f, 5f) // Điều chỉnh kích thước theo nhu cầu của bạn
+//                .image(createTextOverlay("A110", 20, Color.BLACK, Typeface.DEFAULT));
+//        GroundOverlay overlay = map.addGroundOverlay(overlayOptions);
+//        overlay.setBearing(-90);
+//        overlay.setZIndex(2);
 
         //Hiển thị các maker
         firestore.collection("Marker")
