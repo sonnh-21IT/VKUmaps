@@ -51,10 +51,15 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
                             boolean isSearched = false;
                             MarkerModel markerModel = null;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (areaName.equals(document.getId().trim())) {
-                                    isSearched = true;
-                                    markerModel = document.toObject(MarkerModel.class);
-                                    break;
+//                                List<String> contains = (List<String>) document.get("contains");
+                                if (document.get("contains") != null) {
+                                    for (String name : (List<String>) document.get("contains")) {
+                                        if (areaName.equals(name)) {
+                                            isSearched = true;
+                                            markerModel = document.toObject(MarkerModel.class);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                             if(isSearched){
