@@ -25,15 +25,15 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
     private ChangeFragmentListener listener;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-    public NestedAdapter(List<String> mList,ChangeFragmentListener listener) {
+    public NestedAdapter(List<String> mList, ChangeFragmentListener listener) {
         this.mList = mList;
-        this.listener=listener;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.nested_item , parent , false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.nested_item, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -47,7 +47,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
                 firestore.collection("Marker").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             boolean isSearched = false;
                             MarkerModel markerModel = null;
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -62,7 +62,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
                                     }
                                 }
                             }
-                            if(isSearched){
+                            if (isSearched) {
                                 listener.onNestedClick(markerModel, areaName);
                             } else {
                                 Toast.makeText(holder.itemView.getContext(), "Hiện chưa có thông tin tọa độ của địa điểm này!", Toast.LENGTH_SHORT).show();
@@ -79,9 +79,10 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.MyViewHold
         return mList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTv;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mTv = itemView.findViewById(R.id.nestedItemTv);

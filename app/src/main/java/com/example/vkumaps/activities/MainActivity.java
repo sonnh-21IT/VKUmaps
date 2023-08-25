@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onTimeTableClick() {
         if (currentFragment != FRAGMENT_WEEKLY_SCHEDULE) {
             fragment = new WeekScheduleFragment(this);
-            replaceFragment(fragment,null);
+            replaceFragment(fragment, null);
             drawerLayout.closeDrawer(GravityCompat.START);
             currentFragment = FRAGMENT_WEEKLY_SCHEDULE;
         }

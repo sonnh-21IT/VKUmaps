@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 
@@ -40,9 +41,11 @@ public class LoginFragment extends Fragment {
     private GoogleSignInClient client;
     private ActivityResultLauncher<Intent> signInLauncher;
     private final ChangeFragmentListener listener;
-    public LoginFragment(ChangeFragmentListener listener){
-        this.listener=listener;
+
+    public LoginFragment(ChangeFragmentListener listener) {
+        this.listener = listener;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,7 +116,7 @@ public class LoginFragment extends Fragment {
                 builder.show();
             }
         } catch (ApiException ignored) {
-            Toast.makeText(requireContext(),ignored.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), ignored.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -121,6 +124,7 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
     }
+
     @Override
     public void onStop() {
         super.onStop();
