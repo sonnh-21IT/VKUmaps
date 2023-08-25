@@ -111,7 +111,11 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                         if (task.isSuccessful()) {
                             list.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                list.add(document.getId());
+                                if (document.get("contains") != null) {
+                                    for (String name : (List<String>) document.get("contains")) {
+                                        list.add(name);
+                                    }
+                                }
                             }
                             adapter.notifyDataSetChanged();
                         }
@@ -148,13 +152,17 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                     String startDir = null;
                     String endDir = null;
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (s_start.equals(document.getId().trim())) {
-                            MarkerModel model = document.toObject(MarkerModel.class);
-                            startDir = model.getSubname();
-                        }
-                        if (s_end.equals(document.getId().trim())) {
-                            MarkerModel model = document.toObject(MarkerModel.class);
-                            endDir = model.getSubname();
+                        if (document.get("contains") != null) {
+                            for (String name : (List<String>) document.get("contains")) {
+                                if (s_start.equals(name)) {
+                                    MarkerModel model = document.toObject(MarkerModel.class);
+                                    startDir = model.getSubname();
+                                }
+                                if (s_end.equals(name)) {
+                                    MarkerModel model = document.toObject(MarkerModel.class);
+                                    endDir = model.getSubname();
+                                }
+                            }
                         }
                     }
                     if (startDir != null && endDir != null) {
