@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,10 @@
         android:theme="@style/Theme.VKUmaps"
         tools:targetApi="31">
         <activity
-            android:name="com.example.vkumaps.activities.DirectionActivity"
+            android:name=".activities.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DirectionActivity"
             android:exported="false" />
 
         <meta-data
@@ -30,7 +34,7 @@
             android:exported="true" />
 
         <activity
-            android:name="com.example.vkumaps.activities.MainActivity"
+            android:name=".activities.IntroActivity"
             android:configChanges="uiMode|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:theme="@style/Theme.MySplash">
@@ -41,9 +45,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.vkumaps.activities.BrowserActivity"
+            android:name=".activities.BrowserActivity"
             android:configChanges="uiMode|orientation|screenSize|keyboardHidden"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

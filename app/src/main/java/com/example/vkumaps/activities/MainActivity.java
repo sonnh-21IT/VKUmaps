@@ -51,11 +51,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
+    private FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SplashScreen.installSplashScreen(this);
+//        SplashScreen.installSplashScreen(this);
         int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         AppCompatDelegate.setDefaultNightMode(nightMode);
         setContentView(R.layout.activity_main);
@@ -71,16 +72,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fragment = new HomeFragment(this, this);
+        fragment = new HomeFragment(this,this);
         Intent intent = getIntent();
+        transaction = getSupportFragmentManager().beginTransaction();
         if (intent != null && intent.getStringExtra("startPoint") != null && intent.getStringExtra("endPoint") != null) {
+            fragment = new HomeFragment(this,this);
             Bundle bundle = new Bundle();
             bundle.putString("startPoint", intent.getStringExtra("startPoint"));
             bundle.putString("endPoint", intent.getStringExtra("endPoint"));
             fragment.setArguments(bundle);
         }
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.content_frame, fragment);
             transaction.commit();
             currentFragment = FRAGMENT_HOME;
@@ -141,6 +143,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     drawerLayout.closeDrawer(GravityCompat.START);
                     currentFragment = FRAGMENT_FEEDBACK;
                 }
+                break;
+            }
+            case R.id.menu_home: {
+                startActivity(new Intent(MainActivity.this, IntroActivity.class));
+                finish(); // Kết thúc activity hiện tại
                 break;
             }
             case R.id.menu_account: {
@@ -210,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (bundle != null) {
             fragment.setArguments(bundle);
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in,  // enter
                 R.anim.fade_out,  // exit
                 R.anim.fade_in,   // popEnter

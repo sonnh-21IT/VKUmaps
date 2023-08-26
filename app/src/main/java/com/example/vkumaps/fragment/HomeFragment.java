@@ -130,11 +130,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 .commit();
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-
         return rootView;
     }
 
     private void initializeViews() {
+
         ImageView oc = rootView.findViewById(R.id.btn);
         ImageView zoomOut = rootView.findViewById(R.id.zoom_out);
         ImageView zoomIn = rootView.findViewById(R.id.zoom_in);

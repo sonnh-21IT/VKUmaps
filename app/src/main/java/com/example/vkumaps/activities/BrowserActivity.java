@@ -19,8 +19,10 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.vkumaps.R;
@@ -40,6 +42,10 @@ public class BrowserActivity extends AppCompatActivity implements PopupMenu.OnMe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        SplashScreen.installSplashScreen(this);
+        int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        AppCompatDelegate.setDefaultNightMode(nightMode);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_browser);
         binding.webViewMain.setVisibility(View.GONE);
         binding.pageError.setVisibility(View.GONE);
