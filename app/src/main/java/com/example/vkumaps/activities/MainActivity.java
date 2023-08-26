@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
-    private FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fragment = new HomeFragment(this,this);
+        fragment = new HomeFragment(this, this);
         Intent intent = getIntent();
-        transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (intent != null && intent.getStringExtra("startPoint") != null && intent.getStringExtra("endPoint") != null) {
-            fragment = new HomeFragment(this,this);
+            fragment = new HomeFragment(this, this);
             Bundle bundle = new Bundle();
             bundle.putString("startPoint", intent.getStringExtra("startPoint"));
             bundle.putString("endPoint", intent.getStringExtra("endPoint"));
@@ -217,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (bundle != null) {
             fragment.setArguments(bundle);
         }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in,  // enter
                 R.anim.fade_out,  // exit
                 R.anim.fade_in,   // popEnter

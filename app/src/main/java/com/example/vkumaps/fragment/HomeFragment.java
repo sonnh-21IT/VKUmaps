@@ -15,6 +15,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -69,6 +71,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskExecutors;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -102,6 +105,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private GoogleMap map;
     private String namePlace;
     private ActivityResultLauncher<String> resultLauncher;
+    private Handler handler = new Handler();
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
             new LatLng(15.977745, 108.253451)  // Tọa độ góc đông bắc của hình chữ nhật
@@ -130,6 +134,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 .commit();
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+        requestPermission();
         return rootView;
     }
 
@@ -318,7 +323,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        requestPermission();
     }
 
     @Override
@@ -328,6 +332,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                handler.removeCallbacksAndMessages(null);
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     // Do something when the bottom sheet is expanded
                     currentState = 1;
@@ -462,6 +467,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                                         markerModel.getIconURL(), name, markerModel.getImgURL());
                             }
                             map.setOnMarkerClickListener(marker -> {
+                                handler.removeCallbacksAndMessages(null);
+                                animateMarkerBounceInfinite(marker);
                                 if (marker.getTitle().equalsIgnoreCase("noneClick")) {
                                     cameraSetup(marker.getPosition(), 20, 0);
                                     if (currentState == 1) {
@@ -485,6 +492,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                                 // Get the current camera zoom level
                                 float zoomLevel = map.getCameraPosition().zoom;
                                 if (zoomLevel < 17) {
+                                    handler.removeCallbacksAndMessages(null);
                                     // Hide all markers if the zoom level is less than 12
                                     for (Marker marker : markerList) {
                                         marker.setVisible(false);
@@ -589,8 +597,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                         if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 //                            map.setMyLocationEnabled(true);
                             // Lấy vị trí cuối cùng đã biết
+//                            fusedLocationClient.getLastLocation()
+//                                    .addOnSuccessListener((Executor) this, location -> {
+//                                        if (location != null) {
+//                                            LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
+//                                            boolean isWithinArea = allowedArea.contains(area);
+//                                            map.setMyLocationEnabled(isWithinArea);
+//                                        }
+//                                    });
                             fusedLocationClient.getLastLocation()
-                                    .addOnSuccessListener((Executor) this, location -> {
+                                    .addOnSuccessListener(TaskExecutors.MAIN_THREAD, location -> {
                                         if (location != null) {
                                             LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
                                             boolean isWithinArea = allowedArea.contains(area);
@@ -766,6 +782,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             }
         }
         return true;
+    }
+    private void animateMarkerBounceInfinite(final Marker marker) {
+        final long duration = 1000; // Thời gian mỗi chu kỳ nhấp nhô (milliseconds)
+        final double bounceHeight = 0.003; // Độ cao của hiệu ứng nhấp nhô (từ 0 đến 1)
+        final LatLng originalPosition = marker.getPosition();
+
+        // Tính toán tọa độ mới cho marker
+        final double offsetY = bounceHeight * 0.01; // Điều chỉnh giá trị offset cho khoảng cách nhấp nháy nhỏ hơn
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() % duration;
+                float t = (float) elapsed / duration;
+
+                // Áp dụng hiệu ứng nhấp nhô lên vị trí dọc theo trục y
+                double offset = Math.sin(t * Math.PI * 2) * offsetY;
+                LatLng newPosition = new LatLng(originalPosition.latitude + offset, originalPosition.longitude);
+                marker.setPosition(newPosition);
+
+                // Tiếp tục chạy hiệu ứng vô hạn
+                handler.postDelayed(this, 16);
+            }
+        });
     }
 
     @Override
