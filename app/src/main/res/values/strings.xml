@@ -16,8 +16,9 @@
     <string name="menu_instruct">Hướng dẫn sử dụng</string>
     <string name="menu_rating">Đánh giá / Góp ý</string>
     <string name="menu_user_email">vku.udn.vn</string>
+    <string name="menu_home">Trang chủ</string>
 
-    <string name="app_name">VKUStudents</string>
+    <string name="app_name">VKUGo</string>
 
     <string name="mail_tt_hl">tthltt@vku.udn.vn</string>
     <string name="tt_hl">Trung tâm Học liệu và Truyền thông</string>

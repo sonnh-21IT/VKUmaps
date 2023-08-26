@@ -20,8 +20,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -93,6 +95,9 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        SplashScreen.installSplashScreen(this);
+        int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        AppCompatDelegate.setDefaultNightMode(nightMode);
         setContentView(R.layout.activity_direction);
         Paper.init(getApplicationContext());
         initView();
