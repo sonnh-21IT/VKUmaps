@@ -20,8 +20,8 @@
 
     <string name="app_name">VKUGo</string>
 
-    <string name="mail_tt_hl">tthltt@vku.udn.vn</string>
-    <string name="tt_hl">Trung tâm Học liệu và Truyền thông</string>
+    <string name="mail_tt_hl">vku.udn.vn</string>
+    <string name="tt_hl">Trường Đại học Công nghệ thông tin và Truyền thông Việt - Hàn</string>
     <string name="tt_fb">Trung tâm Học liệu và Truyền thông</string>
 
     <string name="pop_copy_link">Sao chép liên kết</string>
