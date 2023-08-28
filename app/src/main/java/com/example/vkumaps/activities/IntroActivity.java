@@ -17,7 +17,7 @@ import com.example.vkumaps.databinding.ActivityBrowserBinding;
 import com.example.vkumaps.helpers.PDFRendererHelper;
 
 public class IntroActivity extends AppCompatActivity implements View.OnClickListener {
-    private ImageView pdfViewer, imgViewer;
+    private ImageView pdfViewer;
     private TextView btnPrev, btnNext, currentPage, getStarted;
     private int currentPageIndex = -1;
 
@@ -35,7 +35,6 @@ public class IntroActivity extends AppCompatActivity implements View.OnClickList
         pdfViewer = findViewById(R.id.pdfViewer);
         btnNext = findViewById(R.id.next);
         btnPrev = findViewById(R.id.prev);
-        imgViewer = findViewById(R.id.imgViewer);
         currentPage = findViewById(R.id.current_page);
         pdfViewer.setVisibility(View.GONE);
         getStarted=findViewById(R.id.get_started);
