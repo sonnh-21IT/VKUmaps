@@ -144,11 +144,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             }
-            case R.id.menu_home: {
-                startActivity(new Intent(MainActivity.this, IntroActivity.class));
-                finish(); // Kết thúc activity hiện tại
-                break;
-            }
+//            case R.id.menu_home: {
+//                startActivity(new Intent(MainActivity.this, IntroActivity.class));
+//                finish(); // Kết thúc activity hiện tại
+//                break;
+//            }
             case R.id.menu_account: {
                 if (auth.getCurrentUser() != null) {
                     if (currentFragment != FRAGMENT_MY_INFORMATION) {

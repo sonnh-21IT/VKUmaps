@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -18,7 +18,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.VKUmaps"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+<!--        <activity-->
+<!--            android:name=".activities.OnBoardingActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_on_boarding"-->
+<!--            android:theme="@style/Theme.VKUmaps.NoActionBar" />-->
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="uiMode|orientation|screenSize|keyboardHidden"
@@ -34,12 +39,15 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:exported="true" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".activities.IntroActivity"
+            android:name=".activities.OnBoardingActivity"
             android:configChanges="uiMode|orientation|screenSize|keyboardHidden"
             android:exported="true"
-            android:theme="@style/Theme.MySplash">
+            android:theme="@style/Theme.MySplash" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
