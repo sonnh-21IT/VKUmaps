@@ -12,6 +12,8 @@
 
     <color name="textHeading">#008eff</color>
 
+    <color name="blue">#00f0ff</color>
+
     <color name="fb_color_1">#FDD736</color>
     <color name="fb_color_2">#3B5796</color>
 </resources>
