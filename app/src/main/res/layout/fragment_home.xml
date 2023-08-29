@@ -222,5 +222,55 @@
                     app:tint="@android:color/darker_gray" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/viewer_start"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="30dp"
+            app:cardCornerRadius="15dp">
+
+            <TextView
+                android:id="@+id/start_dir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:drawableStart="@drawable/ic_start_direction"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/status"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:gravity="center_vertical"
+                android:text="Bắt đầu"
+                android:textColor="@color/status" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/viewer_finish"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="30dp"
+            app:cardCornerRadius="15dp">
+
+            <TextView
+                android:id="@+id/finish_dir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/status"
+                android:drawableStart="@drawable/ic_finish"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/white"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="10dp"
+                android:text="Hoàn Thành"
+                android:textColor="@color/white" />
+        </androidx.cardview.widget.CardView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>
