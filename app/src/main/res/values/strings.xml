@@ -25,6 +25,13 @@
 
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
+
+    <string name="first_slide">VKUGo - Tiện ích sinh viên</string>
+    <string name="second_slide">Cảnh báo</string>
+    <string name="third_slide">Cảnh báo</string>
+    <string name="description_1">Ứng dụng chỉ đường trong khuôn viên trường VKU \nTích hợp các tiện ích khác cho sinh viên VKU</string>
+    <string name="description_2">Ứng dụng đang trong quá trình thử nghiệm \nHãy phản hồi nếu bạn đang gặp vấn đề</string>
+
     <string-array name="my_header_title">
         <item></item>
         <item>Mon</item>
@@ -36,6 +43,7 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="school_name">Trường Đại học và Công nghệ Thông tin và Truyền thông Việt - Hàn</string>
     <string name="vku_udn_vn">vku.udn.vn</string>
 </resources>

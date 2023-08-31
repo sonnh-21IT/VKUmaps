@@ -30,4 +30,10 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:colorBackground">@color/white</item>
     </style>
+    <style name="Theme.VKUmaps.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.VKUmaps.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.VKUmaps.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
