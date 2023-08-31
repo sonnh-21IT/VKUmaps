@@ -91,7 +91,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMapClickListener, PopupMenu.OnMenuItemClickListener, GoogleMap.OnMyLocationButtonClickListener, FinishDialog.DialogFinishListener {
-    private ChangeFragmentListener listener;
+    private ChangeFragmentListener changeTitleListener;
     private BottomSheetListener sharePlaceListener;
     public static int currentState;
     public static BottomSheetBehavior<View> bottomSheetBehavior;
@@ -123,8 +123,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public HomeFragment() {
     }
 
-    public HomeFragment(ChangeFragmentListener listener, BottomSheetListener sharePlaceListener) {
-        this.listener = listener;
+    public HomeFragment(ChangeFragmentListener changeTitleListener,BottomSheetListener sharePlaceListener) {
+        this.changeTitleListener = changeTitleListener;
         this.sharePlaceListener = sharePlaceListener;
     }
 
@@ -147,6 +147,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
         requestPermission();
         return rootView;
     }
+
 
     private void initializeViews() {
 
@@ -339,13 +340,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        listener.changeTitle("Bản đồ");
+        changeTitleListener.changeTitle("Bản đồ");
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -675,7 +672,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             }
             case R.id.btn_direction: {
                 currentState = 0;
-                listener.onDirectionClick(namePlace);
+                changeTitleListener.onDirectionClick(namePlace);
                 break;
             }
             case R.id.btn_share: {

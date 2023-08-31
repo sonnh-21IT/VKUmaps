@@ -4,25 +4,17 @@
     <string name="menu_search_by_area">Tra cứu khu vực</string>
     <string name="menu_direction">Dẫn đường</string>
     <string name="menu_learn">HỌC TẬP</string>
-    <string name="menu_timetable">Thời khóa biểu</string>
-    <string name="menu_learning_outcomes">Kết quả học tập</string>
-    <string name="menu_contact">Liên hệ</string>
     <string name="menu_news">TIN TỨC</string>
     <string name="menu_admissions">Tuyển sinh</string>
     <string name="menu_event">Sự Kiện</string>
     <string name="menu_account">Tài khoản</string>
-    <string name="menu_logout">Đăng xuất</string>
     <string name="menu_more">KHÁC</string>
     <string name="menu_instruct">Hướng dẫn sử dụng</string>
     <string name="menu_rating">Đánh giá / Góp ý</string>
     <string name="menu_user_email">vku.udn.vn</string>
-    <string name="menu_home">Trang chủ</string>
+    <string name="menu_about">Về chúng tôi</string>
 
     <string name="app_name">VKUGo</string>
-
-    <string name="mail_tt_hl">vku.udn.vn</string>
-    <string name="tt_hl">Trường Đại học Công nghệ thông tin và Truyền thông Việt - Hàn</string>
-    <string name="tt_fb">Trung tâm Học liệu và Truyền thông</string>
 
     <string name="pop_copy_link">Sao chép liên kết</string>
     <string name="pop_share">Chia sẻ</string>
@@ -51,13 +43,7 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_on_boarding">OnBoardingActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="school_name">Trường Đại học và Công nghệ Thông tin và Truyền thông Việt - Hàn</string>
+    <string name="vku_udn_vn">vku.udn.vn</string>
 </resources>

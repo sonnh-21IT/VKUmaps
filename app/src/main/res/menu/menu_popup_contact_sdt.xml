@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_now_phone"
+        android:title="Cuộc gọi" />
+    <item
+        android:id="@+id/menu_copy_phone"
+        android:title="Copy" />
+</menu>

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.vkumaps.R;
+import com.example.vkumaps.fragment.AboutFragment;
 import com.example.vkumaps.fragment.AdmissionsFragment;
 import com.example.vkumaps.fragment.EventFragment;
 import com.example.vkumaps.fragment.FeedbackFragment;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int FRAGMENT_ACCOUNT = 5;
     private static final int FRAGMENT_FEEDBACK = 6;
     private static final int FRAGMENT_MY_INFORMATION = 7;
+    private static final int FRAGMENT_ABOUT = 8;
     private int currentFragment = FRAGMENT_HOME;
     private FirebaseAuth auth;
     private Fragment fragment;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        SplashScreen.installSplashScreen(this);
+        SplashScreen.installSplashScreen(this);
         int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         AppCompatDelegate.setDefaultNightMode(nightMode);
         setContentView(R.layout.activity_main);
@@ -75,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (intent != null && intent.getStringExtra("startPoint") != null && intent.getStringExtra("endPoint") != null) {
-            fragment = new HomeFragment(this, this);
             Bundle bundle = new Bundle();
             bundle.putString("startPoint", intent.getStringExtra("startPoint"));
             bundle.putString("endPoint", intent.getStringExtra("endPoint"));
@@ -126,6 +127,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             }
+            case R.id.menu_about: {
+                if (currentFragment != FRAGMENT_ABOUT) {
+                    fragment = new AboutFragment(this);
+//                    replaceFragment(fragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    currentFragment = FRAGMENT_ABOUT;
+                }
+                break;
+            }
             case R.id.menu_search_by_area: {
                 if (currentFragment != FRAGMENT_SEARCH_BY_AREA) {
                     fragment = new SearchByAreaFragment(this);
@@ -144,11 +154,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             }
-//            case R.id.menu_home: {
-//                startActivity(new Intent(MainActivity.this, IntroActivity.class));
-//                finish(); // Kết thúc activity hiện tại
-//                break;
-//            }
             case R.id.menu_account: {
                 if (auth.getCurrentUser() != null) {
                     if (currentFragment != FRAGMENT_MY_INFORMATION) {

@@ -2,57 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/status"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="10dp"
+    android:paddingVertical="25dp"
     android:gravity="bottom">
-    <ImageView
-        android:layout_gravity="start"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"/>
-    <TextView
-        android:textAlignment="textStart"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tt_hl"
-        android:textColor="@color/white"
-        android:layout_marginTop="8dp"
-        android:textSize="16dp"
-        android:textStyle="bold"/>
-    <TextView
-        android:textAlignment="textStart"
+        app:cardCornerRadius="7dp">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/vku"/>
+    </androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/mail_tt_hl"
-        android:textColor="@color/white"
-        android:textSize="14sp"/>
-<!--    <LinearLayout-->
-<!--        android:padding="5dp"-->
-<!--        android:layout_marginTop="25dp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:weightSum="5"-->
-<!--        android:layout_gravity="center">-->
-<!--        <ImageView-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:src="@drawable/ic_zalo"/>-->
-<!--        <TextView-->
-<!--            android:layout_marginHorizontal="15dp"-->
-<!--            android:layout_width="1dp"-->
-<!--            android:background="@android:color/darker_gray"-->
-<!--            android:layout_height="match_parent"/>-->
-<!--        <ImageView-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:src="@drawable/ic_facebook"/>-->
-<!--    </LinearLayout>-->
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/school_name"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/vku_udn_vn"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+    </LinearLayout>
 </LinearLayout>
