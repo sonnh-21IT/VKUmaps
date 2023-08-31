@@ -25,34 +25,27 @@ public class SliderAdapter extends PagerAdapter {
         this.context = context;
     }
 
-    int imagesLogoArray[] = {
-            R.drawable.logo,
-            R.drawable.ic_notification,
-            R.drawable.ic_notification
-    };
-
     int imagesArray[] ={
             R.raw.onboardscreen1,
             R.raw.onboardscreen2,
-            R.raw.onboardscreen3
+            R.raw.onboardscreen
     };
 
-    int headingArray[] ={
-            R.string.first_slide,
-            R.string.second_slide,
-            R.string.third_slide
+    int introTitle[] ={
+            R.string.intro_title_1,
+            R.string.intro_title_2,
+            R.string.intro_title_3
     };
-
-    int descriptionArray[] ={
-            R.string.description_1,
-            R.string.description_2,
-            R.string.description_2
+    int introContent[] ={
+            R.string.intro_content_1,
+            R.string.intro_content_2,
+            R.string.intro_content_3
     };
 
 
     @Override
     public int getCount() {
-        return headingArray.length;
+        return introContent.length;
     }
 
     @Override
@@ -67,15 +60,13 @@ public class SliderAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.layout_sliding_intro,container, false);
 
-        ImageView imageViewLogo = view.findViewById(R.id.img_logo);
         LottieAnimationView imageView = view.findViewById(R.id.slider_img);
-        TextView heading = view.findViewById(R.id.heading);
-        TextView description = view.findViewById(R.id.description);
+        TextView introTitleTv=view.findViewById(R.id.intro_title);
+        TextView introContentTv=view.findViewById(R.id.intro_content);
 
-        imageViewLogo.setImageResource(imagesLogoArray[position]);
         imageView.setAnimation(imagesArray[position]);
-        heading.setText(headingArray[position]);
-        description.setText(descriptionArray[position]);
+        introContentTv.setText(introContent[position]);
+        introTitleTv.setText(introTitle[position]);
 
         container.addView(view);
 

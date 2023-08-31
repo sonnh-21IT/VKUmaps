@@ -3,6 +3,7 @@ package com.example.vkumaps.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
         AppCompatDelegate.setDefaultNightMode(nightMode);
         setContentView(R.layout.activity_main);
+
         auth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
