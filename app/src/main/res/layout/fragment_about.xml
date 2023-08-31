@@ -269,7 +269,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:textColor="@android:color/darker_gray"
-                                    android:text="21GIT - Leader"
+                                    android:text="21SE3 - Member"
                                     android:textSize="10dp"
                                     android:textStyle="italic" />
 
@@ -278,7 +278,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:textColor="@color/black"
-                                    android:text="Lê Minh Thế" />
+                                    android:text="Tr. Xuân Tiến" />
                             </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -316,7 +316,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:textColor="@android:color/darker_gray"
-                                    android:text="21SE3 - Member"
+                                    android:text="21GIT - Leader"
                                     android:textSize="10dp"
                                     android:textStyle="italic" />
 
@@ -325,7 +325,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:textColor="@color/black"
-                                    android:text="Trần Xuân Tiến" />
+                                    android:text="L. Minh Thế" />
                             </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -534,10 +534,9 @@
                             android:layout_height="wrap_content">
                             <ImageView
                                 android:padding="10dp"
-                                app:tint="@color/status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/ic_fb_public"/>
+                                android:src="@drawable/ic_fb"/>
                             <LinearLayout
                                 android:paddingVertical="10dp"
                                 android:orientation="vertical"
@@ -548,7 +547,7 @@
                                     android:layout_height="wrap_content"
                                     android:textSize="16dp"
                                     android:textColor="@color/black"
-                                    android:text="FB: VKU"/>
+                                    android:text="Fanpage: VKU"/>
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

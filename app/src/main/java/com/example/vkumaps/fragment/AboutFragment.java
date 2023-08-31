@@ -25,7 +25,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener{
     private View rootView;
     private final String CONTACT_PHONE_DT_DT ="02366552688";
     private final String CONTACT_PHONE_DT_TT ="0935048080";
-    private final String CONTACT_MAIL_DT_DT ="daotao@vku.udv.vn";
+    private final String CONTACT_MAIL_DT_DT ="daotao@vku.udn.vn";
 
     public AboutFragment(ChangeFragmentListener listener) {
         this.listener = listener;
@@ -47,10 +47,12 @@ public class AboutFragment extends Fragment implements View.OnClickListener{
         LinearLayout lnCallDt=rootView.findViewById(R.id.call_pdt);
         LinearLayout lnCallTt=rootView.findViewById(R.id.call_tt);
         LinearLayout lnMailDt=rootView.findViewById(R.id.mail_pdt);
+        LinearLayout lnFb=rootView.findViewById(R.id.fb);
 
         lnMailDt.setOnClickListener(this);
         lnCallDt.setOnClickListener(this);
         lnCallTt.setOnClickListener(this);
+        lnFb.setOnClickListener(this);
     }
 
     @Override
