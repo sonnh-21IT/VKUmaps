@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="20dp"
     tools:context=".activities.OnBoardingActivity">
 
@@ -33,26 +34,27 @@
             android:background="@drawable/back_button_status"
             android:textColor="#ffffff"
             android:text="Trải nghiệm ngay" />
-
         <LinearLayout
-            android:id="@+id/dots"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="horizontal"
-            android:paddingBottom="20dp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/next_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:background="#00000000"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:paddingBottom="30dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/dots"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"/>
 
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/next_btn"
+                android:layout_gravity="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:drawableTint="@color/black"
+                android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
+        </LinearLayout>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
