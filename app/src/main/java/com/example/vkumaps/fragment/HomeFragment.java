@@ -53,6 +53,7 @@ import com.example.vkumaps.models.ShortestPathFinder;
 import com.example.vkumaps.models.ShortestPathResult;
 import com.example.vkumaps.models.Vertex;
 import com.example.vkumaps.models.WeightModel;
+import com.example.vkumaps.toasts.CustomToast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -106,6 +107,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     private String namePlace;
     private ActivityResultLauncher<String> resultLauncher;
     private float bearingStart;
+    private boolean isFinishDir = true;
     private Marker markerStart, markerTarget, markerEnd, markerClicked, markerTemp;
     private static final LatLngBounds allowedArea = new LatLngBounds(
             new LatLng(15.971851, 108.248515), // Tọa độ góc tây nam của hình chữ nhật
@@ -123,7 +125,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     public HomeFragment() {
     }
 
-    public HomeFragment(ChangeFragmentListener changeTitleListener,BottomSheetListener sharePlaceListener) {
+    public HomeFragment(ChangeFragmentListener changeTitleListener, BottomSheetListener sharePlaceListener) {
         this.changeTitleListener = changeTitleListener;
         this.sharePlaceListener = sharePlaceListener;
     }
@@ -200,6 +202,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             MarkerModel marker = bundle.getParcelable("marker");
             if (marker != null) {
                 String name = bundle.getString("name");
+                namePlace = name;
                 LatLng position = new LatLng(marker.getGeoPoint().getLatitude(), marker.getGeoPoint().getLongitude());
                 titlePlace.setText(name);
                 Glide.with(requireContext()).load(marker.getImgURL()).into(imgPlace);
@@ -284,7 +287,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                         // Tiếp tục thực thi đoạn mã ở dưới sau khi cả hai tác vụ Firestore hoàn thành
                         continueExecution(graph, startVertexLabel, targetVertexLabel);
                     } else {
-                        Toast.makeText(requireContext(), "Lỗi dữ liệu", Toast.LENGTH_SHORT).show();
+                        CustomToast customToast = CustomToast.makeText(requireContext(), "Lỗi tải dữ liệu.", Toast.LENGTH_SHORT);
+                        customToast.show();
                     }
                 });
     }
@@ -335,7 +339,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             showDirection(markerStart, markerTarget, po);
             polyline = map.addPolyline(po);
         } else {
-            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
+            CustomToast customToast = CustomToast.makeText(requireContext(), "Không tìm thấy liên kết giữa hai vị trí này.", Toast.LENGTH_SHORT);
+            customToast.show();
         }
     }
 
@@ -442,7 +447,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
 
             }
         } else {
-            Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
+            CustomToast customToast = CustomToast.makeText(requireContext(), "Lỗi tải bản đồ.", Toast.LENGTH_SHORT);
+            customToast.show();
         }
 
         kmlLayer.setOnFeatureClickListener(new KmlLayer.OnFeatureClickListener() {
@@ -481,24 +487,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                                         markerModel.getIconURL(), name, markerModel.getImgURL());
                             }
                             map.setOnMarkerClickListener(marker -> {
-                                cancelMarkerBlink();
-                                markerClicked = marker;
-                                if (Objects.requireNonNull(marker.getTitle()).equalsIgnoreCase("noneClick")) {
-                                    cameraSetup(marker.getPosition(), 20, 0);
-                                    if (currentState == 1) {
-                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                if (!isFinishDir) {
+                                    CustomToast customToast = CustomToast.makeText(requireContext(), "Hãy hoàn thành chỉ dẫn này.", Toast.LENGTH_SHORT);
+                                    customToast.show();
+                                } else {
+                                    cancelMarkerBlink();
+                                    markerClicked = marker;
+                                    if (Objects.requireNonNull(marker.getTitle()).equalsIgnoreCase("noneClick")) {
+                                        cameraSetup(marker.getPosition(), 20, 0);
+                                        if (currentState == 1) {
+                                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                                        }
+                                        return true;
+                                    } else {
+                                        animateMarkerBlink(marker);
+                                        cameraSetup(marker.getPosition(), 20, 0);
+                                        titlePlace.setText(marker.getTitle());
+                                        Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
+                                        shareLocation = marker;
+                                        namePlace = marker.getTitle();
+                                        if (currentState == 0) {
+                                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                                        }
                                     }
                                     return true;
-                                } else {
-                                    animateMarkerBlink(marker);
-                                    cameraSetup(marker.getPosition(), 20, 0);
-                                    titlePlace.setText(marker.getTitle());
-                                    Glide.with(requireContext()).load(marker.getSnippet()).into(imgPlace);
-                                    shareLocation = marker;
-                                    namePlace = marker.getTitle();
-                                    if (currentState == 0) {
-                                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                                    }
                                 }
                                 return true;
                             });
@@ -526,7 +538,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             });
                         }
                     } else {
-                        Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                        CustomToast customToast = CustomToast.makeText(requireContext(), "Lỗi tải dữ liệu.", Toast.LENGTH_SHORT);
+                        customToast.show();
                     }
                 });
 
@@ -724,6 +737,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     public void showDirection(Marker markerStart, Marker markerTarget, PolylineOptions po) {
+        isFinishDir = false;
         if (po.getPoints().size() <= 1) {
             cameraSetup(new LatLng(po.getPoints().get(0).latitude, po.getPoints().get(0).longitude), 20, 0);
         } else {
@@ -876,6 +890,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
             viewerFinish.setVisibility(View.GONE);
             viewerStart.setVisibility(View.GONE);
             dialog.close();
+            isFinishDir = true;
         }
     }
 }
