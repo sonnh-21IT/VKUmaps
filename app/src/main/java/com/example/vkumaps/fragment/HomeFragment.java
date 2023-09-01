@@ -377,7 +377,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                         if (location != null) {
                             LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
                             boolean isWithinArea = allowedArea.contains(area);
-                            map.setMyLocationEnabled(isWithinArea);
+                            map.setMyLocationEnabled(true);
                         }
                     });
         }
