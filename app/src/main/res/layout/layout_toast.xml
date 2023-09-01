@@ -11,28 +11,15 @@
         app:cardCornerRadius="5dp">
 
         <TextView
-            android:id="@+id/content"
+            android:id="@+id/toast_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/darker_gray"
-            android:drawableStart="@drawable/ic_check"
+            android:drawableStart="@drawable/ic_notification"
             android:drawablePadding="5dp"
             android:drawableTint="@color/white"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="Đã sao chép vào bộ nhớ tạm"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/content_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
-            android:drawableStart="@drawable/ic_error"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/white"
-            android:gravity="center"
-            android:padding="5dp"
+            android:padding="10dp"
             android:text="Đã sao chép vào bộ nhớ tạm"
             android:textColor="@color/white" />
     </androidx.cardview.widget.CardView>

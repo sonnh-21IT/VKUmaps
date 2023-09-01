@@ -110,7 +110,6 @@ public class BrowserActivity extends AppCompatActivity implements PopupMenu.OnMe
                 onBackPressed();
                 return true;
             case R.id.toolbar_more:
-//                Toast.makeText(this, "item click", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(this, toolbar.findViewById(R.id.toolbar_more));
                 popupMenu.getMenuInflater().inflate(R.menu.menu_popup_item, popupMenu.getMenu());
 

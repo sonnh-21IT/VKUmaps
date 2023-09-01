@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.vkumaps.activities.MainActivity;
+import com.example.vkumaps.toasts.CustomToast;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -73,7 +74,8 @@ public class LoginFragment extends Fragment {
                 handleSignInResult(task);
             } else {
                 // Xử lý lỗi đăng nhập không thành công
-                Toast.makeText(requireContext(), "Đăng nhập không thành công.", Toast.LENGTH_SHORT).show();
+                CustomToast customToast = CustomToast.makeText(requireContext(), "Đăng nhập không thành công!", Toast.LENGTH_SHORT);
+                customToast.show();
             }
         });
 
@@ -102,7 +104,8 @@ public class LoginFragment extends Fragment {
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(requireContext(), "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show();
+                                CustomToast customToast = CustomToast.makeText(requireContext(), "Đã xảy ra lỗi!", Toast.LENGTH_SHORT);
+                                customToast.show();
                             }
                         });
             } else {
@@ -116,7 +119,9 @@ public class LoginFragment extends Fragment {
                 builder.show();
             }
         } catch (ApiException ignored) {
-            Toast.makeText(requireContext(), ignored.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(requireContext(), ignored.getMessage(), Toast.LENGTH_SHORT).show();
+            CustomToast customToast = CustomToast.makeText(requireContext(), "Đã xảy ra lỗi!", Toast.LENGTH_SHORT);
+            customToast.show();
         }
     }
 

@@ -33,6 +33,7 @@ import com.example.vkumaps.adapters.HistoryAdapter;
 import com.example.vkumaps.dialog.WarningDeleteHistoryDialog;
 import com.example.vkumaps.listener.DialogListener;
 import com.example.vkumaps.models.MarkerModel;
+import com.example.vkumaps.toasts.CustomToast;
 import com.example.vkumaps.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -127,7 +128,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
                     }
                 });
         List<String> searchResults = searchPhrases(list, input);
-        if (!searchResults.isEmpty()){
+        if (!searchResults.isEmpty()) {
             history.setVisibility(View.GONE);
             recommend.setVisibility(View.VISIBLE);
         }
@@ -239,15 +240,21 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Utils.listHistory != null) {
-                    View immView = getCurrentFocus();
-                    if (immView != null) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    }
-                    dialog.showDialog();
+                if (Utils.listHistory == null) {
+                    CustomToast customToast = CustomToast.makeText(getApplicationContext(), "Lịch sử trống.", Toast.LENGTH_SHORT);
+                    customToast.show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Lịch sử đang rỗng", Toast.LENGTH_SHORT).show();
+                    if (Utils.listHistory.size() == 0) {
+                        CustomToast customToast = CustomToast.makeText(getApplicationContext(), "Lịch sử trống.", Toast.LENGTH_SHORT);
+                        customToast.show();
+                    }else{
+                        View immView = getCurrentFocus();
+                        if (immView != null) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                        dialog.showDialog();
+                    }
                 }
             }
         });
@@ -332,20 +339,31 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         historyAdapter.setmList(new ArrayList<>());
         rv_history.setAdapter(historyAdapter);
         dialog.close();
-        Toast.makeText(this, "Đã xóa", Toast.LENGTH_SHORT).show();
+        CustomToast customToast = CustomToast.makeText(getApplicationContext(), "Đã xóa.", Toast.LENGTH_SHORT);
+        customToast.show();
     }
 
     public void clickItemList(String text) {
         if (start.isFocused()) {
             start.setText(text);
             if (!end.getText().toString().equals("")) {
-                findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+                if (!start.getText().toString().trim().equals(end.getText().toString().trim())){
+                    findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+                }else {
+                    CustomToast customToast = CustomToast.makeText(getApplication(), "Hai vị trí này không được trùng nhau.", Toast.LENGTH_SHORT);
+                    customToast.show();
+                }
             } else {
                 end.requestFocus();
             }
         } else if (end.isFocused()) {
             end.setText(text);
-            findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+            if (!start.getText().toString().trim().equals(end.getText().toString().trim())){
+                findDirection(start.getText().toString().trim(), end.getText().toString().trim());
+            }else {
+                CustomToast customToast = CustomToast.makeText(getApplication(), "Hai vị trí này không được trùng nhau.", Toast.LENGTH_SHORT);
+                customToast.show();
+            }
         }
         Utils.listHistory = Paper.book().read("history");
         boolean checkExit = false;
@@ -353,7 +371,7 @@ public class DirectionActivity extends AppCompatActivity implements DialogListen
         if (Utils.listHistory != null) {
             if (Utils.listHistory.size() > 0) {
                 for (int i = 0; i < Utils.listHistory.size() - 1; i++) {
-                    if (text.equals(Utils.listHistory.get(i))) {
+                    if (text.equals(Utils.listHistory.get(i).trim())) {
                         checkExit = true;
                         n = i;
                     }

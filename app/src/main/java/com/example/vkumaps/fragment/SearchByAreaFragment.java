@@ -16,6 +16,7 @@ import com.example.vkumaps.R;
 import com.example.vkumaps.adapters.SearchByAreaAdapter;
 import com.example.vkumaps.listener.ChangeFragmentListener;
 import com.example.vkumaps.models.DataModel;
+import com.example.vkumaps.toasts.CustomToast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -81,7 +82,8 @@ public class SearchByAreaFragment extends Fragment {
                                                 recyclerView.setVisibility(View.VISIBLE);
                                             } else {
                                                 // Hiển thị thông báo hoặc thực hiện hành động phù hợp khi danh sách rỗng
-                                                Toast.makeText(getContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
+                                                CustomToast customToast = CustomToast.makeText(requireContext(), "Lỗi tải dữ liệu.", Toast.LENGTH_SHORT);
+                                                customToast.show();
                                             }
                                         }
                                     }
