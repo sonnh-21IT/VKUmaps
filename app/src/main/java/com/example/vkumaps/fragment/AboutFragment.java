@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.vkumaps.R;
 import com.example.vkumaps.listener.ChangeFragmentListener;
+import com.example.vkumaps.toasts.CustomToast;
 
 public class AboutFragment extends Fragment implements View.OnClickListener {
     private ChangeFragmentListener listener;
@@ -177,7 +178,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         // Sao chép ClipData vào clipboard
         clipboardManager.setPrimaryClip(clipData);
 
-        Toast.makeText(requireContext(), "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT).show();
+        //Hiện thông báo Toast custom
+        CustomToast customToast = CustomToast.makeText(requireContext(), "Đã sao chép vào bộ nhớ tạm", Toast.LENGTH_SHORT);
+        customToast.show();
     }
 
     private void openEmailComposer(String email) {
