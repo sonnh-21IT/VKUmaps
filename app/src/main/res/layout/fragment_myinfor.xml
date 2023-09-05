@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="5dp"
-                        android:text="21IT***"
+                        android:text="Not update"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -125,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="21***"
+                        android:text="Not update"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -164,7 +164,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Your Major"
+                        android:text="Not update"
                         android:textAllCaps="true"
                         android:textColor="@color/white"/>
                 </LinearLayout>
