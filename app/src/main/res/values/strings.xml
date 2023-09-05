@@ -43,7 +43,7 @@
         <item>Sat</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Chức năng đang trong giai đoạn phát triển. Vui lòng quay lại trong thời gian tới!</string>
 
     <string name="school_name">Trường Đại học Công nghệ Thông tin và Truyền thông Việt - Hàn</string>
     <string name="vku_udn_vn">vku.udn.vn</string>
