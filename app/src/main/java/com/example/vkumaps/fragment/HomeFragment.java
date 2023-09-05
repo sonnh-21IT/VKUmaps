@@ -146,10 +146,30 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                 .commit();
         mapFragment.getMapAsync(this);
         locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-        requestPermission();
         return rootView;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                            fusedLocationClient.getLastLocation()
+                                    .addOnSuccessListener(TaskExecutors.MAIN_THREAD, location -> {
+                                        if (location != null) {
+                                            LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
+                                            boolean isWithinArea = allowedArea.contains(area);
+                                            map.setMyLocationEnabled(isWithinArea);
+                                        }
+                                    });
+                        }
+                    }
+                }
+        );
+    }
 
     private void initializeViews() {
 
@@ -380,6 +400,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
                             map.setMyLocationEnabled(true);
                         }
                     });
+        }else {
+            requestPermission();
         }
         map.getUiSettings().setMapToolbarEnabled(false);
         map.setOnMapClickListener(this);
@@ -622,23 +644,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, View.O
     }
 
     private void requestPermission() {
-        resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        if (!(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-                            fusedLocationClient.getLastLocation()
-                                    .addOnSuccessListener(TaskExecutors.MAIN_THREAD, location -> {
-                                        if (location != null) {
-                                            LatLng area = new LatLng(location.getLatitude(), location.getLongitude());
-                                            boolean isWithinArea = allowedArea.contains(area);
-                                            map.setMyLocationEnabled(isWithinArea);
-                                        }
-                                    });
-                        }
-                    }
-                }
-        );
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
